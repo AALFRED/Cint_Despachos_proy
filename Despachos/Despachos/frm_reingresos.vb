@@ -196,6 +196,10 @@ Public Class frm_reingresos
         lbl_usr_reing_gt.Text = ""
         cmd_modif_gt.Enabled = False
         cmd_actualizar_gt.Enabled = False
+
+        msk_fe_reing.Text = FormatDateTime(Now(), DateFormat.ShortDate)
+        msk_fe_reing_boe.Text = FormatDateTime(Now(), DateFormat.ShortDate)
+
         txt_bus_fact.Select()
 
 

@@ -969,6 +969,22 @@ Public Class frm_ing_fel
                 cbo_ampm.Enabled = False
                 cmd_guardar.Enabled = False
                 txt_nroflete.Select()
+
+            Case "T.L.N"
+
+                cbo_medio_tp.Text = "EXTERNO"
+                cbo_chofer.Text = "EXTERNO"
+                cbo_chofer.Enabled = False
+                lbl_patente.Text = "0"
+                Label13.Visible = False
+                txt_cedible.Visible = False
+                cbo_medio_tp.Enabled = False
+                cbo_ampm.Text = "PM"
+                cbo_ampm.Enabled = False
+                cmd_guardar.Enabled = False
+                txt_nroflete.Select()
+
+
         End Select
     End Sub
 
