@@ -1108,6 +1108,15 @@ Public Class frm_ing_fel
                         txt_peso.SelectAll()
                         txt_peso.Select()
 
+                    Case "T.L.N"
+                        cbo_ciudad.Enabled = False
+                        cbo_chofer.Enabled = False
+                        cbo_medio_tp.Enabled = False
+
+                        txt_peso.Text = " "
+                        txt_peso.SelectAll()
+                        txt_peso.Select()
+
                 End Select
 
 
@@ -1204,6 +1213,12 @@ Public Class frm_ing_fel
 
                     Case "URBANO"
 
+                        cbo_acomodador.Enabled = True
+                        cbo_acomodador.Text = "ASISTENTE"
+                        cbo_acomodador.SelectAll()
+                        cbo_acomodador.Select()
+
+                    Case "T.L.N"
                         cbo_acomodador.Enabled = True
                         cbo_acomodador.Text = "ASISTENTE"
                         cbo_acomodador.SelectAll()

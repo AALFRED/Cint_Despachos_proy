@@ -257,7 +257,7 @@ Public Class frm_reingresos
                     End If
                 End If
 
-                msk_fe_reing.Text = ""
+
                 msk_fe_recep_clte.Text = ""
                 txt_recep_desp.Text = ""
                 txt_reing_obs.Text = ""
@@ -694,7 +694,7 @@ Public Class frm_reingresos
                     End If
                 End If
 
-                msk_fe_reing_boe.Text = ""
+
                 msk_fe_recep_clie_boe.Text = ""
                 txt_recep_desp_boe.Text = ""
                 txt_obs_reing_boe.Text = ""
