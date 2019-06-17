@@ -71,6 +71,7 @@ Public Class frm_reingresos
 
         'control de carga  TP FACTURAS
         'datos de la factura
+        lbl_idbd.Text = ""
         lbl_rut.Text = ""
         lbl_cliente.Text = ""
         lbl_noc.Text = ""
@@ -100,6 +101,7 @@ Public Class frm_reingresos
         cmd_modificar.Enabled = False
 
         'control de carga  TP BOLETAS
+        lbl_idbd_boe.Text = ""
         lbl_rut_boe.Text = ""
         lbl_ciudad_boe.Text = ""
         lbl_ciudad_boe.Text = ""
@@ -278,7 +280,7 @@ Public Class frm_reingresos
                     rs5.Read()
 
 
-                    lbl_idbd.Text = CStr(rs5("id"))
+                    lbl_idbd.Text = rs5("id")
                     lbl_rut.Text = CStr(rs5("rutclie"))
                     lbl_cliente.Text = CStr(rs5("nomclie"))
 
@@ -527,12 +529,13 @@ Public Class frm_reingresos
             lbl_fe_reg.Text = ""
 
             msk_fe_recep_clte.Text = "    -  -"
-            msk_fe_reing.Text = "    -  -"
+
             txt_recep_desp.Text = ""
             txt_reing_obs.Text = ""
             cmd_actualizar.Enabled = False
             txt_bus_fact.Text = ""
             txt_bus_fact.Select()
+
 
 
         Catch ex As Exception

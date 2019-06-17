@@ -906,7 +906,6 @@ Partial Class frm_reingresos
         Me.lbl_idbd.Size = New System.Drawing.Size(51, 13)
         Me.lbl_idbd.TabIndex = 45
         Me.lbl_idbd.Text = "lbl_idbd"
-        Me.lbl_idbd.Visible = False
         '
         'txt_reing_obs
         '
@@ -1354,12 +1353,11 @@ Partial Class frm_reingresos
         'lbl_idbd_boe
         '
         Me.lbl_idbd_boe.AutoSize = True
-        Me.lbl_idbd_boe.Location = New System.Drawing.Point(615, 90)
+        Me.lbl_idbd_boe.Location = New System.Drawing.Point(615, 52)
         Me.lbl_idbd_boe.Name = "lbl_idbd_boe"
         Me.lbl_idbd_boe.Size = New System.Drawing.Size(79, 15)
         Me.lbl_idbd_boe.TabIndex = 45
         Me.lbl_idbd_boe.Text = "lbl_idbd_boe"
-        Me.lbl_idbd_boe.Visible = False
         '
         'txt_obs_reing_boe
         '
