@@ -439,20 +439,22 @@ Public Class frm_Rep_Est_guias
 
             Dim dt As System.Data.DataTable = New System.Data.DataTable
             Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd28)
+
             da.Fill(dt)
-            ' If dt.Rows.Count <> 0 Then
-            grilla.DataSource = dt
+            If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+                ' If dt.Rows.Count <> 0 Then
+                grilla.DataSource = dt
 
-            conexion.Close()
-            da.Dispose()
-            cmd28.Dispose()
+                conexion.Close()
+                da.Dispose()
+                cmd28.Dispose()
 
+                Cursor.Current = Cursors.Default
+            Else
+                Cursor.Current = Cursors.Default
+                MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
 
-
-
-
-
-            Cursor.Current = Cursors.Default
+            End If
 
 
         Catch ex As Exception

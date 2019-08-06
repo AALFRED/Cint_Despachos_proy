@@ -59,6 +59,8 @@ Partial Class frm_Menu
         Me.mnu_rep_Fact_NoIngresadas = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem15 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnu_rep_Estad_DespISO = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripSeparator()
+        Me.mnu_ExtracDatosCobroTp = New System.Windows.Forms.ToolStripMenuItem()
         Me.LogisticaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnu_Chofer_Bultos_Gramos = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem17 = New System.Windows.Forms.ToolStripSeparator()
@@ -290,7 +292,7 @@ Partial Class frm_Menu
         '
         'ReportesToolStripMenuItem
         '
-        Me.ReportesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnu_rep_Est_Fact_Desp, Me.ToolStripMenuItem12, Me.mnu_rep_Est_Guias_Desp, Me.ToolStripMenuItem13, Me.mnu_rep_Est_Bol_desp, Me.ToolStripMenuItem14, Me.mnu_rep_Fact_NoIngresadas, Me.ToolStripMenuItem15, Me.mnu_rep_Estad_DespISO})
+        Me.ReportesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnu_rep_Est_Fact_Desp, Me.ToolStripMenuItem12, Me.mnu_rep_Est_Guias_Desp, Me.ToolStripMenuItem13, Me.mnu_rep_Est_Bol_desp, Me.ToolStripMenuItem14, Me.mnu_rep_Fact_NoIngresadas, Me.ToolStripMenuItem15, Me.mnu_rep_Estad_DespISO, Me.ToolStripMenuItem4, Me.mnu_ExtracDatosCobroTp})
         Me.ReportesToolStripMenuItem.Name = "ReportesToolStripMenuItem"
         Me.ReportesToolStripMenuItem.Size = New System.Drawing.Size(65, 20)
         Me.ReportesToolStripMenuItem.Text = "Reportes"
@@ -298,52 +300,63 @@ Partial Class frm_Menu
         'mnu_rep_Est_Fact_Desp
         '
         Me.mnu_rep_Est_Fact_Desp.Name = "mnu_rep_Est_Fact_Desp"
-        Me.mnu_rep_Est_Fact_Desp.Size = New System.Drawing.Size(252, 22)
+        Me.mnu_rep_Est_Fact_Desp.Size = New System.Drawing.Size(265, 22)
         Me.mnu_rep_Est_Fact_Desp.Text = "Estado Facturas Despachadas"
         '
         'ToolStripMenuItem12
         '
         Me.ToolStripMenuItem12.Name = "ToolStripMenuItem12"
-        Me.ToolStripMenuItem12.Size = New System.Drawing.Size(249, 6)
+        Me.ToolStripMenuItem12.Size = New System.Drawing.Size(262, 6)
         '
         'mnu_rep_Est_Guias_Desp
         '
         Me.mnu_rep_Est_Guias_Desp.Name = "mnu_rep_Est_Guias_Desp"
-        Me.mnu_rep_Est_Guias_Desp.Size = New System.Drawing.Size(252, 22)
+        Me.mnu_rep_Est_Guias_Desp.Size = New System.Drawing.Size(265, 22)
         Me.mnu_rep_Est_Guias_Desp.Text = "Estado Guias Despachadas"
         '
         'ToolStripMenuItem13
         '
         Me.ToolStripMenuItem13.Name = "ToolStripMenuItem13"
-        Me.ToolStripMenuItem13.Size = New System.Drawing.Size(249, 6)
+        Me.ToolStripMenuItem13.Size = New System.Drawing.Size(262, 6)
         '
         'mnu_rep_Est_Bol_desp
         '
         Me.mnu_rep_Est_Bol_desp.Name = "mnu_rep_Est_Bol_desp"
-        Me.mnu_rep_Est_Bol_desp.Size = New System.Drawing.Size(252, 22)
+        Me.mnu_rep_Est_Bol_desp.Size = New System.Drawing.Size(265, 22)
         Me.mnu_rep_Est_Bol_desp.Text = "Estado Boletas Despachadas"
         '
         'ToolStripMenuItem14
         '
         Me.ToolStripMenuItem14.Name = "ToolStripMenuItem14"
-        Me.ToolStripMenuItem14.Size = New System.Drawing.Size(249, 6)
+        Me.ToolStripMenuItem14.Size = New System.Drawing.Size(262, 6)
         '
         'mnu_rep_Fact_NoIngresadas
         '
         Me.mnu_rep_Fact_NoIngresadas.Name = "mnu_rep_Fact_NoIngresadas"
-        Me.mnu_rep_Fact_NoIngresadas.Size = New System.Drawing.Size(252, 22)
+        Me.mnu_rep_Fact_NoIngresadas.Size = New System.Drawing.Size(265, 22)
         Me.mnu_rep_Fact_NoIngresadas.Text = "Facturas No Ingresadas al Sistema"
         '
         'ToolStripMenuItem15
         '
         Me.ToolStripMenuItem15.Name = "ToolStripMenuItem15"
-        Me.ToolStripMenuItem15.Size = New System.Drawing.Size(249, 6)
+        Me.ToolStripMenuItem15.Size = New System.Drawing.Size(262, 6)
         '
         'mnu_rep_Estad_DespISO
         '
         Me.mnu_rep_Estad_DespISO.Name = "mnu_rep_Estad_DespISO"
-        Me.mnu_rep_Estad_DespISO.Size = New System.Drawing.Size(252, 22)
+        Me.mnu_rep_Estad_DespISO.Size = New System.Drawing.Size(265, 22)
         Me.mnu_rep_Estad_DespISO.Text = "Estadistica de Despacho (ISO)"
+        '
+        'ToolStripMenuItem4
+        '
+        Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
+        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(262, 6)
+        '
+        'mnu_ExtracDatosCobroTp
+        '
+        Me.mnu_ExtracDatosCobroTp.Name = "mnu_ExtracDatosCobroTp"
+        Me.mnu_ExtracDatosCobroTp.Size = New System.Drawing.Size(265, 22)
+        Me.mnu_ExtracDatosCobroTp.Text = "Extraccion Datos para Cobro Transp."
         '
         'LogisticaToolStripMenuItem
         '
@@ -384,84 +397,84 @@ Partial Class frm_Menu
         'mnu_Acomodadores
         '
         Me.mnu_Acomodadores.Name = "mnu_Acomodadores"
-        Me.mnu_Acomodadores.Size = New System.Drawing.Size(180, 22)
+        Me.mnu_Acomodadores.Size = New System.Drawing.Size(168, 22)
         Me.mnu_Acomodadores.Text = "Acomodadores"
         '
         'ToolStripMenuItem11
         '
         Me.ToolStripMenuItem11.Name = "ToolStripMenuItem11"
-        Me.ToolStripMenuItem11.Size = New System.Drawing.Size(177, 6)
+        Me.ToolStripMenuItem11.Size = New System.Drawing.Size(165, 6)
         '
         'mnu_Ciudades
         '
         Me.mnu_Ciudades.Name = "mnu_Ciudades"
-        Me.mnu_Ciudades.Size = New System.Drawing.Size(180, 22)
+        Me.mnu_Ciudades.Size = New System.Drawing.Size(168, 22)
         Me.mnu_Ciudades.Text = "Ciudades"
         '
         'ToolStripMenuItem21
         '
         Me.ToolStripMenuItem21.Name = "ToolStripMenuItem21"
-        Me.ToolStripMenuItem21.Size = New System.Drawing.Size(177, 6)
+        Me.ToolStripMenuItem21.Size = New System.Drawing.Size(165, 6)
         '
         'mnu_Choferes
         '
         Me.mnu_Choferes.Name = "mnu_Choferes"
-        Me.mnu_Choferes.Size = New System.Drawing.Size(180, 22)
+        Me.mnu_Choferes.Size = New System.Drawing.Size(168, 22)
         Me.mnu_Choferes.Text = "Choferes"
         '
         'ToolStripMenuItem22
         '
         Me.ToolStripMenuItem22.Name = "ToolStripMenuItem22"
-        Me.ToolStripMenuItem22.Size = New System.Drawing.Size(177, 6)
+        Me.ToolStripMenuItem22.Size = New System.Drawing.Size(165, 6)
         '
         'mnu_Moviles
         '
         Me.mnu_Moviles.Name = "mnu_Moviles"
-        Me.mnu_Moviles.Size = New System.Drawing.Size(180, 22)
+        Me.mnu_Moviles.Size = New System.Drawing.Size(168, 22)
         Me.mnu_Moviles.Text = "Móviles"
         '
         'ToolStripMenuItem23
         '
         Me.ToolStripMenuItem23.Name = "ToolStripMenuItem23"
-        Me.ToolStripMenuItem23.Size = New System.Drawing.Size(177, 6)
+        Me.ToolStripMenuItem23.Size = New System.Drawing.Size(165, 6)
         '
         'mnu_Transportes
         '
         Me.mnu_Transportes.Name = "mnu_Transportes"
-        Me.mnu_Transportes.Size = New System.Drawing.Size(180, 22)
+        Me.mnu_Transportes.Size = New System.Drawing.Size(168, 22)
         Me.mnu_Transportes.Text = "Transportes"
         '
         'ToolStripMenuItem24
         '
         Me.ToolStripMenuItem24.Name = "ToolStripMenuItem24"
-        Me.ToolStripMenuItem24.Size = New System.Drawing.Size(177, 6)
+        Me.ToolStripMenuItem24.Size = New System.Drawing.Size(165, 6)
         '
         'mnu_TarifasTranscom
         '
         Me.mnu_TarifasTranscom.Name = "mnu_TarifasTranscom"
-        Me.mnu_TarifasTranscom.Size = New System.Drawing.Size(180, 22)
+        Me.mnu_TarifasTranscom.Size = New System.Drawing.Size(168, 22)
         Me.mnu_TarifasTranscom.Text = "Tarifas Transcom"
         '
         'ToolStripMenuItem25
         '
         Me.ToolStripMenuItem25.Name = "ToolStripMenuItem25"
-        Me.ToolStripMenuItem25.Size = New System.Drawing.Size(177, 6)
+        Me.ToolStripMenuItem25.Size = New System.Drawing.Size(165, 6)
         '
         'mnu_Usuarios
         '
         Me.mnu_Usuarios.Name = "mnu_Usuarios"
-        Me.mnu_Usuarios.Size = New System.Drawing.Size(180, 22)
+        Me.mnu_Usuarios.Size = New System.Drawing.Size(168, 22)
         Me.mnu_Usuarios.Text = "Usuarios"
         '
         'ToolStripMenuItem26
         '
         Me.ToolStripMenuItem26.Name = "ToolStripMenuItem26"
-        Me.ToolStripMenuItem26.Size = New System.Drawing.Size(177, 6)
+        Me.ToolStripMenuItem26.Size = New System.Drawing.Size(165, 6)
         '
         'mnu_EliminarRegistros
         '
         Me.mnu_EliminarRegistros.Name = "mnu_EliminarRegistros"
-        Me.mnu_EliminarRegistros.Size = New System.Drawing.Size(180, 22)
+        Me.mnu_EliminarRegistros.Size = New System.Drawing.Size(168, 22)
         Me.mnu_EliminarRegistros.Text = "Eliminar Registros"
         '
         'SalirToolStripMenuItem
@@ -564,4 +577,6 @@ Partial Class frm_Menu
     Friend WithEvents mnu_EliminarRegistros As ToolStripMenuItem
     Friend WithEvents lbl_valor_emp_entrada As Label
     Friend WithEvents DeTraspasosToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem4 As ToolStripSeparator
+    Friend WithEvents mnu_ExtracDatosCobroTp As ToolStripMenuItem
 End Class

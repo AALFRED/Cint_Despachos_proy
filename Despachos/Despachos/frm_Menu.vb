@@ -385,4 +385,10 @@ Public Class frm_Menu
     Private Sub mnu_Moviles_Click(sender As Object, e As EventArgs) Handles mnu_Moviles.Click
         MsgBox("Reporte No Disponible", MsgBoxStyle.Exclamation)
     End Sub
+
+    Private Sub mnu_ExtracDatosCobroTp_Click(sender As Object, e As EventArgs) Handles mnu_ExtracDatosCobroTp.Click
+        Me.Hide()
+        frm_Extract_datos_cobro.Show()
+
+    End Sub
 End Class

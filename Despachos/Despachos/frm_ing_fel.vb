@@ -242,7 +242,7 @@ Public Class frm_ing_fel
 
     Sub formato_grilla()
         'FORMATO DE GRILLA CM
-        'VENTA.tipocon, VENTA.fechacon, VENTA.rutcon, Cliente.nomclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon
+        'VENTA.tipocon, VENTA.fechacon, VENTA.rutcon, Cliente.nomclie, cliente.ciuclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon
 
 
         'FORMATO DE GRILLA

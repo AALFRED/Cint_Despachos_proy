@@ -35,12 +35,14 @@ Partial Class frm_Rep_Est_Fact
         Me.msk_fe_fin = New System.Windows.Forms.MaskedTextBox()
         Me.msk_fe_ini = New System.Windows.Forms.MaskedTextBox()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.lbl_cartel = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         CType(Me.grilla, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.lbl_cartel)
         Me.GroupBox1.Controls.Add(Me.ch_anio_ant)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.cbo_estado)
@@ -163,6 +165,15 @@ Partial Class frm_Rep_Est_Fact
         Me.Label5.TabIndex = 45
         Me.Label5.Text = "Fecha Inicial:"
         '
+        'lbl_cartel
+        '
+        Me.lbl_cartel.AutoSize = True
+        Me.lbl_cartel.Location = New System.Drawing.Point(672, 21)
+        Me.lbl_cartel.Name = "lbl_cartel"
+        Me.lbl_cartel.Size = New System.Drawing.Size(57, 15)
+        Me.lbl_cartel.TabIndex = 56
+        Me.lbl_cartel.Text = "lbl_cartel"
+        '
         'frm_Rep_Est_Fact
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
@@ -194,4 +205,5 @@ Partial Class frm_Rep_Est_Fact
     Friend WithEvents Label1 As Label
     Friend WithEvents cbo_estado As ComboBox
     Friend WithEvents ch_anio_ant As CheckBox
+    Friend WithEvents lbl_cartel As Label
 End Class

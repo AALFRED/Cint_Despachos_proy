@@ -122,6 +122,12 @@
     <Compile Include="frm_cons_desp_main.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frm_Extract_datos_cobro.Designer.vb">
+      <DependentUpon>frm_Extract_datos_cobro.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frm_Extract_datos_cobro.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frm_ing_bol.Designer.vb">
       <DependentUpon>frm_ing_bol.vb</DependentUpon>
     </Compile>
@@ -203,6 +209,9 @@
   <ItemGroup>
     <EmbeddedResource Include="frm_cons_desp_main.resx">
       <DependentUpon>frm_cons_desp_main.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frm_Extract_datos_cobro.resx">
+      <DependentUpon>frm_Extract_datos_cobro.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frm_ing_bol.resx">
       <DependentUpon>frm_ing_bol.vb</DependentUpon>
