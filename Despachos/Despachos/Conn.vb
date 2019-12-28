@@ -62,7 +62,8 @@ Module Conn
 
             '//////////////////////
             'CARGA DE PARAMETROS
-            Const fichero As String = "C:\Proyectos Vb2017\DESPACHOS\paramcint.dat"
+            ' Const fichero As String = "C:\Proyectos Vb2017\DESPACHOS_PROY\Despachos\paramcint.dat"
+            Const fichero As String = "C:\Proyectos Vb2017\Redireccionamiento\DESPACHOS_PROY\paramcint.dat"
             Dim texto As String = ""
 
 
@@ -108,7 +109,7 @@ Module Conn
                             Else
 
                                 If Mid(line.ToString, 1, 9) = "Database=" Then
-                                    v_database = Mid(Trim(line), 10, 22) 'base de datos
+                                    v_database = Mid(Trim(line), 10, 40) 'base de datos
                                     'MsgBox(v_database.ToString)
                                     mibd = v_database.ToString
 
@@ -160,7 +161,7 @@ Module Conn
 
     Sub ConectaCint2()
         'CONECTA A CINTEGRAL AÑO ANTERIOR
-        Dim miserver2 As String = "192.168.1.61"
+        Dim miserver2 As String = "192.168.1.63"
         Dim myid2 As String
         Dim mipass2 As String
         Dim mipuerto2 As Integer
@@ -169,8 +170,8 @@ Module Conn
         miano = miano - 1
         ' miyear = CInt(miyear - 1)
         myid2 = "cintegral"
-        mipass2 = "Xtreme749"
-        mibd = "cintegral" & miano
+        mipass2 = "509cintegral509"
+        mibd = "pos_version_cintegral_integracion"
         mipuerto2 = "3306"
         Try
             If conexion.State = 1 Then conexion.Close()
@@ -193,7 +194,8 @@ Module Conn
 
             '//////////////////////
             'CARGA DE PARAMETROS
-            Const fichero As String = "C:\Proyectos Vb2017\DESPACHOS\paramglo.dat"
+            'Const fichero As String = "C:\Proyectos Vb2017\DESPACHOS\paramglo.dat"
+            Const fichero As String = "C:\Proyectos Vb2017\Redireccionamiento\DESPACHOS_PROY\paramglo.dat"
             Dim texto As String = ""
 
 
@@ -278,7 +280,6 @@ Module Conn
                 Loop
             End Using
 
-
             If conexion.State = 1 Then conexion.Close()
             conexion.ConnectionString = "server=" & miserver & ";Port=" & mipuerto & ";user id=" & myid & ";database=" & mibd & ";password=" & mipass & "; convert zero datetime=True"
 
@@ -292,7 +293,7 @@ Module Conn
 
     Sub ConectaGlo2()
         'CONECTA A GLOBAL AÑO ANTERIOR
-        Dim miserver2 As String = "192.168.1.61"
+        Dim miserver2 As String = "192.168.1.63"
         Dim myid2 As String
         Dim mipass2 As String
         Dim mipuerto2 As Integer
@@ -301,8 +302,8 @@ Module Conn
         miano = miano - 1
         ' miyear = CInt(miyear - 1)
         myid2 = "cintegral"
-        mipass2 = "Xtreme749"
-        mibd = "global" & miano
+        mipass2 = "509cintegral509"
+        mibd = "pos_version_global_integracion"
         mipuerto2 = "3306"
         Try
 

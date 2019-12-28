@@ -15,15 +15,13 @@ Imports MySql.Data.MySqlClient
 Imports Despachos
 
 
-
-
-
 Public Class frm_ing_guia_trasp
 
     Dim reseña As Integer
     Dim bandera As Boolean
     Dim fecha_actual As String
-    Dim resultado As String = 0
+    Dim resultado_origen As String
+    Dim resultado_destino As String
 
 
 
@@ -147,15 +145,15 @@ Public Class frm_ing_guia_trasp
             Case 1 'Choferes
                 cmd1 = New MySqlCommand("select " & fldName & " from " & TABLENAME & " order by " & fldName, conexion)
             Case 2 'bodega origen
-                cmd1 = New MySqlCommand("SELECT " & fldName & " FROM " & TABLENAME & " where codbod between 1 and 20 and codbod <> 10 and codbod <> 12 and codbod <> 5 and codbod <> 9 and codbod <> 13 and codbod <> 15 and codbod <> 16 and codbod <> 17 and codbod <> 18 and codbod <> 19 and codbod <> 20 order by " & fldName, conexion)
+                cmd1 = New MySqlCommand("SELECT " & fldName & " FROM " & TABLENAME & " where num_bodega between 2 and 20 order by " & fldName, conexion)
             Case 3 'bodega destino
-                cmd1 = New MySqlCommand("SELECT " & fldName & " FROM " & TABLENAME & " where codbod between 1 and 20 and codbod <> 10 and codbod <> 12 and codbod <> 5 and codbod <> 9 and codbod <> 13 and codbod <> 15 and codbod <> 16 and codbod <> 17 and codbod <> 18 and codbod <> 19 and codbod <> 20 order by " & fldName, conexion)
+                cmd1 = New MySqlCommand("SELECT " & fldName & " FROM " & TABLENAME & " where num_bodega between 2 and 20 order by " & fldName, conexion)
             Case 4 'trasporte
                 cmd1 = New MySqlCommand("select " & fldName & " from " & TABLENAME & " order by " & fldName, conexion)
             Case 5 'bodega origen nombre
-                cmd1 = New MySqlCommand("Select " & fldName & " From " & TABLENAME & " Where codbod = '" & lbl_bod_origen.Text & "'")
+                cmd1 = New MySqlCommand("Select " & fldName & " From " & TABLENAME & " Where num_bodega = '" & lbl_bod_origen.Text & "'")
             Case 6 'bodega destino nombre
-                cmd1 = New MySqlCommand("Select " & fldName & " From " & TABLENAME & " Where codbod = '" & lbl_bod_destino.Text & "'")
+                cmd1 = New MySqlCommand("Select " & fldName & " From " & TABLENAME & " Where num_bodega = '" & lbl_bod_destino.Text & "'")
 
         End Select
 
@@ -171,7 +169,7 @@ Public Class frm_ing_guia_trasp
 
         Return 0
     End Function
-    Function carga_bod(nro_bod As Integer)
+    Function carga_bod_origen(nom_bod As String)
         Dim cmd21 As MySqlCommand
         Dim rs21 As MySqlDataReader
 
@@ -179,14 +177,44 @@ Public Class frm_ing_guia_trasp
         If conexion.State = 1 Then conexion.Close()
         conexion.Open()
 
-        sql = "Select * FROM maebode where codbod = '" & nro_bod & "'"
+        'sql = "Select * FROM maebode where codbod = '" & nro_bod & "'"
+        sql = "Select * FROM bodegas where nombre = '" & nom_bod & "'"
         cmd21 = New MySqlCommand(sql, conexion)
         rs21 = cmd21.ExecuteReader()
 
         If rs21.HasRows() Then
             rs21.Read()
 
-            resultado = CStr(rs21("nombod"))
+            resultado_origen = CStr(rs21("num_bodega"))
+
+        Else
+            MsgBox("No hay datos de la bodega", "Validación de Bodega")
+        End If
+
+        rs21.Dispose()
+        conexion.Close()
+
+        Return resultado_origen
+
+    End Function
+
+    Function carga_bod_destino(nom_bod As String)
+        Dim cmd21 As MySqlCommand
+        Dim rs21 As MySqlDataReader
+
+
+        If conexion.State = 1 Then conexion.Close()
+        conexion.Open()
+
+        'sql = "Select * FROM maebode where codbod = '" & nro_bod & "'"
+        sql = "Select * FROM bodegas where nombre = '" & nom_bod & "'"
+        cmd21 = New MySqlCommand(sql, conexion)
+        rs21 = cmd21.ExecuteReader()
+
+        If rs21.HasRows() Then
+            rs21.Read()
+
+            resultado_destino = CStr(rs21("num_bodega"))
 
         Else
             MsgBox("No hay datos de la bodega", "Validacion de bodega")
@@ -195,10 +223,9 @@ Public Class frm_ing_guia_trasp
         rs21.Dispose()
         conexion.Close()
 
-        Return resultado
+        Return resultado_destino
 
     End Function
-
 
 
     Private Sub frm_ing_guia_trasp_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -244,7 +271,7 @@ Public Class frm_ing_guia_trasp
 
         Dim BarraStatusTexto = New StatusBarPanel
         BarraStatusTexto.Name = "StatusBartexto"
-        BarraStatusTexto.Width = 200
+        BarraStatusTexto.Width = 450
         BarraStatusTexto.Text = "CONECTADO A BD " & v_database
         BarraStatus.Panels.Add(BarraStatusTexto)
 
@@ -252,8 +279,8 @@ Public Class frm_ing_guia_trasp
         Me.Controls.Add(BarraStatus)
 
 
-        cbo_rut_emp_gt.Items.Add("0966899700") 'cintegral
-        cbo_rut_emp_gt.Items.Add("096661420K") 'global
+        cbo_rut_emp_gt.Items.Add("96689970-0") 'cintegral
+        cbo_rut_emp_gt.Items.Add("96661420-K") 'global
 
 
 
@@ -263,11 +290,11 @@ Public Class frm_ing_guia_trasp
 
         'carga bodega origen
         reseña = 2
-        Call cargacombo("maebode", "nombod", cbo_bod_origen_gt)
+        Call cargacombo("bodegas", "nombre", cbo_bod_origen_gt)
 
         'carga bodega destino
         reseña = 3
-        Call cargacombo("maebode", "nombod", cbo_bod_destino_gt)
+        Call cargacombo("bodegas", "nombre", cbo_bod_destino_gt)
 
         'carga medios
         reseña = 4
@@ -286,6 +313,9 @@ Public Class frm_ing_guia_trasp
         lbl_usuario_gt.Text = ""
         lbl_idbd_gt.Text = ""
         lbl_fe_trasp.Text = ""
+        lbl_empresa_gt.Text = ""
+        lbl_sol_tras.Text = ""
+        lbl_ciu_trasp.Text = ""
 
 
         Call bloqueo_campos()
@@ -302,28 +332,19 @@ Public Class frm_ing_guia_trasp
     End Sub
 
     Private Sub cbo_rut_emp_gt_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbo_rut_emp_gt.SelectedValueChanged
-        If cbo_rut_emp_gt.Text = "0966899700" Then
+        If cbo_rut_emp_gt.Text = "96689970-0" Then
             lbl_empresa_gt.Text = "Computacion Integral S.A. (Telemarketing)"
             txt_direccion_gt.Text = "Libertad # 749, Viña del Mar"
 
 
         Else
-            cbo_rut_emp_gt.Text = "096661420K"
+            cbo_rut_emp_gt.Text = "96661420-K"
             lbl_empresa_gt.Text = "Servicios Computacionales Global S.A."
             txt_direccion_gt.Text = "1 Poniente 1334 - Viña del Mar"
 
         End If
     End Sub
 
-    Private Sub msk_fe_gt_MaskInputRejected(sender As Object, e As MaskInputRejectedEventArgs)
-
-    End Sub
-
-
-
-    Private Sub msk_fe_desp_gt_MaskInputRejected(sender As Object, e As MaskInputRejectedEventArgs) Handles msk_fe_desp_gt.MaskInputRejected
-
-    End Sub
 
     Private Sub msk_fe_desp_gt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles msk_fe_desp_gt.KeyPress
         If e.KeyChar = Convert.ToChar(13) Then
@@ -620,7 +641,7 @@ Public Class frm_ing_guia_trasp
                     End If
                 End If
 
-                valret4 = txt_guia_gt.Text
+                valret4 = CStr(txt_guia_gt.Text)
 
                 If conexion.State = 1 Then conexion.Close()
                 'la abre 
@@ -628,7 +649,7 @@ Public Class frm_ing_guia_trasp
 
                 'entrega el valor a la variable para buscar
 
-                sql = "Select * From guias_trasp_dp Where nguia = '" & valret4 & "'"
+                sql = "Select * From guias_trasp_dp Where nguia = '" & valret4.ToString() & "'"
                 com16 = New MySqlCommand(sql, conexion)
 
                 rs16 = com16.ExecuteReader()
@@ -650,38 +671,39 @@ Public Class frm_ing_guia_trasp
                     'BUSCA LOS DATOS
                     Dim com20 As MySqlCommand
                     Dim rs20 As MySqlDataReader
-                    Dim verif_guia As Integer   'verifica si la guia esta impresa o no
+                    Dim verif_guia As String   'verifica si la guia esta impresa o no
 
                     conexion.Open()
                     sql = ""
-                    sql = "Select * From traspa Where nrotra = '1" & valret4 & "'"
+                    sql = "Select * From transferencias Where folio_interno = '" & valret4.ToString() & "'"
                     com20 = New MySqlCommand(sql, conexion)
                     rs20 = com20.ExecuteReader()
 
                     If rs20.HasRows = True Then
                         rs20.Read()
 
-                        cbo_rut_emp_gt.Text = CStr(rs20("ruttra"))
-                        lbl_empresa_gt.Text = CStr(rs20("nomtra"))
-                        txt_direccion_gt.Text = CStr(rs20("dirtra"))
-                        lbl_sol_tras.Text = CStr(rs20("dsolitra"))
-                        lbl_bod_origen.Text = CStr(rs20("bodstra"))
-                        lbl_bod_destino.Text = CStr(rs20("bodetra"))
-                        lbl_fe_trasp.Text = CStr(rs20("fechtra"))
-                        lbl_ciu_trasp.Text = CStr(rs20("ciutra"))
-                        verif_guia = CStr(rs20("impretras"))
-
+                        cbo_rut_emp_gt.Text = CStr(rs20("rut"))
+                        lbl_empresa_gt.Text = CStr(rs20("razon_social"))
+                        txt_direccion_gt.Text = CStr(rs20("direccion"))
+                        lbl_sol_tras.Text = CStr(rs20("solicitante"))
+                        cbo_bod_origen_gt.Text = CStr(rs20("bodega_origen"))
+                        cbo_bod_destino_gt.Text = CStr(rs20("bodega_destino"))
+                        lbl_fe_trasp.Text = CStr(rs20("timestamp_generacion"))
+                        lbl_ciu_trasp.Text = CStr(rs20("ciudad"))
+                        verif_guia = CStr(rs20("estado"))
 
 
                         rs20.Dispose()
                         com20.Dispose()
 
                         'Busca los nombres de las bodega
-                        Call carga_bod(lbl_bod_origen.Text)
-                        cbo_bod_origen_gt.Text = resultado
+                        'Call carga_bod(lbl_bod_origen.Text)
+                        Call carga_bod_origen(cbo_bod_origen_gt.Text)
+                        lbl_bod_origen.Text = resultado_origen
 
-                        Call carga_bod(lbl_bod_destino.Text)
-                        cbo_bod_destino_gt.Text = resultado
+                        'Call carga_bod(lbl_bod_destino.Text)
+                        Call carga_bod_destino(cbo_bod_destino_gt.Text)
+                        lbl_bod_destino.Text = resultado_destino
 
 
                         'carga la fecha actual
@@ -692,7 +714,7 @@ Public Class frm_ing_guia_trasp
 
 
                         'verifica si la guia esta impresa
-                        If verif_guia = 0 Then
+                        If verif_guia = "PENDIENTE" Then
                             MsgBox("Se ha detectado que la Guia no ha sido impresa, No puede despachar esta Guía, Verifique!", MsgBoxStyle.Exclamation)
                             cmd_guardar_gt.Enabled = False
 
@@ -708,11 +730,12 @@ Public Class frm_ing_guia_trasp
                             txt_nrobultos_gt.Enabled = False
                             cbo_chofer_gt.Enabled = False
                             cbo_transp_gt.Enabled = False
-                            lbl_patente_gt.Text = ""
-                            lbl_ciu_trasp.Text = ""
-                            lbl_usuario_gt.Text = ""
-                            lbl_sol_tras.Text = ""
-                            lbl_empresa_gt.Text = ""
+                            'lbl_patente_gt.Text = ""
+                            'lbl_ciu_trasp.Text = ""
+                            'lbl_usuario_gt.Text = ""
+                            'lbl_sol_tras.Text = ""
+                            'lbl_empresa_gt.Text = ""
+                            lbl_usuario_gt.Text = retenUser
 
                         Else
                             cbo_bod_origen_gt.Enabled = False
@@ -720,6 +743,7 @@ Public Class frm_ing_guia_trasp
                             cbo_rut_emp_gt.Enabled = False
                             txt_guia_gt.Enabled = False
                             cmd_guardar_gt.Enabled = True
+                            lbl_usuario_gt.Text = retenUser
                         End If
 
                         cbo_transp_gt.Select()
@@ -734,7 +758,7 @@ Public Class frm_ing_guia_trasp
                 End If
             End If
         Catch ex As Exception
-            Msgbox(ex.ToString, "txt_guia_gt")
+            MsgBox(ex.ToString, "txt_guia_gt")
         End Try
 
     End Sub
@@ -799,102 +823,102 @@ Public Class frm_ing_guia_trasp
                 sql = "Select * From guias_trasp_dp Where nguia = '" & valret5 & "'"
                 com17 = New MySqlCommand(sql, conexion)
 
-                rs17 = com17.ExecuteReader()
-                If rs17.HasRows = True Then
-                    rs17.Read()
+                            rs17 = com17.ExecuteReader()
+                            If rs17.HasRows = True Then
+                                rs17.Read()
 
-                    ret0 = (rs17.GetUInt32(0)) 'nrodp
-                    ret1 = (rs17.GetUInt32(1)) 'nguia
-                    ret2 = (rs17.GetString(2)) 'bod origen
-                    ret3 = (rs17.GetString(3)) 'bod_destino
-                    ret4 = (rs17.GetString(4)) 'fe_trasp
-                    ret5 = (rs17.GetString(5)) 'rut_trasp
-                    ret6 = (rs17.GetString(6)) 'nom_trasp
-                    ret7 = (rs17.GetString(7)) 'dir_trasp
-                    ret8 = (rs17.GetString(8)) 'fe_desp
-                    ret9 = (rs17.GetString(9)) 'transporte
-                    ret10 = (rs17.GetString(10)) 'patente
-                    ret11 = (rs17.GetString(11)) 'chofer
-                    ret12 = (rs17.GetString(12)) 'gramos
-                ret13 = (rs17.GetString(13)) 'nrobultos
-
-
-
-                If IsDBNull(rs17("obs_ingreso")) = True Then
-                    ret14 = ""
-                Else
-                    ret14 = CStr(rs17("obs_ingreso"))
-
-                End If
-
-                If IsDBNull(rs17("usr_registro")) = True Then
-                    ret15 = "sin registro"
-                Else
-                    ret15 = CStr(rs17("usr_registro"))
-                End If
+                                ret0 = (rs17.GetUInt32(0)) 'nrodp
+                                ret1 = (rs17.GetUInt32(1)) 'nguia
+                                ret2 = (rs17.GetString(2)) 'bod origen
+                                ret3 = (rs17.GetString(3)) 'bod_destino
+                                ret4 = (rs17.GetString(4)) 'fe_trasp
+                                ret5 = (rs17.GetString(5)) 'rut_trasp
+                                ret6 = (rs17.GetString(6)) 'nom_trasp
+                                ret7 = (rs17.GetString(7)) 'dir_trasp
+                                ret8 = (rs17.GetString(8)) 'fe_desp
+                                ret9 = (rs17.GetString(9)) 'transporte
+                                ret10 = (rs17.GetString(10)) 'patente
+                                ret11 = (rs17.GetString(11)) 'chofer
+                                ret12 = (rs17.GetString(12)) 'gramos
+                                ret13 = (rs17.GetString(13)) 'nrobultos
 
 
-                lbl_idbd_gt.Text = ret0 'nrodp
-                lbl_nrodp_gt.Text = ret0
 
-                txt_guia_gt.Text = ret1
-                cbo_bod_origen_gt.Text = ret2 'bod origen
-                cbo_bod_destino_gt.Text = ret3 'bod destino
-                ret4 = Convert.ToDateTime(ret4).ToShortDateString
-                lbl_fe_trasp.Text = ret4 'fe trasp
-                cbo_rut_emp_gt.Text = ret5 'rut
-                lbl_empresa_gt.Text = ret6 'empresa
-                txt_direccion_gt.Text = ret7 'direccion
-                msk_fe_desp_gt.Text = ret8 'fe desp
-                cbo_transp_gt.Text = ret9 'transporte
-                lbl_patente_gt.Text = ret10 'patente
-                cbo_chofer_gt.Text = ret11 'chofer
-                txt_peso_gt.Text = ret12 'gramos
-                txt_nrobultos_gt.Text = ret13 ' nro bultos
-                txt_obs_ing_gt.Text = ret14 'observacion
-                lbl_usuario_gt.Text = ret15 'usuario
+                                If IsDBNull(rs17("obs_ingreso")) = True Then
+                                    ret14 = ""
+                                Else
+                                    ret14 = CStr(rs17("obs_ingreso"))
 
-                rs17.Close()
-                com17.Dispose()
-                conexion.Close()
+                                End If
+
+                                If IsDBNull(rs17("usr_registro")) = True Then
+                                    ret15 = "sin registro"
+                                Else
+                                    ret15 = CStr(rs17("usr_registro"))
+                                End If
 
 
-                If conexion.State = 1 Then conexion.Close()
-                conexion.Open()
+                                lbl_idbd_gt.Text = ret0 'nrodp
+                                lbl_nrodp_gt.Text = ret0
 
-                Dim com22 As MySqlCommand
-                Dim rs22 As MySqlDataReader
+                                txt_guia_gt.Text = ret1
+                                cbo_bod_origen_gt.Text = ret2 'bod origen
+                                cbo_bod_destino_gt.Text = ret3 'bod destino
+                                ret4 = Convert.ToDateTime(ret4).ToShortDateString
+                                lbl_fe_trasp.Text = ret4 'fe trasp
+                                cbo_rut_emp_gt.Text = ret5 'rut
+                                lbl_empresa_gt.Text = ret6 'empresa
+                                txt_direccion_gt.Text = ret7 'direccion
+                                msk_fe_desp_gt.Text = ret8 'fe desp
+                                cbo_transp_gt.Text = ret9 'transporte
+                                lbl_patente_gt.Text = ret10 'patente
+                                cbo_chofer_gt.Text = ret11 'chofer
+                                txt_peso_gt.Text = ret12 'gramos
+                                txt_nrobultos_gt.Text = ret13 ' nro bultos
+                                txt_obs_ing_gt.Text = ret14 'observacion
+                                lbl_usuario_gt.Text = ret15 'usuario
 
-                sql = ""
-                sql = "Select * From traspa Where nrotra = '1" & txt_guia_gt.Text & "'"
-                com22 = New MySqlCommand(sql, conexion)
-
-                rs22 = com22.ExecuteReader()
-                If rs22.HasRows = True Then
-                    rs22.Read()
-
-                    lbl_sol_tras.Text = CStr(rs22("dsolitra"))
-                    lbl_ciu_trasp.Text = CStr(rs22("ciutra"))
-
-                Else
-                    MsgBox("No se pudieron cargar algunos Datos de la Guía", MsgBoxStyle.Exclamation)
-
-                End If
-
-
-                Call bloqueo_campos()
-                cmd_guardar_gt.Enabled = False
-                cmd_modif_gt.Enabled = True
-                txt_guia_gt.Enabled = False
-
-                Else
-                    MsgBox("La Guía No fue encontrada, Verifíque!", MsgBoxStyle.Critical)
-                txt_guia_gt.Select()
+                                rs17.Close()
+                                com17.Dispose()
+                                conexion.Close()
 
 
-                End If
-            Else
-                MsgBox("Debe Ingresar un valor para buscar", MsgBoxStyle.Critical)
+                                If conexion.State = 1 Then conexion.Close()
+                                conexion.Open()
+
+                                Dim com22 As MySqlCommand
+                                Dim rs22 As MySqlDataReader
+
+                                sql = ""
+                                sql = "Select * From transferencias Where folio_interno = '" & txt_guia_gt.Text & "' and tipo_traspaso = 'INTERNO'"
+                                com22 = New MySqlCommand(sql, conexion)
+
+                                rs22 = com22.ExecuteReader()
+                                If rs22.HasRows = True Then
+                                    rs22.Read()
+
+                                    lbl_sol_tras.Text = CStr(rs22("solicitante"))
+                                    lbl_ciu_trasp.Text = CStr(rs22("ciudad"))
+
+                                Else
+                                    MsgBox("No se pudieron cargar algunos Datos de la Guía", MsgBoxStyle.Exclamation)
+
+                                End If
+
+
+                                Call bloqueo_campos()
+                                cmd_guardar_gt.Enabled = False
+                                cmd_modif_gt.Enabled = True
+                                txt_guia_gt.Enabled = False
+
+                            Else
+                                MsgBox("La Guía No fue encontrada, Verifíque!", MsgBoxStyle.Critical)
+                                txt_guia_gt.Select()
+
+
+                            End If
+                        Else
+                            MsgBox("Debe Ingresar un valor para buscar", MsgBoxStyle.Critical)
 
             End If
 
@@ -1025,7 +1049,6 @@ Public Class frm_ing_guia_trasp
 
             cmd_guardar_gt.Enabled = True
             cmd_guardar_gt.Select()
-
 
 
         End If

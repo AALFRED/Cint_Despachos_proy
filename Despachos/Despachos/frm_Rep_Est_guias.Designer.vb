@@ -144,11 +144,11 @@ Partial Class frm_Rep_Est_guias
         '
         Me.grilla.AllowUserToAddRows = False
         Me.grilla.AllowUserToDeleteRows = False
-        Me.grilla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grilla.Location = New System.Drawing.Point(15, 110)
+        Me.grilla.Location = New System.Drawing.Point(15, 103)
+        Me.grilla.MultiSelect = False
         Me.grilla.Name = "grilla"
         Me.grilla.ReadOnly = True
-        Me.grilla.Size = New System.Drawing.Size(1152, 330)
+        Me.grilla.Size = New System.Drawing.Size(1152, 359)
         Me.grilla.TabIndex = 53
         '
         'Label6

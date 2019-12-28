@@ -14,7 +14,6 @@ Imports MySql.Data
 Imports MySql.Data.MySqlClient
 Imports Despachos
 
-
 Public Class frm_Extract_datos_cobro
 
     Private mifecha As Date
@@ -90,7 +89,7 @@ Public Class frm_Extract_datos_cobro
 
             '  Dim strFileName As String = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory) & "Temp\Rep_Estado_Facturas.xlsx"
             'Dim strFilename As String = System.IO.Path.GetDirectoryName(path:="Temp\exp_Cuadro_Anual.xlsx")
-            Dim strfilename As String = "C:\Proyectos Vb2017\DESPACHOS\Despachos\Temp\Rep_Datos_Cobro_" & cbo_tipo_doc.Text & ".xlsx"
+            Dim strfilename As String = "C:\Proyectos Vb2017\Redireccionamiento\DESPACHOS_PROY\Temp\Rep_Datos_Cobro_" & cbo_tipo_doc.Text & ".xlsx"
             Dim blnFileOpen As Boolean = False
             Try
                 Dim fileTemp As System.IO.FileStream = System.IO.File.OpenWrite(strfilename)
@@ -435,11 +434,11 @@ Public Class frm_Extract_datos_cobro
             Select Case cbo_tipo_doc.Text
                 Case "FACTURAS"
                     'BUSCA FACTURAS
-                    cmd.CommandText = "Select nrodp, substring(nfactura, 8, 10) As Factura, fe_docto, nomclie, vendedor, fe_desp, comuna, nrobultos, gramos, transporte, nflete, fe_creacion, usuario, usuario_reing From ENTREGAS_DP WHERE fe_docto between '" & msk_fe_ini.Text & "' and '" & msk_fe_fin.Text & "' and transporte = '" & cbo_tp.Text & "' order by factura, fe_docto asc"
+                    cmd.CommandText = "Select nrodp, substring(nfactura, 8, 10) As Factura, fe_docto, nomclie, vendedor, fe_desp, comuna, nrobultos, gramos, transporte, nflete, fe_creacion, usuario, usuario_reing From entregas_dp WHERE fe_docto between '" & msk_fe_ini.Text & "' and '" & msk_fe_fin.Text & "' and transporte = '" & cbo_tp.Text & "' order by factura, fe_docto asc"
                    ' Call Formato_grilla1()
                 Case "GUIAS"
 
-                    cmd.CommandText = "Select nrodp, substring(nfactura,8,10) As nfactura, nguia, rutclie, nombre, comuna, vendedor, fe_docto, fe_desp, nflete, nro_rece, nrobultos, gramos, transporte, usuario, usuario_reing From guias_dp WHERE fe_creacion between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and transporte = '" & cbo_tp.Text & "' order by factura, fe_docto asc"
+                    cmd.CommandText = "Select nrodp, substring(nfactura,8,10) As Factura, nguia, rutclie, nombre, comuna, vendedor, fe_docto, fe_desp, nflete, nro_rece, nrobultos, gramos, transporte, usuario, usuario_reing From guias_dp WHERE fe_creacion between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and transporte = '" & cbo_tp.Text & "' order by factura, fe_docto asc"
                     ' Call Formato_grilla2()
             End Select
 

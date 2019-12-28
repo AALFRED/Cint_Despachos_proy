@@ -95,7 +95,7 @@ Public Class frm_ing_fel
         If conexion.State = 1 Then conexion.Close()
         conexion.Open()
 
-        sql = "Select MAX(nrodp) FROM ENTREGAS_DP ORDER BY nrodp ASC"
+        sql = "Select MAX(nrodp) FROM entregas_dp ORDER BY nrodp ASC"
         com2 = New MySqlCommand(sql, conexion)
         rs2 = com2.ExecuteReader()
 
@@ -431,8 +431,8 @@ Public Class frm_ing_fel
             cmd1.Connection = conexion
 
 
-            cmd1.CommandText = "SELECT Substring(VENTA.tipocon,8,10)tipocon, VENTA.fechacon, VENTA.rutcon, Cliente.nomclie, Cliente.ciuclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon FROM VENTA INNER JOIN CLIENTE ON VENTA.rutcon = CLIENTE.rutclie WHERE VENTA.tipocon LIKE '%FEL%' AND year(VENTA.fechacon) = '" & miano & "' AND month(VENTA.fechacon) > '0' GROUP BY VENTA.tipocon, VENTA.fechacon, VENTA.rutcon, CLIENTE.nomclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon ORDER BY fechacon DESC"
-
+            'cmd1.CommandText = "SELECT Substring(VENTA.tipocon,8,10)tipocon, VENTA.fechacon, VENTA.rutcon, Cliente.nomclie, Cliente.ciuclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon FROM VENTA INNER JOIN CLIENTE ON VENTA.rutcon = CLIENTE.rutclie WHERE VENTA.tipocon LIKE '%FEL%' AND year(VENTA.fechacon) = '" & miano & "' AND month(VENTA.fechacon) > '0' GROUP BY VENTA.tipocon, VENTA.fechacon, VENTA.rutcon, CLIENTE.nomclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon ORDER BY fechacon DESC"
+            cmd1.CommandText = "select folio, fecha_emision, rut_receptor, razon_social_receptor, ciudad_receptor, vendedor, monto_neto, referencias.folio_ref from ventas left join referencias on ventas.id = referencias.id_doc where tipo_documento = '33' and year(fecha_emision)= '" & miano & "' and month(fecha_emision) > 0 group by tipo_documento, folio, fecha_emision, rut_receptor, razon_social_receptor, ciudad_receptor, vendedor, monto_neto, referencias.folio_ref order by fecha_emision DESC;"
 
             Dim dt As System.Data.DataTable = New System.Data.DataTable
             Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd1)
@@ -701,7 +701,8 @@ Public Class frm_ing_fel
         If conexion.State = 1 Then conexion.Close()
         conexion.Open()
         sql = ""
-        sql = "select * from entregas_dp where nfactura  = 'FEL0000" & grilla.Item(0, e.RowIndex).Value & "'"
+        'sql = "select * from entregas_dp where nfactura  = 'FEL0000" & grilla.Item(0, e.RowIndex).Value & "'"
+        sql = "select * from entregas_dp where nfactura  = '" & grilla.Item(0, e.RowIndex).Value & "'"
         com2 = New MySqlCommand(sql, conexion)
 
         rs2 = com2.ExecuteReader()
@@ -729,8 +730,13 @@ Public Class frm_ing_fel
             lbl_nro_fact.Text = grilla.Item(0, e.RowIndex).Value 'nro fact
             lbl_fe_fact.Text = grilla.Item(1, e.RowIndex).Value 'fecha fact
             lbl_mto_fact.Text = grilla.Item(6, e.RowIndex).Value 'mto_fact
-            lbl_codejec.Text = grilla.Item(5, e.RowIndex).Value 'vendedor
-            lbl_noc.Text = grilla.Item(7, e.RowIndex).Value 'NOC
+            lbl_vendedor.Text = grilla.Item(5, e.RowIndex).Value 'vendedor
+            If IsDBNull(grilla.Item(7, e.RowIndex).Value) = True Then
+                lbl_noc.Text = "0"
+            Else
+                lbl_noc.Text = grilla.Item(7, e.RowIndex).Value 'NOC
+            End If
+
 
             'busca al vendedor
             If ch_anio_ant.Checked = True Then
@@ -756,7 +762,8 @@ Public Class frm_ing_fel
             If conexion.State = 1 Then conexion.Close()
             conexion.Open()
             sql = ""
-            sql = "select nomven from maemozo where codven = '" & lbl_codejec.Text & "'"
+            'sql = "select nomven from maemozo where codven = '" & lbl_codejec.Text & "'"
+            sql = "select num_vendedor from usuarios where nombre_usuario = '" & lbl_vendedor.Text & "' and es_vendedor = 1"
             com2 = New MySqlCommand(sql, conexion)
 
             rs2 = com2.ExecuteReader()
@@ -765,7 +772,8 @@ Public Class frm_ing_fel
                 lbl_vendedor.Text = ""
             Else
                 rs2.Read()
-                lbl_vendedor.Text = CStr(rs2("nomven").ToString)
+                lbl_codejec.Text = CStr(rs2("num_vendedor").ToString)
+
             End If
             com2.Dispose()
             conexion.Close()
@@ -774,42 +782,42 @@ Public Class frm_ing_fel
             'busca la direccion de facturacion
             conexion.Open()
 
-            sql = ""
-            sql = "select dirclie from cliente where rutclie = '" & lbl_rut.Text & "'"
+                sql = ""
+                sql = "select direccion from clientes where rut = '" & lbl_rut.Text & "'"
 
-            com2 = New MySqlCommand(sql, conexion)
+                com2 = New MySqlCommand(sql, conexion)
 
-            rs2 = com2.ExecuteReader()
-            If rs2.HasRows() = False Then
-                MsgBox("No se encontró direccion", MsgBoxStyle.Critical)
-                txt_dirclie.Text = ""
-            Else
-                rs2.Read()
-                txt_dirclie.Text = CStr(rs2("dirclie").ToString)
+                rs2 = com2.ExecuteReader()
+                If rs2.HasRows() = False Then
+                    MsgBox("No se encontró direccion", MsgBoxStyle.Critical)
+                    txt_dirclie.Text = ""
+                Else
+                    rs2.Read()
+                    txt_dirclie.Text = CStr(rs2("direccion").ToString)
+                End If
+                com2.Dispose()
+                conexion.Close()
+
+                txt_dirclie.Enabled = True
+                txt_cedible.Enabled = True
+                cbo_tp.Enabled = True
+                cbo_ciudad.Enabled = False
+                cbo_chofer.Enabled = True
+                cbo_acomodador.Enabled = True
+                txt_nrobulto.Enabled = True
+                txt_nroflete.Enabled = True
+                txt_peso.Enabled = True
+                msk_fe_desp.Enabled = True
+                txt_obs.Enabled = True
+                cbo_ampm.Enabled = True
+                cbo_ciudad.Enabled = False
+                cbo_medio_tp.Enabled = True
+                cmd_modificar.Enabled = False
+                cmd_guardar.Enabled = False
+                cbo_tp.Select()
+
+
             End If
-            com2.Dispose()
-            conexion.Close()
-
-            txt_dirclie.Enabled = True
-            txt_cedible.Enabled = True
-            cbo_tp.Enabled = True
-            cbo_ciudad.Enabled = False
-            cbo_chofer.Enabled = True
-            cbo_acomodador.Enabled = True
-            txt_nrobulto.Enabled = True
-            txt_nroflete.Enabled = True
-            txt_peso.Enabled = True
-            msk_fe_desp.Enabled = True
-            txt_obs.Enabled = True
-            cbo_ampm.Enabled = True
-            cbo_ciudad.Enabled = False
-            cbo_medio_tp.Enabled = True
-            cmd_modificar.Enabled = False
-            cmd_guardar.Enabled = False
-            cbo_tp.Select()
-
-
-        End If
 
 
 
@@ -1057,9 +1065,6 @@ Public Class frm_ing_fel
                         txt_peso.Text = "400"
                         cbo_acomodador.SelectAll()
                         cbo_acomodador.Select()
-
-
-
 
                     Case "TRANSCOM"
                         txt_nroflete.Text = "0"
@@ -1398,7 +1403,7 @@ Public Class frm_ing_fel
                     conexion.Open()
 
                     cmd4 = New MySqlCommand("Insert Into entregas_dp (nrodp, rutclie, nomclie, dirdesp, nfactura, monto_fact, nboleta, nguia, fe_docto, fe_desp, patente, transporte, nflete, recibio, fe_reingreso, nro_rece, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, noc, gramos, fe_creacion, comuna, obs_despacho, usuario) " &
-                                            " Values ('" & lbl_nrodp.Text & "', '" & lbl_rut.Text & "', '" & lbl_nombre.Text & "', '" & txt_dirclie.Text & "', 'FEL0000" & lbl_nro_fact.Text & "', '" & lbl_mto_fact.Text & "', '0', '0', '" & lbl_fe_fact.Text & "', '" & msk_fe_desp.Text & "', '" & lbl_patente.Text & "', '" & cbo_tp.Text & "', '" & txt_nroflete.Text & "', '', null, '" & txt_cedible.Text & "', null, '" & lbl_vendedor.Text & "', '" & cbo_chofer.Text & "', '" & cbo_acomodador.Text & "', '" & txt_nrobulto.Text & "', '" & cbo_ampm.Text & "', '" & lbl_noc.Text & "', '" & txt_peso.Text & "', '" & lbl_fe_actual.Text & "', '" & cbo_ciudad.Text & "', '" & txt_obs.Text & "', '" & retenUser & "' )", conexion)
+                                            " Values ('" & lbl_nrodp.Text & "', '" & lbl_rut.Text & "', '" & lbl_nombre.Text & "', '" & txt_dirclie.Text & "', '" & lbl_nro_fact.Text & "', '" & lbl_mto_fact.Text & "', '0', '0', '" & lbl_fe_fact.Text & "', '" & msk_fe_desp.Text & "', '" & lbl_patente.Text & "', '" & cbo_tp.Text & "', '" & txt_nroflete.Text & "', '', null, '" & txt_cedible.Text & "', null, '" & lbl_vendedor.Text & "', '" & cbo_chofer.Text & "', '" & cbo_acomodador.Text & "', '" & txt_nrobulto.Text & "', '" & cbo_ampm.Text & "', '" & lbl_noc.Text & "', '" & txt_peso.Text & "', '" & lbl_fe_actual.Text & "', '" & cbo_ciudad.Text & "', '" & txt_obs.Text & "', '" & retenUser & "' )", conexion)
                     cmd4.ExecuteNonQuery()
                     conexion.Close()
 
@@ -1515,10 +1520,10 @@ Public Class frm_ing_fel
             conexion.Open()
 
             com4.Connection = conexion
-            com4.CommandText = "SELECT nrodp, fe_creacion, rutclie, nomclie, comuna, nfactura, monto_fact, fe_docto,  noc, fe_desp, transporte, patente, nflete, nrobultos, gramos, h_salida, obs_despacho, vendedor, chofer, despachador From ENTREGAS_DP Where year(fe_docto) = '" & miano & "' order by nrodp DESC"
-                ' com4.CommandText = "SELECT  Substring(VENTA.tipocon,8,10)tipocon, VENTA.fechacon, VENTA.rutcon, Cliente.nomclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon FROM VENTA INNER JOIN CLIENTE ON VENTA.rutcon = CLIENTE.rutclie WHERE VENTA.tipocon LIKE '%FEL'  AND year(VENTA.fechacon) = '" & miano & "' GROUP BY VENTA.tipocon, VENTA.fechacon, VENTA.rutcon, CLIENTE.nomclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon ORDER BY fechacon DESC"
+            com4.CommandText = "SELECT nrodp, fe_creacion, rutclie, nomclie, comuna, nfactura, monto_fact, fe_docto, noc, fe_desp, transporte, patente, nflete, nrobultos, gramos, h_salida, obs_despacho, vendedor, chofer, despachador From entregas_dp Where year(fe_docto) = '" & miano & "' order by nrodp DESC"
+            ' com4.CommandText = "SELECT  Substring(VENTA.tipocon,8,10)tipocon, VENTA.fechacon, VENTA.rutcon, Cliente.nomclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon FROM VENTA INNER JOIN CLIENTE ON VENTA.rutcon = CLIENTE.rutclie WHERE VENTA.tipocon LIKE '%FEL'  AND year(VENTA.fechacon) = '" & miano & "' GROUP BY VENTA.tipocon, VENTA.fechacon, VENTA.rutcon, CLIENTE.nomclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon ORDER BY fechacon DESC"
 
-                Dim dt As System.Data.DataTable = New System.Data.DataTable
+            Dim dt As System.Data.DataTable = New System.Data.DataTable
             Dim da As MySqlDataAdapter = New MySqlDataAdapter(com4)
             da.Fill(dt)
             grilla2.DataSource = dt
@@ -1529,7 +1534,7 @@ Public Class frm_ing_fel
 
 
             Call Formato_grilla2()
-            Call Saca_Contenido_factura(grilla2)
+            'Call Saca_Contenido_factura(grilla2)
 
             For i As Integer = 0 To grilla2.Rows.Count() - 1 Step +1
 
@@ -1590,7 +1595,7 @@ Public Class frm_ing_fel
         Dim com5 As New MySqlCommand
         Dim rs4 As MySqlDataReader
         Dim rs5 As MySqlDataReader
-        Dim contenido2 As String
+        'Dim contenido2 As String
         Dim resul As String = ""
 
         ch_stop_timer.Checked = True
@@ -1620,7 +1625,8 @@ Public Class frm_ing_fel
         End If
 
 
-        valret = "FEL0000" + valret 'le agrega el 0 para igualar el campo
+        'valret = "FEL0000" + valret 'le agrega el 0 para igualar el campo
+
         If conexion.State = 1 Then conexion.Close()
         'la abre 
         conexion.Open()
@@ -1640,12 +1646,12 @@ Public Class frm_ing_fel
             lbl_nombre.Text = CStr(rs4("nomclie"))
 
 
-            contenido2 = CStr(rs4("nfactura")).ToString
-            If Strings.Left(contenido2, 3) = "FEL" Then
-                resul = Mid(contenido2, 7, 10)
-            End If
-            lbl_nro_fact.Text = resul.ToString
-
+            ' contenido2 = CStr(rs4("nfactura")).ToString
+            ' If Strings.Left(contenido2, 3) = "FEL" Then
+            ' resul = Mid(contenido2, 7, 10)
+            'End If
+            'lbl_nro_fact.Text = resul.ToString
+            lbl_nro_fact.Text = CStr(rs4("nfactura")).ToString
 
             lbl_mto_fact.Text = CStr(rs4("monto_fact"))
             lbl_fe_fact.Text = CStr(rs4("fe_docto"))
@@ -1738,12 +1744,8 @@ Public Class frm_ing_fel
 
         If e.KeyChar = Convert.ToChar(13) Then
 
-                cbo_medio_tp.Enabled = True
-                cbo_medio_tp.Select()
-
-
-
-
+            cbo_medio_tp.Enabled = True
+            cbo_medio_tp.Select()
         End If
     End Sub
 

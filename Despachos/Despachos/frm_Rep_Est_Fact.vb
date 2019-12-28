@@ -88,7 +88,8 @@ Public Class frm_Rep_Est_Fact
 
             '  Dim strFileName As String = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory) & "Temp\Rep_Estado_Facturas.xlsx"
             'Dim strFilename As String = System.IO.Path.GetDirectoryName(path:="Temp\exp_Cuadro_Anual.xlsx")
-            Dim strfilename As String = "C:\Proyectos Vb2017\DESPACHOS\Despachos\Temp\Rep_Estado_Facturas.xlsx"
+            'Dim strfilename As String = "C:\Proyectos Vb2017\DESPACHOS\Despachos\Temp\Rep_Estado_Facturas.xlsx"
+            Dim strfilename As String = "C:\Proyectos Vb2017\Redireccionamiento\DESPACHOS_PROY\Temp\Rep_Estado_Facturas.xlsx"
             Dim blnFileOpen As Boolean = False
             Try
                 Dim fileTemp As System.IO.FileStream = System.IO.File.OpenWrite(strfilename)
@@ -144,7 +145,7 @@ Public Class frm_Rep_Est_Fact
         grilla.Columns(19).HeaderCell.Value = "Ordenador"
         grilla.Columns(20).HeaderCell.Value = "Nro Bultos"
         grilla.Columns(21).HeaderCell.Value = "Hra Salida"
-        grilla.Columns(22).HeaderCell.Value = "Peso"
+        grilla.Columns(22).HeaderCell.Value = "Peso Grs"
         grilla.Columns(23).HeaderCell.Value = "obs Reingreso"
         grilla.Columns(24).HeaderCell.Value = "obs Despacho"
         grilla.Columns(25).HeaderCell.Value = "Usuario"
@@ -156,29 +157,30 @@ Public Class frm_Rep_Est_Fact
         grilla.Columns(0).Width = 60
         grilla.Columns(1).Width = 70
         grilla.Columns(2).Width = 70
-        grilla.Columns(3).Width = 350
-        grilla.Columns(4).Width = 100
-        grilla.Columns(5).Width = 80
-        grilla.Columns(7).Width = 70
-        grilla.Columns(8).Width = 90
+        grilla.Columns(3).Width = 70
+        grilla.Columns(4).Width = 80
+        grilla.Columns(5).Width = 95
+        grilla.Columns(6).Width = 80
+        grilla.Columns(7).Width = 210
+        grilla.Columns(8).Width = 120
         grilla.Columns(9).Width = 80
-        grilla.Columns(10).Width = 100
-        grilla.Columns(11).Width = 60
+        grilla.Columns(10).Width = 90
+        grilla.Columns(11).Width = 100
         grilla.Columns(12).Width = 80
-        grilla.Columns(13).Width = 60
-        grilla.Columns(14).Width = 70
+        grilla.Columns(13).Width = 150
+        grilla.Columns(14).Width = 100
         grilla.Columns(15).Width = 60
         grilla.Columns(16).Width = 150 'obs
-        grilla.Columns(17).Width = 120
+        grilla.Columns(17).Width = 110
         grilla.Columns(18).Width = 90
         grilla.Columns(19).Width = 120
-        grilla.Columns(20).Width = 120
-        grilla.Columns(21).Width = 120
-        grilla.Columns(22).Width = 120
+        grilla.Columns(20).Width = 60
+        grilla.Columns(21).Width = 60
+        grilla.Columns(22).Width = 60
         grilla.Columns(23).Width = 120
         grilla.Columns(24).Width = 120
-        grilla.Columns(25).Width = 120
-        grilla.Columns(26).Width = 120
+        grilla.Columns(25).Width = 90
+        grilla.Columns(26).Width = 90
 
         grilla.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
         grilla.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
@@ -187,19 +189,19 @@ Public Class frm_Rep_Est_Fact
         grilla.Columns(4).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(5).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(6).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        grilla.Columns(7).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(7).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(8).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(9).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
         grilla.Columns(10).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(11).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
         grilla.Columns(12).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
         grilla.Columns(13).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
-        grilla.Columns(14).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(14).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(15).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
         grilla.Columns(16).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(17).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        grilla.Columns(18).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
-        grilla.Columns(19).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(18).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(19).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(20).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(21).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(22).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -229,6 +231,15 @@ Public Class frm_Rep_Est_Fact
 
 
         grilla.Refresh()
+
+        With grilla
+            For fila = 1 To .Rows.Count
+
+                .Columns(4).DefaultCellStyle.Format = "$###,##0"
+
+
+            Next
+        End With
 
 
     End Sub
@@ -276,7 +287,7 @@ Public Class frm_Rep_Est_Fact
 
         Dim BarraStatusTexto = New StatusBarPanel
         BarraStatusTexto.Name = "StatusBartexto"
-        BarraStatusTexto.Width = 200
+        BarraStatusTexto.Width = 450
         BarraStatusTexto.Text = "CONECTADO A BD " & v_database
         BarraStatus.Panels.Add(BarraStatusTexto)
 
@@ -378,10 +389,10 @@ Public Class frm_Rep_Est_Fact
 
             Select Case cbo_estado.Text
                 Case "DESPACHADO Y ENTREGADO"
-                    cmd27.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, monto_fact, noc, rutclie, nomclie, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso, obs_despacho, usuario, usuario_reing  From ENTREGAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null ORDER BY fe_docto DESC"
+                    cmd27.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, monto_fact, noc, rutclie, nomclie, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso, obs_despacho, usuario, usuario_reing  From entregas_dp WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null ORDER BY fe_docto DESC"
 
                 Case "EN TRANSITO"
-                    cmd27.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, monto_fact, noc, rutclie, nomclie, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso, obs_despacho, usuario, usuario_reing  From ENTREGAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is null ORDER BY fe_docto DESC"
+                    cmd27.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, monto_fact, noc, rutclie, nomclie, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso, obs_despacho, usuario, usuario_reing  From entregas_dp WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is null ORDER BY fe_docto DESC"
 
             End Select
 

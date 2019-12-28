@@ -907,7 +907,7 @@ Partial Class frm_ing_bol
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.InactiveCaption
-        Me.ClientSize = New System.Drawing.Size(1114, 742)
+        Me.ClientSize = New System.Drawing.Size(1114, 691)
         Me.Controls.Add(Me.MenuStrip1)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)

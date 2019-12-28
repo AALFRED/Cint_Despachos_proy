@@ -36,9 +36,10 @@ Public Class frm_cons_desp_main
             Dim dt As New System.Data.DataTable
             dt = TryCast(migrilla2.DataSource, System.Data.DataTable)
 
-            My.Computer.FileSystem.DeleteFile("C:\Proyectos Vb2017\DESPACHOS\Despachos\Temp\Rep_desp.xlsx")
+            ' My.Computer.FileSystem.DeleteFile("C:\Proyectos Vb2017\DESPACHOS\Despachos\Temp\Rep_desp.xlsx")
+            My.Computer.FileSystem.DeleteFile("C:\Proyectos Vb2017\Redireccionamiento\DESPACHOS_PROY\Temp\Rep_desp.xlsx")
 
-            Dim fileg As New FileInfo("C:\Proyectos Vb2017\DESPACHOS\Despachos\Temp\Rep_desp.xlsx")
+            Dim fileg As New FileInfo("C:\Proyectos Vb2017\Redireccionamiento\DESPACHOS\Temp\Rep_desp.xlsx")
             Using package As New OfficeOpenXml.ExcelPackage(fileg)
                 Dim ws As OfficeOpenXml.ExcelWorksheet = package.Workbook.Worksheets.Add("Hoja1")
                 ws.Cells("A1").LoadFromDataTable(dt, True)
@@ -643,7 +644,8 @@ Public Class frm_cons_desp_main
                 If conexion.State = 1 Then conexion.Close()
                 conexion.Open()
 
-                valor = "FEL0000" + txt_nrodocto.Text
+                'valor = "FEL0000" + txt_nrodocto.Text
+                valor = txt_nrodocto.Text
                 cmd10.Connection = conexion
                 cmd10.CommandText = "Select * From entregas_dp Where nfactura = '" & valor & "'"
                 Dim dt As System.Data.DataTable = New System.Data.DataTable
@@ -656,22 +658,22 @@ Public Class frm_cons_desp_main
                     Call formato_grilla_fact()
 
 
-                    Dim contenido As String
-                    Dim resul As String
+                    'Dim contenido As String
+                    'Dim resul As String
 
-                    For i As Integer = 0 To grilla.Rows.Count() - 1 Step +1
+                    ' For i As Integer = 0 To grilla.Rows.Count() - 1 Step +1
 
-                        'saca texto en las facturas
-                        contenido = grilla.Rows(i).Cells(2).Value
-                        If Strings.Left(contenido, 3) = "FEL" Then
-                            resul = Mid(contenido, 7, 10)
+                    'saca texto en las facturas
+                    'contenido = grilla.Rows(i).Cells(2).Value
+                    'If Strings.Left(contenido, 3) = "FEL" Then
+                    'resul = Mid(contenido, 7, 10)
 
-                            grilla.Rows(i).Cells(2).Value = resul.ToString
-                        End If
-                        resul = ""
-                        contenido = ""
-                        i = +i
-                    Next
+                    'grilla.Rows(i).Cells(2).Value = resul.ToString
+                    'End If
+                    ' resul = ""
+                    '      contenido = ""
+                    '       i = +i
+                    'Next
                     cmd_exp_excel.Enabled = True
                 Else
                     MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
@@ -706,8 +708,9 @@ Public Class frm_cons_desp_main
                 conexion.Open()
 
                 valor = "0" + txt_nrodocto.Text
+
                 cmd10.Connection = conexion
-                cmd10.CommandText = "Select id, nrodp, rutclie, nomclie, comuna, nboleta, monto_fact, fe_docto, fe_desp, transporte, patente, nflete, recibio, fe_reingreso, nro_rece, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, noc, gramos, fe_creacion, obs_despacho, obs_reingreso, usuario, usuario_reing  From boletas_dp Where nboleta = '" & valor & "'"
+                cmd10.CommandText = "Select id, nrodp, rutclie, nomclie, comuna, nboleta, monto_fact, fe_docto, fe_desp, transporte, patente, nflete, recibio, fe_reingreso, nro_rece, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, noc, gramos, fe_creacion, obs_despacho, obs_reingreso, usuario, usuario_reing From boletas_dp Where nboleta = '" & valor & "'"
                 Dim dt As System.Data.DataTable = New System.Data.DataTable
                 Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd10)
 
@@ -855,22 +858,22 @@ Public Class frm_cons_desp_main
                     Call formato_grilla_fact()
 
 
-                    Dim contenido As String
-                    Dim resul As String
+                    ' Dim contenido As String
+                    ' Dim resul As String
 
-                    For i As Integer = 0 To grilla.Rows.Count() - 1 Step +1
+                    'For i As Integer = 0 To grilla.Rows.Count() - 1 Step +1
 
-                        'saca texto en las facturas
-                        contenido = grilla.Rows(i).Cells(2).Value
-                        If Strings.Left(contenido, 3) = "FEL" Then
-                            resul = Mid(contenido, 7, 10)
+                    'saca texto en las facturas
+                    'contenido = grilla.Rows(i).Cells(2).Value
+                    ' If Strings.Left(contenido, 3) = "FEL" Then
+                    'resul = Mid(contenido, 7, 10)
 
-                            grilla.Rows(i).Cells(2).Value = resul.ToString
-                        End If
-                        resul = ""
-                        contenido = ""
-                        i = +i
-                    Next
+                    'grilla.Rows(i).Cells(2).Value = resul.ToString
+                    'End If
+                    '   resul = ""
+                    '  contenido = ""
+                    ' i = +i
+                    'Next
                     cmd_exp_excel.Enabled = True
                 Else
                     MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
@@ -898,7 +901,6 @@ Public Class frm_cons_desp_main
                 txt_nrodocto.Select()
 
             End If
-
 
         End If
 

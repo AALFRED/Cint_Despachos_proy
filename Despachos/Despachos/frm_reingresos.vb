@@ -231,8 +231,8 @@ Public Class frm_reingresos
         Dim rs5 As MySqlDataReader
         Dim rs6 As MySqlDataReader
         Dim valret1 As String
-        Dim contenido3 As String
-        Dim resul1 As String
+        ' Dim contenido3 As String
+        'Dim resul1 As String
 
         Try
 
@@ -264,7 +264,8 @@ Public Class frm_reingresos
                 txt_recep_desp.Text = ""
                 txt_reing_obs.Text = ""
 
-                valret1 = "FEL0000" + txt_bus_fact.Text 'le agrega el 0 para igualar el campo
+                'valret1 = "FEL0000" + txt_bus_fact.Text 'le agrega el 0 para igualar el campo
+                valret1 = txt_bus_fact.Text 'le agrega el 0 para igualar el campo
 
                 If conexion.State = 1 Then conexion.Close()
                 'la abre 
@@ -279,26 +280,21 @@ Public Class frm_reingresos
                 If rs5.HasRows = True Then
                     rs5.Read()
 
-
                     lbl_idbd.Text = rs5("id")
                     lbl_rut.Text = CStr(rs5("rutclie"))
                     lbl_cliente.Text = CStr(rs5("nomclie"))
 
-
-                    contenido3 = CStr(rs5("nfactura")).ToString
-                    If Strings.Left(contenido3, 3) = "FEL" Then
-                        resul1 = Mid(contenido3, 7, 10)
-                    End If
+                    ' contenido3 = CStr(rs5("nfactura")).ToString
+                    ' If Strings.Left(contenido3, 3) = "FEL" Then
+                    ' resul1 = Mid(contenido3, 7, 10)
+                    ' End If
                     '  txt_bus_fact.Text = resul1.ToString
-
-
+                    txt_bus_fact.Text = CStr(rs5("nfactura")).ToString
                     lbl_mto_fact.Text = CStr(rs5("monto_fact"))
-
                     lbl_vendedor.Text = CStr(rs5("vendedor"))
                     lbl_dirclie.Text = CStr(rs5("dirdesp"))
                     lbl_noc.Text = CStr(rs5("noc"))
                     lbl_nrodp.Text = CStr(rs5("nrodp"))
-
                     lbl_cedible.Text = CStr(rs5("nro_rece"))
                     lbl_medio_tp.Text = CStr(rs5("transporte"))
                     lbl_nroflete.Text = CStr(rs5("nflete"))
@@ -313,11 +309,9 @@ Public Class frm_reingresos
                     End If
 
                     lbl_acomodador.Text = CStr(rs5("despachador"))
-
                     lbl_fe_fact.Text = CStr(rs5("fe_docto"))
                     lbl_fe_desp.Text = CStr(rs5("fe_desp"))
                     lbl_fe_reg.Text = CStr(rs5("fe_creacion"))
-
                     lbl_obs.Text = CStr(rs5("obs_despacho"))
                     lbl_ampm.Text = CStr(rs5("h_salida"))
 
@@ -702,7 +696,8 @@ Public Class frm_reingresos
                 txt_recep_desp_boe.Text = ""
                 txt_obs_reing_boe.Text = ""
 
-                valret2 = "0" + txt_bus_boe.Text 'le agrega el 0 para igualar el campo
+                'valret2 = "0" + txt_bus_boe.Text 'le agrega el 0 para igualar el campo
+                valret2 = txt_bus_boe.Text
 
                 If conexion.State = 1 Then conexion.Close()
                 'la abre 
@@ -869,7 +864,7 @@ Public Class frm_reingresos
         Dim rs9 As MySqlDataReader
         Dim rs10 As MySqlDataReader
         Dim valret3 As String
-        Dim contenido4 As String
+        'Dim contenido4 As String
         Dim resul2 As String = ""
 
         Try
@@ -948,11 +943,12 @@ Public Class frm_reingresos
                     If (IsDBNull(rs9("nfactura")) = True) Then
                         resul2 = 0
                     Else
-                        contenido4 = CStr(rs9("nfactura")).ToString
-                        If Strings.Left(contenido4, 3) = "FEL" Then
-                            resul2 = Mid(contenido4, 7, 10)
-                        End If
-                        lbl_nrofact_gc.Text = resul2.ToString
+                        ' contenido4 = CStr(rs9("nfactura")).ToString
+                        ' If Strings.Left(contenido4, 3) = "FEL" Then
+                        ' resul2 = Mid(contenido4, 7, 10)
+                        ' End If
+                        '    lbl_nrofact_gc.Text = resul2.ToString
+                        lbl_nrofact_gc.Text = CStr(rs9("nfactura")).ToString
                     End If
 
 

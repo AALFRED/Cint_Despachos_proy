@@ -1,10 +1,10 @@
 [OPCIONES_CONFIGURACION]
 USERADMIN=MASTER
 [CONEXION]
-Server=192.168.1.61
+Server=192.168.1.63
 Port=3306
-Database=global2019
+Database=pos_version_global_integracion
 User=cintegral
-password=Xtreme749
+password=509cintegral509
 EMPRESA=GLOBAL
 SQLServer=MYSQL SERVER PRODUCCION

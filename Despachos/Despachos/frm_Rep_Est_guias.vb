@@ -28,67 +28,68 @@ Public Class frm_Rep_Est_guias
         'REVISAR viernes 28/03
         'dejar campos necesarios
 
-        'nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, 
-        'vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant
+
+        'nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso,
+        'fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant
+
+
         'FORMATO DE GRILLA
         grilla.Columns(0).HeaderCell.Value = "Nro DP"
         grilla.Columns(1).HeaderCell.Value = "Fe.Creacion"
         grilla.Columns(2).HeaderCell.Value = "Nro Factura"
         grilla.Columns(3).HeaderCell.Value = "Fe.Docto."
-        grilla.Columns(5).HeaderCell.Value = "Nro.OC"
-        grilla.Columns(6).HeaderCell.Value = "Rut"
-        grilla.Columns(7).HeaderCell.Value = "Nombre"
-        grilla.Columns(8).HeaderCell.Value = "Ciudad"
-        grilla.Columns(9).HeaderCell.Value = "Nro Guia"
-        grilla.Columns(10).HeaderCell.Value = "Fe Desp."
-        grilla.Columns(11).HeaderCell.Value = "Transporte"
-        grilla.Columns(12).HeaderCell.Value = "Nro Cedible"
-        grilla.Columns(13).HeaderCell.Value = "Nro Flete"
-        grilla.Columns(14).HeaderCell.Value = "Recibio"
-        grilla.Columns(15).HeaderCell.Value = "Fe Reingreso"
-        grilla.Columns(16).HeaderCell.Value = "Fe Cliente"
-        grilla.Columns(17).HeaderCell.Value = "Vendedor"
-        grilla.Columns(18).HeaderCell.Value = "Chofer"
-        grilla.Columns(19).HeaderCell.Value = "Ordenador"
-        grilla.Columns(20).HeaderCell.Value = "Nro Bultos"
-        grilla.Columns(21).HeaderCell.Value = "Hra Salida"
-        grilla.Columns(22).HeaderCell.Value = "Peso"
-        grilla.Columns(23).HeaderCell.Value = "obs Reingreso"
-        grilla.Columns(24).HeaderCell.Value = "obs Despacho"
-        grilla.Columns(25).HeaderCell.Value = "Usuario"
-        grilla.Columns(26).HeaderCell.Value = "Usr Reing."
-        grilla.Columns(27).HeaderCell.Value = "Es Garantia?"
+        grilla.Columns(4).HeaderCell.Value = "Nro.OC"
+        grilla.Columns(5).HeaderCell.Value = "Rut"
+        grilla.Columns(6).HeaderCell.Value = "Nombre"
+        grilla.Columns(7).HeaderCell.Value = "Ciudad"
+        grilla.Columns(8).HeaderCell.Value = "Nro Guia"
+        grilla.Columns(9).HeaderCell.Value = "Fe Desp."
+        grilla.Columns(10).HeaderCell.Value = "Transporte"
+        grilla.Columns(11).HeaderCell.Value = "Nro Cedible"
+        grilla.Columns(12).HeaderCell.Value = "Nro Flete"
+        grilla.Columns(13).HeaderCell.Value = "Recibio"
+        grilla.Columns(14).HeaderCell.Value = "Fe Reingreso"
+        grilla.Columns(15).HeaderCell.Value = "Fe Cliente"
+        grilla.Columns(16).HeaderCell.Value = "Vendedor"
+        grilla.Columns(17).HeaderCell.Value = "Chofer"
+        grilla.Columns(18).HeaderCell.Value = "Ordenador"
+        grilla.Columns(19).HeaderCell.Value = "Nro Bultos"
+        grilla.Columns(20).HeaderCell.Value = "Hra Salida"
+        grilla.Columns(21).HeaderCell.Value = "Peso"
+        grilla.Columns(22).HeaderCell.Value = "obs Reingreso"
+        grilla.Columns(23).HeaderCell.Value = "obs Despacho"
+        grilla.Columns(24).HeaderCell.Value = "Usuario"
+        grilla.Columns(25).HeaderCell.Value = "Usr Reing."
+        grilla.Columns(26).HeaderCell.Value = "Es Garantia?"
 
-        ' grilla.Columns(6).Visible = False 'id
-        'grilla.Columns(16).Visible = False 'fe creacion
 
         grilla.Columns(0).Width = 60
         grilla.Columns(1).Width = 70
         grilla.Columns(2).Width = 70
-        grilla.Columns(3).Width = 350
-        grilla.Columns(4).Width = 100
+        grilla.Columns(3).Width = 70
+        grilla.Columns(4).Width = 90
         grilla.Columns(5).Width = 80
-        grilla.Columns(7).Width = 70
-        grilla.Columns(8).Width = 90
-        grilla.Columns(9).Width = 80
-        grilla.Columns(10).Width = 100
-        grilla.Columns(11).Width = 60
-        grilla.Columns(12).Width = 80
-        grilla.Columns(13).Width = 60
-        grilla.Columns(14).Width = 70
-        grilla.Columns(15).Width = 60
-        grilla.Columns(16).Width = 150 'obs
-        grilla.Columns(17).Width = 120
-        grilla.Columns(18).Width = 90
-        grilla.Columns(19).Width = 120
-        grilla.Columns(20).Width = 120
-        grilla.Columns(21).Width = 120
+        grilla.Columns(6).Width = 200
+        grilla.Columns(7).Width = 90
+        grilla.Columns(8).Width = 60
+        grilla.Columns(9).Width = 70
+        grilla.Columns(10).Width = 90
+        grilla.Columns(11).Width = 80
+        grilla.Columns(12).Width = 90
+        grilla.Columns(13).Width = 120
+        grilla.Columns(14).Width = 75
+        grilla.Columns(15).Width = 70
+        grilla.Columns(16).Width = 120
+        grilla.Columns(17).Width = 75
+        grilla.Columns(18).Width = 120
+        grilla.Columns(19).Width = 60
+        grilla.Columns(20).Width = 60
+        grilla.Columns(21).Width = 70
         grilla.Columns(22).Width = 120
-        grilla.Columns(23).Width = 120
-        grilla.Columns(24).Width = 120
-        grilla.Columns(25).Width = 120
-        grilla.Columns(26).Width = 120
-        grilla.Columns(27).Width = 70
+        grilla.Columns(23).Width = 220
+        grilla.Columns(24).Width = 80
+        grilla.Columns(25).Width = 80
+        grilla.Columns(26).Width = 70
 
         grilla.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
         grilla.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
@@ -117,7 +118,135 @@ Public Class frm_Rep_Est_guias
         grilla.Columns(24).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(25).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(26).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        grilla.Columns(27).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+
+
+        ' grilla.Font = New System.Drawing.Font("Calibri", 7.75, FontStyle.Regular)
+
+
+        grilla.RowsDefaultCellStyle.Font = New System.Drawing.Font("Calibri", 8.75, FontStyle.Bold)
+        ' grilla2.RowsDefaultCellStyle.BackColor = Color.FromArgb(128, 128, 255)
+        ' grilla2.RowsDefaultCellStyle.ForeColor = Color.White
+        ' grilla2.GridColor = Color.Black
+        ' grilla2.BorderStyle = BorderStyle.Fixed3D
+
+        grilla.CellBorderStyle = DataGridViewCellBorderStyle.Single
+        grilla.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single
+        grilla.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single
+
+        grilla.Sort(grilla.Columns(0), System.ComponentModel.ListSortDirection.Descending)
+        ' grilla.RowHeadersVisible = False 'oculta la primera columna
+
+        'grilla.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(0, 0, 128)
+        'grilla.AlternatingRowsDefaultCellStyle.ForeColor = Color.White
+
+
+        grilla.Refresh()
+
+
+    End Sub
+
+    Sub Formato_grilla3()
+
+        'REVISAR viernes 28/03
+        'dejar campos necesarios
+
+
+        'nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso,
+        'fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant
+
+
+        'FORMATO DE GRILLA
+        grilla.Columns(0).HeaderCell.Value = "Nro DP"
+        grilla.Columns(1).HeaderCell.Value = "Fe.Creacion"
+        grilla.Columns(2).HeaderCell.Value = "Nro Factura"
+        grilla.Columns(3).HeaderCell.Value = "Fe.Docto."
+        grilla.Columns(4).HeaderCell.Value = "Nro.OC"
+        grilla.Columns(5).HeaderCell.Value = "Rut"
+        grilla.Columns(6).HeaderCell.Value = "Nombre"
+        grilla.Columns(7).HeaderCell.Value = "Ciudad"
+        grilla.Columns(8).HeaderCell.Value = "Nro Guia"
+        grilla.Columns(9).HeaderCell.Value = "Fe Desp."
+        grilla.Columns(10).HeaderCell.Value = "Transporte"
+        grilla.Columns(11).HeaderCell.Value = "Nro Cedible"
+        grilla.Columns(12).HeaderCell.Value = "Nro Flete"
+        grilla.Columns(13).HeaderCell.Value = "Recibio"
+        grilla.Columns(14).HeaderCell.Value = "Fe Reingreso"
+        grilla.Columns(15).HeaderCell.Value = "Fe Cliente"
+        grilla.Columns(16).HeaderCell.Value = "Vendedor"
+        grilla.Columns(17).HeaderCell.Value = "Chofer"
+        grilla.Columns(18).HeaderCell.Value = "Ordenador"
+        grilla.Columns(19).HeaderCell.Value = "Nro Bultos"
+        grilla.Columns(20).HeaderCell.Value = "Hra Salida"
+        grilla.Columns(21).HeaderCell.Value = "Peso"
+        grilla.Columns(22).HeaderCell.Value = "obs Reingreso"
+        grilla.Columns(23).HeaderCell.Value = "obs Despacho"
+        grilla.Columns(24).HeaderCell.Value = "Usuario"
+        grilla.Columns(25).HeaderCell.Value = "Usr Reing."
+        grilla.Columns(26).HeaderCell.Value = "Es Garantia?"
+
+
+
+
+        grilla.Columns(0).Width = 60
+        grilla.Columns(1).Width = 70
+        grilla.Columns(2).Width = 70
+        grilla.Columns(3).Width = 70
+        grilla.Columns(4).Width = 90
+        grilla.Columns(5).Width = 80
+        grilla.Columns(6).Width = 200
+        grilla.Columns(7).Width = 90
+        grilla.Columns(8).Width = 60
+        grilla.Columns(9).Width = 70
+        grilla.Columns(10).Width = 90
+        grilla.Columns(11).Width = 80
+        grilla.Columns(12).Width = 90
+        grilla.Columns(13).Width = 120
+        grilla.Columns(14).Width = 75
+        grilla.Columns(15).Width = 70
+        grilla.Columns(16).Width = 120
+        grilla.Columns(17).Width = 75
+        grilla.Columns(18).Width = 120
+        grilla.Columns(19).Width = 60
+        grilla.Columns(20).Width = 60
+        grilla.Columns(21).Width = 70
+        grilla.Columns(22).Width = 120
+        grilla.Columns(23).Width = 220
+        grilla.Columns(24).Width = 80
+        grilla.Columns(25).Width = 80
+        grilla.Columns(26).Width = 70
+
+
+
+        grilla.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(2).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(3).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(4).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(5).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(6).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(7).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(8).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(9).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(10).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(11).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(12).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(13).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(14).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(15).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(16).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(17).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(18).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(19).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla.Columns(20).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(21).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(22).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(23).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(24).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(25).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla.Columns(26).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+
+
+
 
         ' grilla.Font = New System.Drawing.Font("Calibri", 7.75, FontStyle.Regular)
 
@@ -143,7 +272,6 @@ Public Class frm_Rep_Est_guias
 
 
     End Sub
-
 
     Sub Formato_grilla2()
 
@@ -302,7 +430,7 @@ Public Class frm_Rep_Est_guias
 
         Dim BarraStatusTexto = New StatusBarPanel
         BarraStatusTexto.Name = "StatusBartexto"
-        BarraStatusTexto.Width = 200
+        BarraStatusTexto.Width = 350
         BarraStatusTexto.Text = "CONECTADO A BD " & v_database
         BarraStatus.Panels.Add(BarraStatusTexto)
 
@@ -356,11 +484,11 @@ Public Class frm_Rep_Est_guias
     Private Sub cmd_buscar_Click(sender As Object, e As EventArgs) Handles cmd_buscar.Click
         Dim cmd28 As New MySqlCommand
 
-        Try
+        ' Try
 
 
 
-            If ch_anio_ant.Checked = True Then
+        If ch_anio_ant.Checked = True Then
                 If emp_entrada = 1 Then   'cintegral
                     Call ConectaCint2()
                     Call elano()
@@ -399,39 +527,46 @@ Public Class frm_Rep_Est_guias
             Select Case cbo_tipo_guia.Text
                 Case "CLIENTE"
                     If tipo_estado = 1 Then
-                        ' despachado y entregado con guia cliente
+                    ' despachado y entregado con guia cliente
 
-                        cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From ENTREGAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null ORDER BY fe_docto DESC"
-
-                    Else
-                        ' en transito con guia cliente
-                        cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From ENTREGAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is null ORDER BY fe_docto DESC"
-                    End If
+                    cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From GUIAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null ORDER BY fe_docto DESC"
                     Call Formato_grilla()
+                Else
+                    ' en transito con guia cliente
+                    cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From GUIAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is null ORDER BY fe_docto DESC"
+                    Call Formato_grilla()
+                End If
 
-                Case "SIN FACTURA"
+
+            Case "SIN FACTURA"
 
                     If tipo_estado = 1 Then
-                        ' despachado y entregado con guia sin fact
-                        cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From ENTREGAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null and nfactura is not null ORDER BY fe_docto DESC"
-                    Else
-                        cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From ENTREGAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null and nfactura is null ORDER BY fe_docto DESC"
-                    End If
+                    ' despachado y entregado con guia sin fact
+                    'cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From guias_dp WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null and nfactura is not null ORDER BY fe_docto DESC"
+                    cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From GUIAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null and nfactura is not null ORDER BY fe_docto DESC"
+                    Call Formato_grilla3()
+                Else
+                    'cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From guias_dp WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null and nfactura is null ORDER BY fe_docto DESC"
+                    cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From GUIAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null and nfactura is null ORDER BY fe_docto DESC"
+                    Call Formato_grilla3()
+                End If
 
-                    Call Formato_grilla()
 
-                Case "TRASPASOS"
+
+            Case "TRASPASOS"
 
                     If tipo_estado = 1 Then
                         'despachado y entregado con guia traspaso
 
                         cmd28.CommandText = "SELECT nrodp, nguia, bod_origen, bod_destino, fe_trasp, rut_trasp, nom_trasp, dir_trasp, fe_desp, transporte, patente, chofer, gramos, nrobultos, fe_recepcion, confirmacion, obs_ingreso, obs_reingreso, usr_registro, usr_reing FROM guias_trasp_dp where fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' order by fe_trasp ASC ;"
-                    Else
-                        'en transito con guia traspaso
-                        cmd28.CommandText = "SELECT nrodp, nguia, bod_origen, bod_destino, fe_trasp, rut_trasp, nom_trasp, dir_trasp, fe_desp, transporte, patente, chofer, gramos, nrobultos, fe_recepcion, confirmacion, obs_ingreso, obs_reingreso, usr_registro, usr_reing FROM guias_trasp_dp where fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' order by fe_trasp ASC ;"
-                    End If
                     Call Formato_grilla2()
-            End Select
+                Else
+                    'en transito con guia traspaso
+                    cmd28.CommandText = "SELECT nrodp, nguia, bod_origen, bod_destino, fe_trasp, rut_trasp, nom_trasp, dir_trasp, fe_desp, transporte, patente, chofer, gramos, nrobultos, fe_recepcion, confirmacion, obs_ingreso, obs_reingreso, usr_registro, usr_reing FROM guias_trasp_dp where fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' order by fe_trasp ASC ;"
+                    Call Formato_grilla2()
+                End If
+
+        End Select
 
 
 
@@ -441,25 +576,26 @@ Public Class frm_Rep_Est_guias
             Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd28)
 
             da.Fill(dt)
-            If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
-                ' If dt.Rows.Count <> 0 Then
-                grilla.DataSource = dt
+        If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
 
-                conexion.Close()
-                da.Dispose()
-                cmd28.Dispose()
+            ' If dt.Rows.Count <> 0 Then
+            grilla.DataSource = dt
 
-                Cursor.Current = Cursors.Default
-            Else
-                Cursor.Current = Cursors.Default
+            conexion.Close()
+            da.Dispose()
+            cmd28.Dispose()
+
+            Cursor.Current = Cursors.Default
+        Else
+            Cursor.Current = Cursors.Default
                 MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
 
             End If
 
 
-        Catch ex As Exception
-            MessageBox.Show(ex.Message)
-        End Try
+        'Catch ex As Exception
+        ' MessageBox.Show(ex.Message)
+        ' End Try
     End Sub
 
     Private Sub cbo_estado_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbo_estado.SelectedIndexChanged

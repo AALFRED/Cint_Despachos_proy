@@ -24,6 +24,7 @@ Partial Class frm_Rep_Est_Fact
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frm_Rep_Est_Fact))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lbl_cartel = New System.Windows.Forms.Label()
         Me.ch_anio_ant = New System.Windows.Forms.CheckBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.cbo_estado = New System.Windows.Forms.ComboBox()
@@ -35,7 +36,6 @@ Partial Class frm_Rep_Est_Fact
         Me.msk_fe_fin = New System.Windows.Forms.MaskedTextBox()
         Me.msk_fe_ini = New System.Windows.Forms.MaskedTextBox()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.lbl_cartel = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         CType(Me.grilla, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -56,10 +56,19 @@ Partial Class frm_Rep_Est_Fact
         Me.GroupBox1.Controls.Add(Me.Label5)
         Me.GroupBox1.Location = New System.Drawing.Point(24, 28)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(890, 414)
+        Me.GroupBox1.Size = New System.Drawing.Size(890, 482)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Estado Despacho de Facturas"
+        '
+        'lbl_cartel
+        '
+        Me.lbl_cartel.AutoSize = True
+        Me.lbl_cartel.Location = New System.Drawing.Point(672, 21)
+        Me.lbl_cartel.Name = "lbl_cartel"
+        Me.lbl_cartel.Size = New System.Drawing.Size(57, 15)
+        Me.lbl_cartel.TabIndex = 56
+        Me.lbl_cartel.Text = "lbl_cartel"
         '
         'ch_anio_ant
         '
@@ -117,7 +126,7 @@ Partial Class frm_Rep_Est_Fact
         Me.grilla.Location = New System.Drawing.Point(15, 96)
         Me.grilla.Name = "grilla"
         Me.grilla.ReadOnly = True
-        Me.grilla.Size = New System.Drawing.Size(869, 296)
+        Me.grilla.Size = New System.Drawing.Size(869, 363)
         Me.grilla.TabIndex = 50
         '
         'cmd_buscar
@@ -164,15 +173,6 @@ Partial Class frm_Rep_Est_Fact
         Me.Label5.Size = New System.Drawing.Size(76, 15)
         Me.Label5.TabIndex = 45
         Me.Label5.Text = "Fecha Inicial:"
-        '
-        'lbl_cartel
-        '
-        Me.lbl_cartel.AutoSize = True
-        Me.lbl_cartel.Location = New System.Drawing.Point(672, 21)
-        Me.lbl_cartel.Name = "lbl_cartel"
-        Me.lbl_cartel.Size = New System.Drawing.Size(57, 15)
-        Me.lbl_cartel.TabIndex = 56
-        Me.lbl_cartel.Text = "lbl_cartel"
         '
         'frm_Rep_Est_Fact
         '

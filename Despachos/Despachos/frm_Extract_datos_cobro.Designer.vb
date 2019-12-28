@@ -24,6 +24,7 @@ Partial Class frm_Extract_datos_cobro
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frm_Extract_datos_cobro))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lbl_cartel = New System.Windows.Forms.Label()
         Me.cmd_exp_excel = New System.Windows.Forms.Button()
         Me.cmd_buscar = New System.Windows.Forms.Button()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -34,10 +35,9 @@ Partial Class frm_Extract_datos_cobro
         Me.msk_fe_fin = New System.Windows.Forms.MaskedTextBox()
         Me.msk_fe_ini = New System.Windows.Forms.MaskedTextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.grilla = New System.Windows.Forms.DataGridView()
         Me.lbl_reg = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.grilla = New System.Windows.Forms.DataGridView()
-        Me.lbl_cartel = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         CType(Me.grilla, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -62,9 +62,18 @@ Partial Class frm_Extract_datos_cobro
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Parámetros de Búsqueda"
         '
+        'lbl_cartel
+        '
+        Me.lbl_cartel.AutoSize = True
+        Me.lbl_cartel.Location = New System.Drawing.Point(748, 88)
+        Me.lbl_cartel.Name = "lbl_cartel"
+        Me.lbl_cartel.Size = New System.Drawing.Size(60, 15)
+        Me.lbl_cartel.TabIndex = 57
+        Me.lbl_cartel.Text = "lbl_cartel"
+        '
         'cmd_exp_excel
         '
-        Me.cmd_exp_excel.Location = New System.Drawing.Point(797, 35)
+        Me.cmd_exp_excel.Location = New System.Drawing.Point(798, 36)
         Me.cmd_exp_excel.Name = "cmd_exp_excel"
         Me.cmd_exp_excel.Size = New System.Drawing.Size(103, 40)
         Me.cmd_exp_excel.TabIndex = 19
@@ -151,6 +160,17 @@ Partial Class frm_Extract_datos_cobro
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Resultado"
         '
+        'grilla
+        '
+        Me.grilla.AllowUserToAddRows = False
+        Me.grilla.AllowUserToDeleteRows = False
+        Me.grilla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.grilla.Location = New System.Drawing.Point(16, 22)
+        Me.grilla.Name = "grilla"
+        Me.grilla.ReadOnly = True
+        Me.grilla.Size = New System.Drawing.Size(904, 288)
+        Me.grilla.TabIndex = 51
+        '
         'lbl_reg
         '
         Me.lbl_reg.AutoSize = True
@@ -170,26 +190,6 @@ Partial Class frm_Extract_datos_cobro
         Me.Label4.Size = New System.Drawing.Size(61, 15)
         Me.Label4.TabIndex = 1
         Me.Label4.Text = "Registros:"
-        '
-        'grilla
-        '
-        Me.grilla.AllowUserToAddRows = False
-        Me.grilla.AllowUserToDeleteRows = False
-        Me.grilla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grilla.Location = New System.Drawing.Point(16, 22)
-        Me.grilla.Name = "grilla"
-        Me.grilla.ReadOnly = True
-        Me.grilla.Size = New System.Drawing.Size(904, 288)
-        Me.grilla.TabIndex = 51
-        '
-        'lbl_cartel
-        '
-        Me.lbl_cartel.AutoSize = True
-        Me.lbl_cartel.Location = New System.Drawing.Point(748, 88)
-        Me.lbl_cartel.Name = "lbl_cartel"
-        Me.lbl_cartel.Size = New System.Drawing.Size(60, 15)
-        Me.lbl_cartel.TabIndex = 57
-        Me.lbl_cartel.Text = "lbl_cartel"
         '
         'frm_Extract_datos_cobro
         '

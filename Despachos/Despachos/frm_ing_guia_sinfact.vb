@@ -96,7 +96,7 @@ Public Class frm_ing_guia_sinfact
         If conexion.State = 1 Then conexion.Close()
         conexion.Open()
 
-        sql = "Select MAX(nrodp) FROM Guias_dp ORDER BY nrodp ASC"
+        sql = "Select MAX(nrodp) FROM guias_dp ORDER BY nrodp ASC"
         com2 = New MySqlCommand(sql, conexion)
         rs2 = com2.ExecuteReader()
 
@@ -134,17 +134,18 @@ Public Class frm_ing_guia_sinfact
 
         If conexion.State = 1 Then conexion.Close()
         conexion.Open()
-        sql = "Select fechacon, totalcon, ordcon, vencon from venta where tipocon = 'FEL000" & txt_nrofact.Text & "'"
+        'sql = "Select fechacon, totalcon, ordcon, vencon from venta where tipocon = 'FEL000" & txt_nrofact.Text & "'"
+        sql = "Select fecha_emision, monto_total, referencias.folio_ref, vendedor from ventas left join referencias on ventas.id = referencias.id_doc where folio = '" & txt_nrofact.Text & "'"
         com12 = New MySqlCommand(sql, conexion)
 
         rs12 = com12.ExecuteReader()
 
         If rs12.HasRows = True Then
             rs12.Read()
-            lbl_fe_docto.Text = CStr(rs12("fechacon"))
-            lbl_monto.Text = CStr(rs12("totalcon"))
-            lbl_noc.Text = CStr(rs12("ordcon"))
-            lbl_vend.Text = CStr(rs12("vencon"))
+            lbl_fe_docto.Text = CStr(rs12("fecha_emision"))
+            lbl_monto.Text = CStr(rs12("monto_total"))
+            lbl_noc.Text = CStr(rs12("folio_ref"))
+            lbl_vend.Text = CStr(rs12("vendedor"))
 
 
             rs12.Dispose()
@@ -188,7 +189,7 @@ Public Class frm_ing_guia_sinfact
 
         If conexion.State = 1 Then conexion.Close()
         conexion.Open()
-        valfact = "FEL0000" & txt_nrofact.Text
+        valfact = txt_nrofact.Text
         sql = "Select * From guias_dp Where nfactura = '" & LTrim(RTrim(valfact)) & "'"
         cmd24 = New MySqlCommand(sql, conexion)
 
@@ -242,7 +243,7 @@ Public Class frm_ing_guia_sinfact
             Case 5 'acomodadores
                 cmd1 = New MySqlCommand("select " & fldName & " from " & TABLENAME & " order by " & fldName, conexion)
             Case 6 'vendedores
-                cmd1 = New MySqlCommand("Select " & fldName & " from " & TABLENAME & " where blocven = 0 and bodven = 11 order by " & fldName, conexion)
+                cmd1 = New MySqlCommand("Select " & fldName & " from " & TABLENAME & " where es_vendedor = 1 order by " & fldName, conexion)
 
         End Select
 
@@ -388,7 +389,7 @@ Public Class frm_ing_guia_sinfact
         Call cargacombo("ordenador_dp", "nom_orden", cbo_despachador)
 
         reseña = 6
-        Call cargacombo("maemozo", "nomven", cbo_vend)
+        Call cargacombo("usuarios", "nombre_usuario", cbo_vend)
 
     End Sub
 
@@ -427,11 +428,11 @@ Public Class frm_ing_guia_sinfact
 
                 If txt_rut.Text <> "" Then
 
-                    txt_rut.Text = QuitarCaracteres(texto)
-                    texto = cadenadevuelta
+                    '  txt_rut.Text = QuitarCaracteres(texto)
+                    ' texto = cadenadevuelta
 
                     'agrega 0 a la izquierda del rut
-                    txt_rut.Text = texto.PadLeft(10, "0")
+                    'txt_rut.Text = texto.PadLeft(10, "0")
 
                     If ch_anio_ant.Checked = True Then
                         If emp_entrada = 1 Then   'cintegral
@@ -458,16 +459,17 @@ Public Class frm_ing_guia_sinfact
 
                     'entrega el valor a la variable para buscar
                     valrut = CStr(txt_rut.Text)
-                    sql = "Select nomclie, dirclie, ciuclie From cliente Where rutclie = '" & LTrim(RTrim(valrut)) & "'"
+                    'sql = "Select nomclie, dirclie, ciuclie From cliente Where rutclie = '" & LTrim(RTrim(valrut)) & "'"
+                    sql = "Select razon_social, direccion, ciudad From clientes Where rut = '" & LTrim(RTrim(valrut)) & "'"
                     com13 = New MySqlCommand(sql, conexion)
 
                     rs13 = com13.ExecuteReader()
                     If rs13.HasRows = True Then
                         rs13.Read()
 
-                        txt_nombre.Text = CStr(rs13("nomclie"))
-                        txt_direccion.Text = CStr(rs13("dirclie"))
-                        cbo_ciudad.Text = CStr(rs13("ciuclie"))
+                        txt_nombre.Text = CStr(rs13("razon_social"))
+                        txt_direccion.Text = CStr(rs13("direccion"))
+                        cbo_ciudad.Text = CStr(rs13("ciudad"))
 
                         rs13.Close()
                         conexion.Close()
@@ -516,16 +518,16 @@ Public Class frm_ing_guia_sinfact
 
                     'entrega el valor a la variable para buscar
                     valrut = CStr(txt_rut.Text)
-                    sql = "Select * From maeprov Where LTrim(RTrim(rutprov)) = '" & valrut & "'"
+                    sql = "Select * From proveedores Where rut = '" & valrut & "'"
                     com14 = New MySqlCommand(sql, conexion)
 
                     rs14 = com14.ExecuteReader()
                     If rs14.HasRows() Then
                         rs14.Read()
 
-                        txt_nombre.Text = CStr(rs14("nomprov"))
-                        txt_direccion.Text = CStr(rs14("dirprov"))
-                        cbo_ciudad.Text = CStr(rs14("ciuprov"))
+                        txt_nombre.Text = CStr(rs14("razon_social"))
+                        txt_direccion.Text = CStr(rs14("direccion"))
+                        cbo_ciudad.Text = CStr(rs14("ciudad"))
 
                         rs14.Close()
                         conexion.Close()
@@ -822,7 +824,8 @@ Public Class frm_ing_guia_sinfact
             End If
 
 
-            valorfact = "FEL0000" & txt_nrofact.Text
+            'valorfact = "FEL0000" & txt_nrofact.Text
+            valorfact = txt_nrofact.Text
 
             Call Valida_Fact_dp()
             If bandera = True Then
@@ -838,17 +841,18 @@ Public Class frm_ing_guia_sinfact
 
                 'entrega el valor a la variable para buscar
 
-                sql = "Select * From venta Where tipocon = '" & valorfact & "'"
+                'sql = "Select * From venta Where tipocon = '" & valorfact & "'"
+                sql = "Select * From ventas left join referencias on ventas.id = referencias.id_doc Where folio = '" & valorfact & "'"
                 com11 = New MySqlCommand(sql, conexion)
 
                 rs11 = com11.ExecuteReader()
                 If rs11.HasRows = True Then
 
                     rs11.Read()
-                    lbl_fe_docto.Text = CStr(rs11("fechacon"))
-                    lbl_monto.Text = CStr(rs11("netocon"))
-                    lbl_noc.Text = CStr(rs11("ordcon"))
-                    lbl_vend.Text = CStr(rs11("vencon"))
+                    lbl_fe_docto.Text = CStr(rs11("fecha_emision"))
+                    lbl_monto.Text = CStr(rs11("monto_neto"))
+                    lbl_noc.Text = CStr(rs11("folio_ref"))
+                    lbl_vend.Text = CStr(rs11("vendedor"))
 
                     cmd_asigna_fact.Enabled = True
                 Else
@@ -863,13 +867,13 @@ Public Class frm_ing_guia_sinfact
                 'la abre 
                 conexion.Open()
                 sql = ""
-                sql = "Select * from maemozo where codven = '" & lbl_vend.Text & "'"
+                sql = "Select nombre_usuario from usuarios where num_vendedor = '" & lbl_vend.Text & "'"
                 cmd23 = New MySqlCommand(sql, conexion)
                 rs23 = cmd23.ExecuteReader()
                 If rs23.HasRows = True Then
 
                     rs23.Read()
-                    nombrev = CStr(rs23("nomven"))
+                    nombrev = CStr(rs23("nombre_usuario"))
 
                 Else
                     MsgBox("El codigo del vendedor no fue encontrado", MsgBoxStyle.Exclamation)
@@ -1575,12 +1579,12 @@ Public Class frm_ing_guia_sinfact
     End Sub
 
     Private Sub txt_rut_Leave(sender As Object, e As EventArgs) Handles txt_rut.Leave
-        Dim texto1 As String = txt_rut.Text
-        txt_rut.Text = QuitarCaracteres(texto1)
-        texto1 = cadenadevuelta
+        'Dim texto1 As String = txt_rut.Text
+        'txt_rut.Text = QuitarCaracteres(texto1)
+        'texto1 = cadenadevuelta
 
         'agrega 0 a la izquierda del rut
-        txt_rut.Text = texto1.PadLeft(10, "0")
+        'txt_rut.Text = texto1.PadLeft(10, "0")
     End Sub
 
     Private Sub cmd_asigna_fact_Click(sender As Object, e As EventArgs) Handles cmd_asigna_fact.Click

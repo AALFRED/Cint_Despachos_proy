@@ -57,7 +57,6 @@ Partial Class frm_ing_guia_clte
         Me.lbl_tipo_guia = New System.Windows.Forms.Label()
         Me.Label24 = New System.Windows.Forms.Label()
         Me.lbl_hora = New System.Windows.Forms.Label()
-        Me.txt_bus_gclte_desp = New System.Windows.Forms.TextBox()
         Me.lbl_reg = New System.Windows.Forms.Label()
         Me.Label25 = New System.Windows.Forms.Label()
         Me.ch_stop_timer = New System.Windows.Forms.CheckBox()
@@ -98,6 +97,7 @@ Partial Class frm_ing_guia_clte
         Me.Label11 = New System.Windows.Forms.Label()
         Me.cbo_tp = New System.Windows.Forms.ComboBox()
         Me.cmd_modifica2 = New System.Windows.Forms.Button()
+        Me.txt_bus_gclte_desp = New System.Windows.Forms.TextBox()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.ArchivoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -528,14 +528,6 @@ Partial Class frm_ing_guia_clte
         Me.lbl_hora.TabIndex = 61
         Me.lbl_hora.Text = "lbl_hora"
         '
-        'txt_bus_gclte_desp
-        '
-        Me.txt_bus_gclte_desp.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.txt_bus_gclte_desp.Location = New System.Drawing.Point(116, 513)
-        Me.txt_bus_gclte_desp.Name = "txt_bus_gclte_desp"
-        Me.txt_bus_gclte_desp.Size = New System.Drawing.Size(88, 23)
-        Me.txt_bus_gclte_desp.TabIndex = 59
-        '
         'lbl_reg
         '
         Me.lbl_reg.AutoSize = True
@@ -668,11 +660,12 @@ Partial Class frm_ing_guia_clte
         DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Maroon
         DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.grilla2.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        Me.grilla2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader
         Me.grilla2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.grilla2.Location = New System.Drawing.Point(5, 6)
         Me.grilla2.Name = "grilla2"
         Me.grilla2.ReadOnly = True
-        Me.grilla2.Size = New System.Drawing.Size(1012, 324)
+        Me.grilla2.Size = New System.Drawing.Size(1012, 287)
         Me.grilla2.TabIndex = 1
         '
         'cmd_modificar
@@ -980,6 +973,14 @@ Partial Class frm_ing_guia_clte
         Me.cmd_modifica2.Text = "Guardar Cambios"
         Me.cmd_modifica2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.cmd_modifica2.UseVisualStyleBackColor = True
+        '
+        'txt_bus_gclte_desp
+        '
+        Me.txt_bus_gclte_desp.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.txt_bus_gclte_desp.Location = New System.Drawing.Point(116, 513)
+        Me.txt_bus_gclte_desp.Name = "txt_bus_gclte_desp"
+        Me.txt_bus_gclte_desp.Size = New System.Drawing.Size(88, 23)
+        Me.txt_bus_gclte_desp.TabIndex = 59
         '
         'Timer1
         '

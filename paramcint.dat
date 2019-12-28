@@ -3,7 +3,7 @@ USERADMIN=MASTER
 [CONEXION]
 Server=192.168.1.68
 Port=3316
-Database=cintegral2019
+Database=pos_cintegral_ultimo
 User=cintegral
 password=Xtreme749
 EMPRESA=CINTEGRAL

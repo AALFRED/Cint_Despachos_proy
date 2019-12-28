@@ -76,12 +76,13 @@ Public Class frm_ing_bol
         grilla.Columns(6).HeaderCell.Value = "Monto Neto"
         grilla.Columns(7).HeaderCell.Value = "Bodega"
 
-        grilla.Columns(0).Width = 90
+        grilla.Columns(0).Width = 70
         grilla.Columns(1).Width = 70
         grilla.Columns(2).Width = 80
         grilla.Columns(3).Width = 250
         grilla.Columns(4).Width = 160
         grilla.Columns(5).Width = 120
+        grilla.Columns(6).Width = 120
         grilla.Columns(7).Width = 120
 
 
@@ -93,6 +94,7 @@ Public Class frm_ing_bol
         grilla.Columns(5).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(6).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla.Columns(7).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+
 
 
         ' grilla.Font = New System.Drawing.Font("Calibri", 7.75, FontStyle.Regular)
@@ -412,8 +414,8 @@ Public Class frm_ing_bol
             cmd1.Connection = conexion
 
 
-            cmd1.CommandText = "SELECT Substring(VENTA.tipocon,8,10)tipocon, VENTA.fechacon, VENTA.rutcon, Cliente.nomclie, Cliente.ciuclie, maemozo.nomven, VENTA.netocon, maebode.nombod FROM VENTA INNER JOIN CLIENTE ON VENTA.rutcon = CLIENTE.rutclie inner join Maemozo on maemozo.codven = venta.vencon inner join maebode on venta.bodecon = maebode.codbod WHERE VENTA.tipocon LIKE '%BOE%' AND year(VENTA.fechacon) = '" & miano & "' AND month(VENTA.fechacon) > 0 and bodecon = '11' GROUP BY VENTA.tipocon, VENTA.fechacon, VENTA.rutcon, CLIENTE.nomclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon ORDER BY fechacon DESC"
-
+            'cmd1.CommandText = "SELECT Substring(VENTA.tipocon,8,10)tipocon, VENTA.fechacon, VENTA.rutcon, Cliente.nomclie, Cliente.ciuclie, maemozo.nomven, VENTA.netocon, maebode.nombod FROM VENTA INNER JOIN CLIENTE ON VENTA.rutcon = CLIENTE.rutclie inner join Maemozo on maemozo.codven = venta.vencon inner join maebode on venta.bodecon = maebode.codbod WHERE VENTA.tipocon LIKE '%BOE%' AND year(VENTA.fechacon) = '" & miano & "' AND month(VENTA.fechacon) > 0 and bodecon = '11' GROUP BY VENTA.tipocon, VENTA.fechacon, VENTA.rutcon, CLIENTE.nomclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon ORDER BY fechacon DESC"
+            cmd1.CommandText = "select folio, fecha_emision, rut_receptor, razon_social_receptor, ciudad_receptor, vendedor, monto_neto, nombre_bodega from ventas where tipo_documento = '39' and year(fecha_emision)= '" & miano & "' and month(fecha_emision) > 0 and num_bodega = '11' group by tipo_documento, folio, fecha_emision, rut_receptor, razon_social_receptor, ciudad_receptor, vendedor, monto_neto, nombre_bodega order by fecha_emision DESC;"
 
             Dim dt As System.Data.DataTable = New System.Data.DataTable
             Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd1)
@@ -872,15 +874,17 @@ Public Class frm_ing_bol
 
         If conexion.State = 1 Then conexion.Close()
         conexion.Open()
+        'valbod = "BOE0000" & lbl_nro_boe.Text
+        'sql = "SELECT nombod FROM venta inner join maebode on venta.bodecon = maebode.codbod where tipocon = '" & valbod & "'"
         valbod = "BOE0000" & lbl_nro_boe.Text
-        sql = "SELECT nombod FROM venta inner join maebode on venta.bodecon = maebode.codbod where tipocon = '" & valbod & "'"
+        sql = "select nombre_bodega from ventas where folio = '" & valbod & "'"
         com6 = New MySqlCommand(sql, conexion)
 
         rs6 = com6.ExecuteReader()
 
         If rs6.HasRows = True Then
             rs6.Read()
-            lbl_bod.Text = CStr(rs6("nombod"))
+            lbl_bod.Text = CStr(rs6("nombre_bodega"))
 
             rs6.Dispose()
             conexion.Close()
@@ -1049,7 +1053,8 @@ Public Class frm_ing_bol
             If conexion.State = 1 Then conexion.Close()
             conexion.Open()
             sql = ""
-            sql = "select codven from maemozo where nomven= '" & lbl_vendedor.Text & "'"
+            'sql = "select codven from maemozo where nomven= '" & lbl_vendedor.Text & "'"
+            sql = "select num_vendedor from usuarios where nombre_usuario= '" & lbl_vendedor.Text & "' and es_vendedor = 1"
             com7 = New MySqlCommand(sql, conexion)
 
             rs7 = com7.ExecuteReader()
@@ -1058,7 +1063,7 @@ Public Class frm_ing_bol
                 lbl_codejec.Text = ""
             Else
                 rs7.Read()
-                lbl_codejec.Text = CStr(rs7("codven").ToString)
+                lbl_codejec.Text = CStr(rs7("num_vendedor").ToString)
             End If
             com7.Dispose()
             conexion.Close()
@@ -1143,7 +1148,7 @@ Public Class frm_ing_bol
             conexion.Open()
 
             com4.Connection = conexion
-            com4.CommandText = "SELECT nrodp, fe_creacion, rutclie, nomclie, comuna, nboleta, monto_fact, fe_docto, noc, fe_desp, transporte, patente, nflete, nrobultos, gramos, h_salida, obs_despacho, vendedor, chofer, despachador, usuario, usuario_reing From Boletas_dp Where year(fe_docto) = '" & miano & "' order by fe_docto DESC"
+            com4.CommandText = "SELECT nrodp, fe_creacion, rutclie, nomclie, comuna, nboleta, monto_fact, fe_docto, noc, fe_desp, transporte, patente, nflete, nrobultos, gramos, h_salida, obs_despacho, vendedor, chofer, despachador, usuario, usuario_reing From boletas_dp Where year(fe_docto) = '" & miano & "' order by fe_docto DESC"
 
             Dim dt As System.Data.DataTable = New System.Data.DataTable
             Dim da As MySqlDataAdapter = New MySqlDataAdapter(com4)
@@ -1274,7 +1279,7 @@ Public Class frm_ing_bol
             If conexion.State = 1 Then conexion.Close()
             conexion.Open()
 
-            cmd2 = New MySqlCommand("Update boletas_dp Set nro_rece= '" & txt_cedible.Text & "', transporte ='" & cbo_tp.Text & "', nflete ='" & txt_nroflete.Text & "', nrobultos ='" & txt_nrobulto.Text & "', gramos ='" & txt_peso.Text & "', comuna ='" & cbo_ciudad.Text & "', chofer ='" & cbo_chofer.Text & "', patente = '" & lbl_patente.Text & "', despachador = '" & cbo_acomodador.Text & "', fe_desp = '" & msk_fe_desp.Text & "', h_salida = '" & cbo_ampm.Text & "', obs_despacho = '" & txt_obs_boe.Text & "'  WHERE id = '" & lbl_idbd.Text & "'", conexion)
+            cmd2 = New MySqlCommand("Update boletas_dp Set nro_rece= '" & txt_cedible.Text & "', transporte ='" & cbo_tp.Text & "', nflete ='" & txt_nroflete.Text & "', nrobultos ='" & txt_nrobulto.Text & "', gramos ='" & txt_peso.Text & "', comuna ='" & cbo_ciudad.Text & "', chofer ='" & cbo_chofer.Text & "', patente = '" & lbl_patente.Text & "', despachador = '" & cbo_acomodador.Text & "', fe_desp = '" & msk_fe_desp.Text & "', h_salida = '" & cbo_ampm.Text & "', obs_despacho = '" & txt_obs_boe.Text & "'  where id = '" & lbl_idbd.Text & "'", conexion)
 
             cmd2.ExecuteNonQuery()
             conexion.Close()
