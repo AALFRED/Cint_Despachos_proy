@@ -368,6 +368,7 @@ Public Class frm_Extract_datos_cobro
 
         cbo_tipo_doc.Items.Add("FACTURAS")
         cbo_tipo_doc.Items.Add("GUIAS")
+        cbo_tipo_doc.Items.Add("BOLETAS")
         cbo_tipo_doc.Text = "FACTURAS"
 
     End Sub
@@ -434,18 +435,21 @@ Public Class frm_Extract_datos_cobro
             Select Case cbo_tipo_doc.Text
                 Case "FACTURAS"
                     'BUSCA FACTURAS
-                    cmd.CommandText = "Select nrodp, substring(nfactura, 8, 10) As Factura, fe_docto, nomclie, vendedor, fe_desp, comuna, nrobultos, gramos, transporte, nflete, fe_creacion, usuario, usuario_reing From entregas_dp WHERE fe_docto between '" & msk_fe_ini.Text & "' and '" & msk_fe_fin.Text & "' and transporte = '" & cbo_tp.Text & "' order by factura, fe_docto asc"
+                    cmd.CommandText = "Select nrodp, nfactura As Factura, fe_docto, nomclie, vendedor, fe_desp, comuna, nrobultos, gramos, transporte, nflete, fe_creacion, usuario, usuario_reing From entregas_dp WHERE fe_desp between '" & msk_fe_ini.Text & "' and '" & msk_fe_fin.Text & "' and transporte = '" & cbo_tp.Text & "' order by factura, fe_docto asc"
                    ' Call Formato_grilla1()
                 Case "GUIAS"
 
-                    cmd.CommandText = "Select nrodp, substring(nfactura,8,10) As Factura, nguia, rutclie, nombre, comuna, vendedor, fe_docto, fe_desp, nflete, nro_rece, nrobultos, gramos, transporte, usuario, usuario_reing From guias_dp WHERE fe_creacion between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and transporte = '" & cbo_tp.Text & "' order by factura, fe_docto asc"
+                    cmd.CommandText = "Select nrodp, nfactura As Factura, nguia, rutclie, nombre, comuna, vendedor, fe_docto, fe_desp, nflete, nro_rece, nrobultos, gramos, transporte, usuario, usuario_reing From guias_dp WHERE fe_creacion between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and transporte = '" & cbo_tp.Text & "' order by factura, fe_docto asc"
                     ' Call Formato_grilla2()
+                Case "BOLETAS"
+                    cmd.CommandText = "Select nrodp, nboleta As boleta, rutclie, nomclie, comuna, vendedor, fe_docto, fe_desp, nflete, fe_reingreso, nrobultos, gramos, transporte, usuario, usuario_reing From boletas_dp WHERE fe_creacion between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and transporte = '" & cbo_tp.Text & "' order by boleta, fe_docto asc"
+
             End Select
 
 
 
 
-            Dim dt As System.Data.DataTable = New System.Data.DataTable
+                    Dim dt As System.Data.DataTable = New System.Data.DataTable
             Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd)
             da.Fill(dt)
             If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then

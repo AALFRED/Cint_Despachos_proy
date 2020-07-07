@@ -108,6 +108,8 @@ Partial Class frm_ing_guia_sinfact
         Me.Label27 = New System.Windows.Forms.Label()
         Me.Label26 = New System.Windows.Forms.Label()
         Me.Label25 = New System.Windows.Forms.Label()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.mnu_eliminar_reg = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -874,7 +876,7 @@ Partial Class frm_ing_guia_sinfact
         '
         'ArchivoToolStripMenuItem
         '
-        Me.ArchivoToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Mnu_BuscarNroGuia, Me.ToolStripMenuItem1, Me.Mnu_LimpiarVentana, Me.ToolStripMenuItem2, Me.Mnu_Salir})
+        Me.ArchivoToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Mnu_BuscarNroGuia, Me.ToolStripMenuItem1, Me.Mnu_LimpiarVentana, Me.ToolStripMenuItem2, Me.mnu_eliminar_reg, Me.ToolStripSeparator1, Me.Mnu_Salir})
         Me.ArchivoToolStripMenuItem.Name = "ArchivoToolStripMenuItem"
         Me.ArchivoToolStripMenuItem.Size = New System.Drawing.Size(60, 20)
         Me.ArchivoToolStripMenuItem.Text = "Archivo"
@@ -882,29 +884,29 @@ Partial Class frm_ing_guia_sinfact
         'Mnu_BuscarNroGuia
         '
         Me.Mnu_BuscarNroGuia.Name = "Mnu_BuscarNroGuia"
-        Me.Mnu_BuscarNroGuia.Size = New System.Drawing.Size(160, 22)
+        Me.Mnu_BuscarNroGuia.Size = New System.Drawing.Size(180, 22)
         Me.Mnu_BuscarNroGuia.Text = "Buscar Nro Guia"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(157, 6)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(177, 6)
         '
         'Mnu_LimpiarVentana
         '
         Me.Mnu_LimpiarVentana.Name = "Mnu_LimpiarVentana"
-        Me.Mnu_LimpiarVentana.Size = New System.Drawing.Size(160, 22)
+        Me.Mnu_LimpiarVentana.Size = New System.Drawing.Size(180, 22)
         Me.Mnu_LimpiarVentana.Text = "Limpiar Ventana"
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(157, 6)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(177, 6)
         '
         'Mnu_Salir
         '
         Me.Mnu_Salir.Name = "Mnu_Salir"
-        Me.Mnu_Salir.Size = New System.Drawing.Size(160, 22)
+        Me.Mnu_Salir.Size = New System.Drawing.Size(180, 22)
         Me.Mnu_Salir.Text = "Salir"
         '
         'GroupBox4
@@ -1043,6 +1045,17 @@ Partial Class frm_ing_guia_sinfact
         Me.Label25.TabIndex = 0
         Me.Label25.Text = "Recepcionó Clte:"
         '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(177, 6)
+        '
+        'mnu_eliminar_reg
+        '
+        Me.mnu_eliminar_reg.Name = "mnu_eliminar_reg"
+        Me.mnu_eliminar_reg.Size = New System.Drawing.Size(180, 22)
+        Me.mnu_eliminar_reg.Text = "Eliminar Guia"
+        '
         'frm_ing_guia_sinfact
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
@@ -1159,4 +1172,6 @@ Partial Class frm_ing_guia_sinfact
     Friend WithEvents Label26 As Label
     Friend WithEvents Label25 As Label
     Friend WithEvents lbl_nroreg2 As Label
+    Friend WithEvents mnu_eliminar_reg As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
 End Class

@@ -339,7 +339,10 @@ Public Class frm_Menu
     End Sub
 
     Private Sub mnu_rep_Est_Bol_desp_Click(sender As Object, e As EventArgs) Handles mnu_rep_Est_Bol_desp.Click
-        MsgBox("Reporte No Disponible", MsgBoxStyle.Exclamation)
+        'MsgBox("Reporte No Disponible", MsgBoxStyle.Exclamation)
+        Me.Hide()
+        frm_Rep_Est_Boletas.Show()
+
     End Sub
 
     Private Sub mnu_rep_Fact_NoIngresadas_Click(sender As Object, e As EventArgs) Handles mnu_rep_Fact_NoIngresadas.Click
@@ -359,7 +362,10 @@ Public Class frm_Menu
     End Sub
 
     Private Sub cmd_cons_serie_Click(sender As Object, e As EventArgs) Handles cmd_cons_serie.Click
-        MsgBox("Opción No Disponible aún", MsgBoxStyle.Exclamation)
+        'MsgBox("Opción No Disponible aún", MsgBoxStyle.Exclamation)
+        Me.Hide()
+        frm_cons_series.Show()
+
     End Sub
 
     Private Sub mnu_Acomodadores_Click(sender As Object, e As EventArgs) Handles mnu_Acomodadores.Click

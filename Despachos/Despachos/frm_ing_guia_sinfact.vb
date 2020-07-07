@@ -25,6 +25,7 @@ Public Class frm_ing_guia_sinfact
     Private counter As Integer
     Dim valdestino As Integer ' 0 - cliente  1 - proveedor
     Dim nombrev As String 'guarda valor nombre vendedor
+    Public valret22 As String
 
     Sub Valida_Campos()
         bandera = False
@@ -65,6 +66,98 @@ Public Class frm_ing_guia_sinfact
 
     End Sub
 
+
+    Sub Busca_guia(valret As String)
+
+        'Dim rs21 As MySqlDataReader
+        ' Dim rs13 As MySqlDataReader
+
+        If ch_anio_ant.Checked = True Then
+            If emp_entrada = 1 Then   'cintegral
+                Call ConectaCint2()
+                Call elano()
+                miano = miano - 1
+            Else                       'global
+                Call ConectaGlo2()
+                Call elano()
+                miano = miano - 1
+            End If
+        Else
+            If emp_entrada = 1 Then  'cintegral
+                Call ConectaCint()
+                Call elano()
+            Else                     'global
+                Call ConectaGlo()
+                Call elano()
+            End If
+        End If
+
+        If conexion.State = 1 Then conexion.Close()
+        'la abre 
+        conexion.Open()
+
+        Dim command22 As MySqlCommand = New MySqlCommand(
+          "Select id, nrodp, nfactura, nguia, direccion, comuna, rutclie, nombre, fe_docto, fe_desp, transporte, patente, nflete, recibio, fe_reingreso, nro_rece, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, noc, gramos, fe_creacion, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant, destino From guias_dp Where nguia = '" & valret & "';", conexion)
+
+
+        Dim reader As MySqlDataReader = command22.ExecuteReader()
+
+        If reader.HasRows Then
+            Do While reader.Read()
+                txt_nroguia.Text = valret
+                txt_nroguia.Enabled = False
+                lbl_idbd.Text = reader.GetInt32(0).ToString
+                txt_rut.Text = reader.GetString(6).ToString
+                txt_nombre.Text = reader.GetString(7).ToString
+                If IsDBNull(reader.GetString(12)) = True Then
+                    txt_nroflete.Text = ""
+                Else
+                    txt_nroflete.Text = reader.GetString(12).ToString   'nflete
+                End If
+                If IsDBNull(reader.GetString(10)) = True Then
+                    cbo_tp.Text = ""
+                Else
+                    cbo_tp.Text = reader.GetString(10).ToString   'transporte
+                End If
+                txt_nrofact.Text = Convert.ToString(reader.GetString(2))  'nfactura
+                txt_nrofact.Enabled = False
+                'SendKeys.Send("~")
+                txt_nrofact.Select()
+
+
+
+                If IsDBNull(reader.GetString(17)) = True Then   'vendedor
+                    cbo_vend.Text = ""
+                Else
+                    cbo_vend.Text = CStr(reader.GetString(17)).ToString()
+                End If
+                If IsDBNull(reader.GetString(4)) = True Then
+                    txt_direccion.Text = ""
+                Else
+                    txt_direccion.Text = CStr(reader.GetString(4)).ToString()   'direccion  
+                End If
+                If IsDBNull(reader.GetString(15)) = True Then
+                    txt_cedible.Text = "0"
+                Else
+                    txt_cedible.Text = CStr(reader.GetString(15)).ToString()  'nro rece
+                End If
+                If IsDBNull(reader.GetString(20)) = True Then
+                    txt_nrobulto.Text = ""
+                Else
+                    txt_nrobulto.Text = CStr(reader.GetString(20)).ToString()
+                End If
+
+
+
+
+            Loop
+        Else
+            Console.WriteLine("No hay datos")
+        End If
+
+        reader.Close()
+
+    End Sub
 
     Sub Ultimo_nrodp()
         Dim com2 As New MySqlCommand
@@ -690,98 +783,198 @@ Public Class frm_ing_guia_sinfact
                 If txt_nroguia.Text <> "" Then
 
 
-                    'NO SE VALIDA LA GUIA A CLIENTE
-                    'PORQUE NO LA REGISTRAN EN PUNTO DE VENTA ES CREADA EN EXCEL.
-                    'SOLO SE VALIDA SI EL NRO YA LO UTILIZARON
+                    'SE VALIDA LA GUIA ELECTRONICA
 
-                    If ch_anio_ant.Checked = True Then
-                        If emp_entrada = 1 Then   'cintegral
-                            Call ConectaCint2()
-                            Call elano()
-                            miano = miano - 1
-                        Else                       'global
-                            Call ConectaGlo2()
-                            Call elano()
-                            miano = miano - 1
+                    If ch_guia_garant.Checked = False And op_cliente.Checked = True Then
+
+                        If conexion.State = 1 Then conexion.Close()
+                        'la abre 
+                        conexion.Open()
+                        sql = "Select * From ventas Where tipo_documento = '52' and folio = '" & txt_nroguia.Text & "'"
+                        com7 = New MySqlCommand(sql, conexion)
+                        rs7 = com7.ExecuteReader()
+                        If rs7.HasRows = True Then
+
+
+                            If ch_anio_ant.Checked = True Then
+                                If emp_entrada = 1 Then   'cintegral
+                                    Call ConectaCint2()
+                                    Call elano()
+                                    miano = miano - 1
+                                Else                       'global
+                                    Call ConectaGlo2()
+                                    Call elano()
+                                    miano = miano - 1
+                                End If
+                            Else
+                                If emp_entrada = 1 Then  'cintegral
+                                    Call ConectaCint()
+                                    Call elano()
+                                Else                     'global
+                                    Call ConectaGlo()
+                                    Call elano()
+                                End If
+                            End If
+
+
+                            If conexion.State = 1 Then conexion.Close()
+                            'la abre 
+                            conexion.Open()
+
+                            'entrega el valor a la variable para buscar
+
+                            sql = "Select * From guias_dp Where nguia = '" & txt_nroguia.Text & "'"
+                            com7 = New MySqlCommand(sql, conexion)
+
+                            rs7 = com7.ExecuteReader()
+                            If rs7.HasRows = True Then
+
+                                MsgBox("A VER!!! LA GUIA YA EXISTE Y NO PUEDE REGISTRARLA.", MsgBoxStyle.Critical, "Validación de Guía.")
+
+
+                                txt_rut.Enabled = False
+                                txt_nombre.Enabled = False
+                                txt_direccion.Enabled = False
+                                txt_cedible.Enabled = False
+                                cbo_tp.Enabled = False
+                                cbo_ciudad.Enabled = False
+                                cbo_chofer.Enabled = False
+                                cbo_despachador.Enabled = False
+                                txt_nrobulto.Enabled = False
+                                txt_nroflete.Enabled = False
+                                txt_peso.Enabled = False
+                                msk_fe_desp.Enabled = False
+                                txt_obs.Enabled = False
+                                cbo_ampm.Enabled = False
+                                cbo_movil.Enabled = False
+                                cmd_modif_guia.Enabled = False
+                                cmd_guardar.Enabled = False
+                                txt_nroguia.Select()
+
+                            Else
+
+
+                                ' MsgBox("LA GUIA NO EXISTE, RELLENE LOS DATOS FALTANTES.", MsgBoxStyle.Information, "Validación de Guía.")
+
+                                txt_rut.Enabled = True
+                                txt_nombre.Enabled = True
+                                txt_direccion.Enabled = True
+                                txt_cedible.Enabled = True
+                                cbo_tp.Enabled = True
+                                cbo_ciudad.Enabled = True
+                                cbo_chofer.Enabled = True
+                                cbo_despachador.Enabled = True
+                                txt_nrobulto.Enabled = True
+                                txt_nroflete.Enabled = True
+                                txt_peso.Enabled = True
+                                msk_fe_desp.Enabled = True
+                                txt_obs.Enabled = True
+                                cbo_ampm.Enabled = True
+                                cbo_vend.Enabled = True
+                                cbo_movil.Enabled = True
+                                cmd_modif_guia.Enabled = False
+                                cmd_guardar.Enabled = True
+                                txt_rut.Select()
+                            End If
+
+
+
+                        Else
+                            MsgBox("DEBE INGRESAR UN NUMERO VÁLIDO DE GUIA PARA CONTROLAR", MsgBoxStyle.Critical)
+                            txt_nroguia.Select()
+
                         End If
                     Else
-                        If emp_entrada = 1 Then  'cintegral
-                            Call ConectaCint()
-                            Call elano()
-                        Else                     'global
-                            Call ConectaGlo()
-                            Call elano()
+
+                        If ch_anio_ant.Checked = True Then
+                            If emp_entrada = 1 Then   'cintegral
+                                Call ConectaCint2()
+                                Call elano()
+                                miano = miano - 1
+                            Else                       'global
+                                Call ConectaGlo2()
+                                Call elano()
+                                miano = miano - 1
+                            End If
+                        Else
+                            If emp_entrada = 1 Then  'cintegral
+                                Call ConectaCint()
+                                Call elano()
+                            Else                     'global
+                                Call ConectaGlo()
+                                Call elano()
+                            End If
                         End If
+
+
+                        If conexion.State = 1 Then conexion.Close()
+                        'la abre 
+                        conexion.Open()
+
+                        'entrega el valor a la variable para buscar
+
+                        sql = "Select * From guias_dp Where nguia = '" & txt_nroguia.Text & "'"
+                        com7 = New MySqlCommand(sql, conexion)
+
+                        rs7 = com7.ExecuteReader()
+                        If rs7.HasRows = True Then
+
+                            MsgBox("A VER!!! LA GUIA YA EXISTE Y NO PUEDE REGISTRARLA.", MsgBoxStyle.Critical, "Validación de Guía.")
+
+
+                            txt_rut.Enabled = False
+                            txt_nombre.Enabled = False
+                            txt_direccion.Enabled = False
+                            txt_cedible.Enabled = False
+                            cbo_tp.Enabled = False
+                            cbo_ciudad.Enabled = False
+                            cbo_chofer.Enabled = False
+                            cbo_despachador.Enabled = False
+                            txt_nrobulto.Enabled = False
+                            txt_nroflete.Enabled = False
+                            txt_peso.Enabled = False
+                            msk_fe_desp.Enabled = False
+                            txt_obs.Enabled = False
+                            cbo_ampm.Enabled = False
+                            cbo_movil.Enabled = False
+                            cmd_modif_guia.Enabled = False
+                            cmd_guardar.Enabled = False
+                            txt_nroguia.Select()
+
+                        Else
+
+
+                            ' MsgBox("LA GUIA NO EXISTE, RELLENE LOS DATOS FALTANTES.", MsgBoxStyle.Information, "Validación de Guía.")
+
+                            txt_rut.Enabled = True
+                            txt_nombre.Enabled = True
+                            txt_direccion.Enabled = True
+                            txt_cedible.Enabled = True
+                            cbo_tp.Enabled = True
+                            cbo_ciudad.Enabled = True
+                            cbo_chofer.Enabled = True
+                            cbo_despachador.Enabled = True
+                            txt_nrobulto.Enabled = True
+                            txt_nroflete.Enabled = True
+                            txt_peso.Enabled = True
+                            msk_fe_desp.Enabled = True
+                            txt_obs.Enabled = True
+                            cbo_ampm.Enabled = True
+                            cbo_vend.Enabled = True
+                            cbo_movil.Enabled = True
+                            cmd_modif_guia.Enabled = False
+                            cmd_guardar.Enabled = True
+                            txt_rut.Select()
+                        End If
+
+
+
                     End If
-
-
-                    If conexion.State = 1 Then conexion.Close()
-                    'la abre 
-                    conexion.Open()
-
-                    'entrega el valor a la variable para buscar
-
-                    sql = "Select * From guias_dp Where nguia = '" & txt_nroguia.Text & "'"
-                    com7 = New MySqlCommand(sql, conexion)
-
-                    rs7 = com7.ExecuteReader()
-                    If rs7.HasRows = True Then
-
-                        MsgBox("A VER!!! LA GUIA YA EXISTE Y NO PUEDE REGISTRARLA.", MsgBoxStyle.Critical, "Validación de Guía.")
-
-
-                        txt_rut.Enabled = False
-                        txt_nombre.Enabled = False
-                        txt_direccion.Enabled = False
-                        txt_cedible.Enabled = False
-                        cbo_tp.Enabled = False
-                        cbo_ciudad.Enabled = False
-                        cbo_chofer.Enabled = False
-                        cbo_despachador.Enabled = False
-                        txt_nrobulto.Enabled = False
-                        txt_nroflete.Enabled = False
-                        txt_peso.Enabled = False
-                        msk_fe_desp.Enabled = False
-                        txt_obs.Enabled = False
-                        cbo_ampm.Enabled = False
-                        cbo_movil.Enabled = False
-                        cmd_modif_guia.Enabled = False
-                        cmd_guardar.Enabled = False
-                        txt_nroguia.Select()
-
-                    Else
-
-
-                        ' MsgBox("LA GUIA NO EXISTE, RELLENE LOS DATOS FALTANTES.", MsgBoxStyle.Information, "Validación de Guía.")
-
-                        txt_rut.Enabled = True
-                        txt_nombre.Enabled = True
-                        txt_direccion.Enabled = True
-                        txt_cedible.Enabled = True
-                        cbo_tp.Enabled = True
-                        cbo_ciudad.Enabled = True
-                        cbo_chofer.Enabled = True
-                        cbo_despachador.Enabled = True
-                        txt_nrobulto.Enabled = True
-                        txt_nroflete.Enabled = True
-                        txt_peso.Enabled = True
-                        msk_fe_desp.Enabled = True
-                        txt_obs.Enabled = True
-                        cbo_ampm.Enabled = True
-                        cbo_vend.Enabled = True
-                        cbo_movil.Enabled = True
-                        cmd_modif_guia.Enabled = False
-                        cmd_guardar.Enabled = True
-                        txt_rut.Select()
-                    End If
-
-
-                Else
-                    MsgBox("DEBE INGRESAR UN NUMERO VÁLIDO DE GUIA PARA CONTROLAR", MsgBoxStyle.Critical)
-                    txt_nroguia.Select()
 
                 End If
+
             End If
+
 
 
         Catch ex As Exception
@@ -969,6 +1162,8 @@ Public Class frm_ing_guia_sinfact
 
     Private Sub cmd_guardar_Click(sender As Object, e As EventArgs) Handles cmd_guardar.Click
         Dim cmd10 As New MySqlCommand
+        Dim valgarant As String
+
 
         Try
 
@@ -1009,8 +1204,20 @@ Public Class frm_ing_guia_sinfact
                     If conexion.State = 1 Then conexion.Close()
                     conexion.Open()
 
-                    cmd10 = New MySqlCommand("Insert Into guias_dp (nguia, nrodp, rutclie, nombre, direccion, fe_desp, patente, transporte, nflete, nro_rece, vendedor, chofer, despachador, nrobultos, h_salida, gramos, fe_creacion, comuna, obs_despacho_guia, usuario, destino) " &
-                                            " Values ('" & txt_nroguia.Text & "', '" & lbl_nroreg.Text & "', '" & txt_rut.Text & "', '" & txt_nombre.Text & "', '" & txt_direccion.Text & "', '" & msk_fe_desp.Text & "', '" & lbl_patente.Text & "', '" & cbo_tp.Text & "', '" & txt_nroflete.Text & "', '" & txt_cedible.Text & "', '" & cbo_vend.Text & "', '" & cbo_chofer.Text & "', '" & cbo_despachador.Text & "', '" & txt_nrobulto.Text & "', '" & cbo_ampm.Text & "', '" & txt_peso.Text & "', '" & lbl_fe_actual.Text & "', '" & cbo_ciudad.Text & "', '" & txt_obs.Text & "', '" & retenUser & "', '" & valdestino & "' )", conexion)
+                    If ch_guia_garant.Checked = True Then
+                        valgarant = "SI"
+                    Else
+                        valgarant = "NO"
+                    End If
+
+                    If op_cliente.Checked = True Then
+                        valdestino = 0 'cliente
+                    Else
+                        valdestino = 1 'proveedor
+                    End If
+
+                    cmd10 = New MySqlCommand("Insert Into guias_dp (nguia, nrodp, rutclie, nombre, direccion, fe_desp, patente, transporte, nflete, nro_rece, vendedor, chofer, despachador, nrobultos, h_salida, gramos, fe_creacion, comuna, obs_despacho_guia, usuario, destino, isgarant) " &
+                                            " Values ('" & txt_nroguia.Text & "', '" & lbl_nroreg.Text & "', '" & txt_rut.Text & "', '" & txt_nombre.Text & "', '" & txt_direccion.Text & "', '" & msk_fe_desp.Text & "', '" & lbl_patente.Text & "', '" & cbo_tp.Text & "', '" & txt_nroflete.Text & "', '" & txt_cedible.Text & "', '" & cbo_vend.Text & "', '" & cbo_chofer.Text & "', '" & cbo_despachador.Text & "', '" & txt_nrobulto.Text & "', '" & cbo_ampm.Text & "', '" & txt_peso.Text & "', '" & lbl_fe_actual.Text & "', '" & cbo_ciudad.Text & "', '" & txt_obs.Text & "', '" & retenUser & "', '" & valdestino & "', '" & valgarant & "')", conexion)
                     cmd10.ExecuteNonQuery()
                     conexion.Close()
 
@@ -1080,226 +1287,347 @@ Public Class frm_ing_guia_sinfact
     End Sub
 
     Private Sub Mnu_BuscarNroGuia_Click(sender As Object, e As EventArgs) Handles Mnu_BuscarNroGuia.Click
-        Dim com12 As New MySqlCommand
-        Dim rs12 As MySqlDataReader
-        Dim rs13 As MySqlDataReader
-        Dim contenido5 As String
-        Dim resul As String = ""
+
+        Dim com As New MySqlCommand
+        Dim com4 As New MySqlCommand
+        Dim cmd4 As New MySqlCommand
+        Dim rs4 As MySqlDataReader
+
+        'id, nrodp, nfactura, nguia, direccion, comuna, rutclie, nombre, fe_docto, fe_desp, transporte, patente, nflete, 
+        'recibio, fe_reingreso, nro_rece, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, noc, gramos,
+        'fe_creacion, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant, destino
+        Dim sql As String
         Dim garantia As String
         Dim eldestino As Integer
 
+        Dim ret0 As Integer 'id
+        Dim ret1 As Integer 'nrodp
+        Dim ret2 As String 'nfactura
+        Dim ret3 As Integer 'nguia
+        Dim ret4 As String 'direccion
+        Dim ret5 As String 'comuna
+        Dim ret6 As String 'rutclie
+        Dim ret7 As String 'nombre
+        Dim ret8 As String 'fe_docto
+        Dim ret9 As String 'fe_desp
+        Dim ret10 As String 'transporte
+        Dim ret11 As String 'patente
+        Dim ret12 As String 'nflete
+        Dim ret13 As String 'recibio
+        Dim ret14 As String 'fe_reingreso
+        Dim ret15 As String 'nro_rece
+        Dim ret16 As String 'fe_cliente
+        Dim ret17 As String 'vendedor
+        Dim ret18 As String 'chofer
+        Dim ret19 As String 'despachador
+        Dim ret20 As Integer 'nrobultos
+        Dim ret21 As String 'h_salida
+        Dim ret22 As String 'noc
+        Dim ret23 As Integer 'gramos
+        Dim ret24 As String 'fe_creacion
+        Dim ret25 As String 'obs_reingreso_guia
+        Dim ret26 As String 'obs_despacho_guia
+        Dim ret27 As String 'usuario
+        Dim ret28 As String 'usuario_reing
+        Dim ret29 As String  'isgarant
+        Dim ret30 As Integer 'destino
 
+
+        'Try
 
         Dim valret As String
 
-        valret = InputBox("Ingrese Nro de Guía", "Buscar Despacho con Guía", "0")
-
-        If ch_anio_ant.Checked = True Then
-            If emp_entrada = 1 Then   'cintegral
-                Call ConectaCint2()
-                Call elano()
-                miano = miano - 1
-            Else                       'global
-                Call ConectaGlo2()
-                Call elano()
-                miano = miano - 1
-            End If
-        Else
-            If emp_entrada = 1 Then  'cintegral
-                Call ConectaCint()
-                Call elano()
-            Else                     'global
-                Call ConectaGlo()
-                Call elano()
-            End If
-        End If
+            valret = InputBox("Ingrese Nro de Guía", "Buscar Despacho con Guía", "0")
 
 
-
-        If conexion.State = 1 Then conexion.Close()
-        'la abre 
-        conexion.Open()
-
-        'entrega el valor a la variable para buscar
-
-        sql = "Select * From guias_dp Where nguia = '" & valret & "'"
-        com12 = New MySqlCommand(sql, conexion)
-
-        rs12 = com12.ExecuteReader()
-        If rs12.HasRows = True Then
-            rs12.Read()
-
-            txt_nroguia.Text = valret
-            txt_nroguia.Enabled = False
-            lbl_idbd.Text = CStr(rs12("id"))
-            txt_rut.Text = CStr(rs12("rutclie"))
-            txt_nombre.Text = CStr(rs12("nombre"))
-
-            If IsDBNull(rs12("nfactura")) = True Then
-                txt_nrofact.Text = 0
-            Else
-
-                contenido5 = CStr(rs12("nfactura")).ToString
-                If Strings.Left(contenido5, 3) = "FEL" Then
-                    resul = Mid(contenido5, 7, 10)
+            If ch_anio_ant.Checked = True Then
+                If emp_entrada = 1 Then   'cintegral
+                    Call ConectaCint2()
+                    Call elano()
+                    miano = miano - 1
+                Else                       'global
+                    Call ConectaGlo2()
+                    Call elano()
+                    miano = miano - 1
                 End If
-                txt_nrofact.Text = resul.ToString
-                txt_nrofact.Enabled = False
-                'SendKeys.Send("~")
-                txt_nrofact.Select()
-
+            Else
+                If emp_entrada = 1 Then  'cintegral
+                    Call ConectaCint()
+                    Call elano()
+                Else                     'global
+                    Call ConectaGlo()
+                    Call elano()
+                End If
             End If
-
-
-            cbo_vend.Text = CStr(rs12("vendedor"))
-            txt_direccion.Text = CStr(rs12("direccion"))
 
             lbl_nroreg.Visible = False
             lbl_nroreg2.Visible = True
-            lbl_nroreg2.Text = CStr(rs12("nrodp"))
 
-            txt_cedible.Text = CStr(rs12("nro_rece"))
-            cbo_tp.Text = CStr(rs12("transporte"))
-            txt_nroflete.Text = CStr(rs12("nflete"))
-            txt_nrobulto.Text = CStr(rs12("nrobultos"))
-            txt_peso.Text = CStr(rs12("gramos"))
-            cbo_ciudad.Text = CStr(rs12("comuna"))
-            cbo_chofer.Text = CStr(rs12("chofer"))
-            lbl_patente.Text = CStr(rs12("patente"))
-            cbo_despachador.Text = CStr(rs12("despachador"))
-            msk_fe_desp.Text = CStr(rs12("fe_desp"))
-            txt_obs.Text = CStr(rs12("obs_despacho_guia"))
-            cbo_ampm.Text = CStr(rs12("h_salida"))
 
-            If IsDBNull(rs12("usuario_reing")) = True Then
-                lbl_usr_reing.Text = "No definido"
+            If conexion.State = 1 Then conexion.Close()
+            'la abre 
+            conexion.Open()
+
+            'entrega el valor a la variable para buscar
+
+            sql = "Select id, nrodp, nfactura, nguia, direccion, comuna, rutclie, nombre, fe_docto, fe_desp, transporte, patente, nflete, recibio, fe_reingreso, nro_rece, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, noc, gramos, fe_creacion, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant, destino From guias_dp Where nguia = '" & valret & "'"
+            com = New MySqlCommand(sql, conexion)
+
+            rs4 = com.ExecuteReader()
+            If rs4.HasRows() Then
+                rs4.Read()
+
+            ret0 = (rs4.GetUInt32(0)) 'id
+            ret1 = (rs4.GetUInt32(1)) 'nrodp
+            If Not IsDBNull(rs4(2)) Then 'nfactura
+                ret2 = rs4.GetUInt32(2)
+
             Else
-                lbl_usr_reing.Text = CStr(rs12("usuario_reing"))
+                ret2 = "0"
+            End If
+
+            If Not IsDBNull(rs4(3)) Then 'nguia
+                ret3 = rs4.GetUInt32(3)
+
+            Else
+                ret3 = "0"
+            End If
+            If Not IsDBNull(rs4(4)) Then 'direccion
+                ret4 = rs4.GetString(4)
+
+            Else
+                ret4 = ""
+            End If
+            If Not IsDBNull(rs4(5)) Then 'comuna
+                ret5 = rs4.GetString(5)
+
+            Else
+                ret5 = ""
+            End If
+            If Not IsDBNull(rs4(6)) Then 'rutclie
+                ret6 = rs4.GetString(6)
+
+            Else
+                ret6 = ""
+            End If
+            If Not IsDBNull(rs4(7)) Then 'nombre
+                ret7 = rs4.GetString(7)
+
+            Else
+                ret7 = ""
+            End If
+
+            If Not IsDBNull(rs4(8)) Then 'fe_docto
+                ret8 = rs4.GetString(8)
+
+            Else
+                ret8 = ""
+            End If
+            If Not IsDBNull(rs4(9)) Then 'fe_desp
+                ret9 = rs4.GetString(9)
+
+            Else
+                ret9 = ""
+            End If
+            If Not IsDBNull(rs4(10)) Then 'transporte
+                ret10 = rs4.GetString(10)
+
+            Else
+                ret10 = ""
+            End If
+            If Not IsDBNull(rs4(11)) Then 'patente
+                ret11 = rs4.GetString(11)
+
+            Else
+                ret11 = ""
+            End If
+            If Not IsDBNull(rs4(12)) Then 'nflete
+                ret12 = rs4.GetString(12)
+
+            Else
+                ret12 = ""
+            End If
+            If Not IsDBNull(rs4(13)) Then 'recibio
+                ret13 = rs4.GetString(13)
+
+            Else
+                ret13 = ""
+            End If
+            If Not IsDBNull(rs4(14)) Then 'fe_reingreso
+                ret14 = rs4.GetString(14)
+
+            Else
+                ret14 = ""
+            End If
+            If Not IsDBNull(rs4(15)) Then 'nro_rece
+                ret15 = rs4.GetString(15)
+
+            Else
+                ret15 = ""
+            End If
+            If Not IsDBNull(rs4(16)) Then 'fe_cliente
+                ret16 = rs4.GetString(16)
+
+            Else
+                ret16 = ""
+            End If
+            If Not IsDBNull(rs4(17)) Then 'vendedor
+                ret17 = rs4.GetString(17)
+
+            Else
+                ret17 = ""
+            End If
+            If Not IsDBNull(rs4(18)) Then 'chofer
+                ret18 = rs4.GetString(18)
+
+            Else
+                ret18 = ""
+            End If
+            If Not IsDBNull(rs4(19)) Then 'despachador
+                ret19 = rs4.GetString(19)
+
+            Else
+                ret19 = ""
+            End If
+            If Not IsDBNull(rs4(20)) Then 'nrobultos
+                ret20 = rs4.GetString(20)
+
+            Else
+                ret20 = ""
+            End If
+            If Not IsDBNull(rs4(21)) Then 'h_salida
+                ret21 = rs4.GetString(21)
+
+            Else
+                ret21 = ""
+            End If
+            If Not IsDBNull(rs4(22)) Then 'noc
+                ret22 = rs4.GetString(22)
+
+            Else
+                ret22 = ""
+            End If
+            If Not IsDBNull(rs4(23)) Then 'gramos
+                ret23 = rs4.GetString(23)
+
+            Else
+                ret23 = ""
+            End If
+            If Not IsDBNull(rs4(24)) Then 'fe_creacion
+                ret24 = rs4.GetString(24)
+
+            Else
+                ret24 = ""
+            End If
+            If Not IsDBNull(rs4(25)) Then 'obs_reingreso_guia
+                ret25 = rs4.GetString(25)
+
+            Else
+                ret25 = ""
+            End If
+            If Not IsDBNull(rs4(26)) Then 'obs_despacho_guia
+                ret26 = rs4.GetString(26)
+
+            Else
+                ret26 = ""
+            End If
+            If Not IsDBNull(rs4(27)) Then 'usuario
+                ret27 = rs4.GetString(27)
+
+            Else
+                ret27 = ""
+            End If
+            If Not IsDBNull(rs4(28)) Then 'usuario_reing
+                ret28 = rs4.GetString(28)
+
+            Else
+                ret28 = ""
+            End If
+            If Not IsDBNull(rs4(29)) Then 'is_garant
+                ret29 = rs4.GetString(29)
+
+            Else
+                ret29 = ""
+            End If
+            If Not IsDBNull(rs4(30)) Then 'destino
+                ret30 = rs4.GetString(30)
+
+            Else
+                ret30 = ""
             End If
 
 
-            garantia = CStr(rs12("isgarant"))
 
+            txt_nroguia.Text = valret
+                txt_nroguia.Enabled = False
+                lbl_idbd.Text = ret0
+                txt_rut.Text = ret6
+                txt_nombre.Text = ret7
+                txt_nroflete.Text = ret12
+                cbo_tp.Text = ret10
+                txt_nrofact.Text = ret2
+                cbo_vend.Text = ret17
+                txt_direccion.Text = ret4
+                lbl_nroreg2.Text = ret0
+                txt_cedible.Text = ret15
+                txt_nrobulto.Text = ret20
+                txt_peso.Text = ret23
+                cbo_ciudad.Text = ret5
+                cbo_chofer.Text = ret18
+                lbl_patente.Text = ret11
+                cbo_despachador.Text = ret19
+                msk_fe_desp.Text = ret9
+                txt_obs.Text = ret26
+                cbo_ampm.Text = ret21
+                lbl_usr_reing.Text = ret28
+                garantia = ret29
 
-            'marca si es guia garantia o normal 
-            If garantia = "NO" Then
-                ch_guia_normal.Checked = True
-                ch_guia_normal.Enabled = False
-                ch_guia_garant.Enabled = False
+                'marca si es guia garantia o normal 
+                If garantia = "NO" Then
+                    ch_guia_normal.Checked = True
+                    ch_guia_normal.Enabled = False
+                    ch_guia_garant.Enabled = False
+                Else
+                    ch_guia_garant.Checked = True
+                    ch_guia_garant.Enabled = False
+                    ch_guia_normal.Checked = False
+                End If
+                eldestino = ret30
+                If eldestino = 0 Then
+                    op_cliente.Checked = True
+                    op_prov.Checked = False
+                Else
+                    op_cliente.Checked = False
+                    op_prov.Checked = True
+                End If
+                'RECIBE
+                lbl_recepciono.Text = ret13 'recibio
+                'FECHA RECEPCION CLIENTE
+                lbl_fe_recep.Text = ret16  'fecha recepcion
+                'FECHA REINGRESO
+                lbl_fe_reing.Text = ret14
+                'USUARIO REINGRESO
+                lbl_usr_reing.Text = ret28
+                'Observacion Reingreso
+                lbl_obs_reing.Text = ret25
+
+                rs4.Dispose()
+                conexion.Close()
+                com.Dispose()
+
             Else
-                ch_guia_garant.Checked = True
-                ch_guia_garant.Enabled = False
-                ch_guia_normal.Checked = False
-            End If
-            eldestino = CStr(rs12("destino"))
+                bandera = False
+                MsgBox("No se pudo detectar el ID de Compra", MsgBoxStyle.Exclamation)
 
-            If eldestino = 0 Then
-                op_cliente.Checked = True
-                op_prov.Checked = False
-            Else
-                op_cliente.Checked = False
-                op_prov.Checked = True
-            End If
-
-            'RECIBE
-            If IsDBNull(rs12("recibio")) = True Then
-
-                lbl_recepciono.Text = "No definido"
-            Else
-                lbl_recepciono.Text = CStr(rs12("recibio"))
-            End If
-
-            'FECHA RECEPCION CLIENTE
-
-            If IsDBNull(rs12("fe_cliente")) = True Then
-
-                lbl_fe_recep.Text = "No definido"
-            Else
-
-                lbl_fe_recep.Text = CStr(rs12("fe_cliente"))
-
-            End If
-
-            'FECHA REINGRESO
-
-            If IsDBNull(rs12("fe_reingreso")) = True Then
-
-                lbl_fe_reing.Text = "No definido"
-            Else
-                lbl_fe_reing.Text = CStr(rs12("fe_reingreso"))
-
-            End If
-
-            'USUARIO REINGRESO
-
-            If IsDBNull(rs12("usuario_reing")) = True Then
-                lbl_usr_reing.Text = "No Definido"
-            Else
-                lbl_usr_reing.Text = CStr(rs12("usuario_reing"))
-            End If
-
-            'Observacion reingreso 
-            If IsDBNull(rs12("obs_reingreso_guia")) = True Then
-                lbl_obs_reing.Text = "No Definido"
-            Else
-                lbl_obs_reing.Text = CStr(rs12("obs_reingreso_guia"))
-
+                Exit Sub
             End If
 
-            rs12.Close()
 
 
-            Else
-                MsgBox("El Nro de Guia no fue encontrado, verifique!", MsgBoxStyle.Critical, "Buscar Guia Registrada")
-            Exit Sub
 
-        End If
-
-
-        rs12.Dispose()
-        com12.Dispose()
-
-
-        'BUSCA MEDIO TP
-        If conexion.State = 1 Then conexion.Close()
-        conexion.Open()
-        sql = "Select tipo from medios_dp where patente = '" & lbl_patente.Text & "'"
-        com12 = New MySqlCommand(sql, conexion)
-
-        rs13 = com12.ExecuteReader()
-
-        If rs13.HasRows = True Then
-            rs13.Read()
-            cbo_movil.Text = CStr(rs13("tipo"))
-
-            rs13.Dispose()
-
-
-        Else
-
-        End If
-
-        Call busca_fact
-
-        txt_direccion.Enabled = False
-        txt_cedible.Enabled = False
-        cbo_tp.Enabled = False
-        cbo_ciudad.Enabled = False
-        cbo_chofer.Enabled = False
-        cbo_despachador.Enabled = False
-        txt_nrobulto.Enabled = False
-        txt_nroflete.Enabled = False
-        txt_peso.Enabled = False
-        msk_fe_desp.Enabled = False
-        txt_obs.Enabled = False
-        cbo_ampm.Enabled = False
-        cbo_tp.Enabled = False
-        txt_nrofact.Enabled = False
-        txt_nroguia.Enabled = False
-        ch_guia_garant.Enabled = False
-        ch_asigna_fact.Enabled = True
-        cmd_modif_guia.Enabled = True
-        cmd_guardar.Enabled = False
+        'Catch ex As Exception
+        ' MsgBox(ex.Message, MsgBoxStyle.Exclamation)
+        'End Try
 
 
     End Sub
@@ -1464,6 +1792,20 @@ Public Class frm_ing_guia_sinfact
                 cbo_tp.Text = "EXTERNO"
                 cbo_chofer.Text = "EXTERNO"
                 cbo_chofer.Enabled = False
+                cbo_movil.Text = "TRASPORTE EXTERNO"
+                cbo_movil.Enabled = False
+
+                lbl_patente.Text = "0"
+                Label13.Visible = True
+                txt_cedible.Visible = True
+                txt_nroflete.Select()
+
+            Case "T.L.N"
+                cbo_tp.Text = "EXTERNO"
+                cbo_chofer.Text = "EXTERNO"
+                cbo_chofer.Enabled = False
+                cbo_movil.Text = "TRASPORTE EXTERNO"
+                cbo_movil.Enabled = False
                 lbl_patente.Text = "0"
                 Label13.Visible = True
                 txt_cedible.Visible = True
@@ -1473,6 +1815,8 @@ Public Class frm_ing_guia_sinfact
                 cbo_tp.Text = "EXTERNO"
                 cbo_chofer.Text = "EXTERNO"
                 cbo_chofer.Enabled = False
+                cbo_movil.Text = "TRASPORTE EXTERNO"
+                cbo_movil.Enabled = False
                 lbl_patente.Text = "0"
                 Label13.Visible = True
                 txt_cedible.Visible = True
@@ -1482,6 +1826,8 @@ Public Class frm_ing_guia_sinfact
                 cbo_tp.Text = "EXTERNO"
                 cbo_chofer.Text = "EXTERNO"
                 cbo_chofer.Enabled = False
+                cbo_movil.Text = "TRASPORTE EXTERNO"
+
                 lbl_patente.Text = "0"
                 Label13.Visible = True
                 txt_cedible.Visible = True
@@ -1502,6 +1848,8 @@ Public Class frm_ing_guia_sinfact
                 cbo_tp.Text = "EXTERNO"
                 cbo_chofer.Text = "EXTERNO"
                 cbo_chofer.Enabled = False
+                cbo_movil.Text = "TRASPORTE EXTERNO"
+
                 lbl_patente.Text = "0"
                 Label13.Visible = True
                 txt_cedible.Visible = True
@@ -1510,6 +1858,8 @@ Public Class frm_ing_guia_sinfact
                 cbo_tp.Text = "EXTERNO"
                 cbo_chofer.Text = "EXTERNO"
                 cbo_chofer.Enabled = False
+                cbo_movil.Text = "TRASPORTE EXTERNO"
+
                 lbl_patente.Text = "0"
                 Label13.Visible = True
                 txt_cedible.Visible = True
@@ -1519,6 +1869,8 @@ Public Class frm_ing_guia_sinfact
                 cbo_tp.Text = "EXTERNO"
                 cbo_chofer.Text = "EXTERNO"
                 cbo_chofer.Enabled = False
+                cbo_movil.Text = "TRASPORTE EXTERNO"
+
                 lbl_patente.Text = "0"
                 Label13.Visible = True
                 txt_cedible.Visible = True
@@ -1551,6 +1903,8 @@ Public Class frm_ing_guia_sinfact
                 cbo_tp.Text = "EXTERNO"
                 cbo_chofer.Text = "EXTERNO"
                 cbo_chofer.Enabled = False
+                cbo_movil.Text = "TRASPORTE EXTERNO"
+
                 lbl_patente.Text = "0"
                 Label13.Visible = True
                 txt_cedible.Visible = True
@@ -1637,6 +1991,63 @@ Public Class frm_ing_guia_sinfact
         conexion.Close()
         Mnu_LimpiarVentana.PerformClick()
 
+
+
+        'Catch ex As Exception
+
+        'End Try
+    End Sub
+
+    Private Sub mnu_eliminar_reg_Click(sender As Object, e As EventArgs) Handles mnu_eliminar_reg.Click
+        Dim myCommand As New MySqlCommand
+        Dim SQL As String
+        Dim val1 As Integer 'pregunta
+
+
+        'Try
+
+
+        If ch_anio_ant.Checked = True Then
+            If emp_entrada = 1 Then   'cintegral
+                Call ConectaCint2()
+                Call elano()
+                miano = miano - 1
+            Else                       'global
+                Call ConectaGlo2()
+                Call elano()
+                miano = miano - 1
+            End If
+        Else
+            If emp_entrada = 1 Then  'cintegral
+                Call ConectaCint()
+                Call elano()
+            Else                     'global
+                Call ConectaGlo()
+                Call elano()
+            End If
+        End If
+
+
+        conexion.Open()
+
+
+        val1 = MsgBox("¿Desea Eliminar la guia de despacho?", MsgBoxStyle.Question + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Eliminar Guia")
+
+        If val1 = 6 Then
+            myCommand.Connection = conexion
+            conexion.Open()
+            SQL = "DELETE From guias_dp Where id ='" & lbl_nroreg2.Text & "'"
+
+            myCommand.CommandText = SQL
+            myCommand.ExecuteNonQuery()
+            MsgBox("Eliminación Existosa", MsgBoxStyle.Information)
+            SQL = ""
+            myCommand.Dispose()
+            conexion.Close()
+            Mnu_LimpiarVentana.PerformClick()
+        Else
+            MsgBox("No se eliminó ningun documento", MsgBoxStyle.Information)
+        End If
 
 
         'Catch ex As Exception

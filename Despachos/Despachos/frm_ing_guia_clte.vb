@@ -23,6 +23,8 @@ Public Class frm_ing_guia_clte
     Dim mes As Integer
     Dim reseña As Integer
     Dim bandera As Boolean
+    Dim bandera_valida As Boolean
+    Dim lapatente As String
 
     Sub Valida_Campos()
         bandera = False
@@ -65,7 +67,7 @@ Public Class frm_ing_guia_clte
 
     Sub formato_grilla()
         'FORMATO DE GRILLA CM
-        'VENTA.tipocon, VENTA.fechacon, VENTA.rutcon, Cliente.nomclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon
+        'folio, fecha_emision, rut_receptor, razon_social_receptor, direccion_receptor, ciudad_receptor, vendedor, monto_neto, referencias.folio_ref
 
 
         'FORMATO DE GRILLA
@@ -83,8 +85,8 @@ Public Class frm_ing_guia_clte
         grilla.Columns(0).Width = 90
         grilla.Columns(1).Width = 70
         grilla.Columns(2).Width = 70
-        grilla.Columns(3).Width = 300
-        grilla.Columns(4).Width = 200
+        grilla.Columns(3).Width = 500
+        grilla.Columns(4).Width = 300
         grilla.Columns(5).Width = 100
         grilla.Columns(6).Width = 70
         grilla.Columns(7).Width = 70
@@ -153,21 +155,24 @@ Public Class frm_ing_guia_clte
         grilla2.Columns(19).HeaderCell.Value = "obs_desp"
         grilla2.Columns(20).HeaderCell.Value = "Hr Salida"
         grilla2.Columns(21).HeaderCell.Value = "nro_rece"
+        grilla2.Columns(22).HeaderCell.Value = "direccion"
+        grilla2.Columns(23).HeaderCell.Value = "id"
 
         grilla2.Columns(0).Width = 70
         grilla2.Columns(1).Width = 70
         grilla2.Columns(2).Width = 70
         grilla2.Columns(3).Width = 80
-        grilla2.Columns(4).Width = 300
-        grilla2.Columns(5).Width = 120
+        grilla2.Columns(4).Width = 400
+        grilla2.Columns(5).Width = 100
+        grilla2.Columns(6).Width = 70
         grilla2.Columns(7).Width = 70
         grilla2.Columns(8).Width = 70
-        grilla2.Columns(9).Width = 120
+        grilla2.Columns(9).Width = 90
         grilla2.Columns(10).Width = 80
-        grilla2.Columns(11).Width = 70
+        grilla2.Columns(11).Width = 120
         grilla2.Columns(12).Width = 60
         grilla2.Columns(13).Width = 70
-        grilla2.Columns(14).Width = 150
+        grilla2.Columns(14).Width = 100
         grilla2.Columns(15).Width = 90
         grilla2.Columns(16).Width = 150
         grilla2.Columns(17).Width = 100
@@ -175,6 +180,8 @@ Public Class frm_ing_guia_clte
         grilla2.Columns(19).Visible = False
         grilla2.Columns(20).Visible = False
         grilla2.Columns(21).Visible = False
+        grilla2.Columns(22).Visible = False
+        grilla2.Columns(23).Visible = False
 
 
         grilla2.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
@@ -188,7 +195,7 @@ Public Class frm_ing_guia_clte
         grilla2.Columns(8).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
         grilla2.Columns(9).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla2.Columns(10).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
-        grilla2.Columns(11).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        grilla2.Columns(11).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla2.Columns(12).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
         grilla2.Columns(13).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
         grilla2.Columns(14).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -199,6 +206,8 @@ Public Class frm_ing_guia_clte
         grilla2.Columns(19).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla2.Columns(20).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
         grilla2.Columns(21).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla2.Columns(22).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        grilla2.Columns(23).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
 
         ' grilla.Font = New System.Drawing.Font("Calibri", 7.75, FontStyle.Regular)
 
@@ -225,62 +234,164 @@ Public Class frm_ing_guia_clte
 
     End Sub
 
+    Sub valida_guia_existe_dp()
+
+        ' valida si la guia existe en despachos
+        Dim com8 As New MySqlCommand
+        Dim rs8 As MySqlDataReader
+
+        Try
+
+
+
+            If ch_anio_ant.Checked = True Then
+                If emp_entrada = 1 Then   'cintegral
+                    Call ConectaCint2()
+                    Call elano()
+                    miano = miano - 1
+                Else                       'global
+                    Call ConectaGlo2()
+                    Call elano()
+                    miano = miano - 1
+                End If
+            Else
+                If emp_entrada = 1 Then  'cintegral
+                    Call ConectaCint()
+                    Call elano()
+                Else                     'global
+                    Call ConectaGlo()
+                    Call elano()
+                End If
+            End If
+
+            If conexion.State = 1 Then conexion.Close()
+            'la abre 
+            conexion.Open()
+
+            'entrega el valor a la variable para buscar
+
+            sql = "Select * From guias_dp Where nguia = '" & txt_nro_Guia.Text & "'"
+            com8 = New MySqlCommand(sql, conexion)
+
+            rs8 = com8.ExecuteReader()
+            If rs8.HasRows = True Then
+
+                bandera_valida = True  'es verdad que la guia existe en despachos
+            Else
+                bandera_valida = False 'la guia no existe en despachos
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Funcion Valida Guia en DP" + ex.Message)
+        End Try
+    End Sub
+
+    Sub busca_patente()
+
+        Try
+
+
+            Dim com9 As New MySqlCommand
+            Dim rs9 As MySqlDataReader
+
+            If ch_anio_ant.Checked = True Then
+                If emp_entrada = 1 Then   'cintegral
+                    Call ConectaCint2()
+                    Call elano()
+                    miano = miano - 1
+                Else                       'global
+                    Call ConectaGlo2()
+                    Call elano()
+                    miano = miano - 1
+                End If
+            Else
+                If emp_entrada = 1 Then  'cintegral
+                    Call ConectaCint()
+                    Call elano()
+                Else                     'global
+                    Call ConectaGlo()
+                    Call elano()
+                End If
+            End If
+
+
+
+            'Va a buscar la patente
+            If conexion.State = 1 Then conexion.Close()
+            conexion.Open()
+            sql = "Select * From medios_dp Where patente ='" & lapatente & "'"
+            com9 = New MySqlCommand(sql, conexion)
+            rs9 = com9.ExecuteReader()
+            rs9.Read()
+
+            If rs9.HasRows = False Then
+
+                cbo_medio_tp.Enabled = True
+            Else
+                cbo_medio_tp.Text = CStr(rs9("tipo"))
+                lbl_patente.Text = lapatente
+
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("Funcion buscar patente" + ex.Message)
+        End Try
+    End Sub
 
     Sub Ultimo_nrodp()
         Dim com2 As New MySqlCommand
         Dim rs2 As MySqlDataReader
 
-        'try
+        Try
 
 
-        If ch_anio_ant.Checked = True Then
-            If emp_entrada = 1 Then   'cintegral
-                Call ConectaCint2()
-                Call elano()
-                miano = miano - 1
-            Else                       'global
-                Call ConectaGlo2()
-                Call elano()
-                miano = miano - 1
+            If ch_anio_ant.Checked = True Then
+                If emp_entrada = 1 Then   'cintegral
+                    Call ConectaCint2()
+                    Call elano()
+                    miano = miano - 1
+                Else                       'global
+                    Call ConectaGlo2()
+                    Call elano()
+                    miano = miano - 1
+                End If
+            Else
+                If emp_entrada = 1 Then  'cintegral
+                    Call ConectaCint()
+                    Call elano()
+                Else                     'global
+                    Call ConectaGlo()
+                    Call elano()
+                End If
             End If
-        Else
-            If emp_entrada = 1 Then  'cintegral
-                Call ConectaCint()
-                Call elano()
-            Else                     'global
-                Call ConectaGlo()
-                Call elano()
+
+            If conexion.State = 1 Then conexion.Close()
+            conexion.Open()
+
+            sql = "Select MAX(nrodp) FROM guias_dp ORDER BY nrodp ASC"
+            com2 = New MySqlCommand(sql, conexion)
+            rs2 = com2.ExecuteReader()
+
+            If rs2.HasRows() Then
+                rs2.Read()
+
+                lbl_nrodp.Text = rs2.GetString(0)
+                lbl_nrodp.Text = Val(lbl_nrodp.Text) + 1
+
+            Else
+                MessageBox.Show("No hay Correlativo Disponible", "Validacion de Correlativo")
+
+
+                lbl_nrodp.Text = miano & "1"
+
+                Exit Sub
             End If
-        End If
 
-        If conexion.State = 1 Then conexion.Close()
-        conexion.Open()
+            rs2.Dispose()
+            conexion.Close()
 
-        sql = "Select MAX(nrodp) FROM guias_dp ORDER BY nrodp ASC"
-        com2 = New MySqlCommand(sql, conexion)
-        rs2 = com2.ExecuteReader()
-
-        If rs2.HasRows() Then
-            rs2.Read()
-
-            lbl_nrodp.Text = rs2.GetString(0)
-            lbl_nrodp.Text = Val(lbl_nrodp.Text) + 1
-
-        Else
-            MessageBox.Show("No hay Correlativo Disponible", "Validacion de Correlativo")
-
-
-            lbl_nrodp.Text = miano & "1"
-
-            Exit Sub
-        End If
-
-        rs2.Dispose()
-        conexion.Close()
-
-        'Catch ex As Exception
-
-        'End Try
+        Catch ex As Exception
+            MessageBox.Show("funcion ultimoDP" + ex.Message)
+        End Try
 
     End Sub
 
@@ -372,12 +483,11 @@ Public Class frm_ing_guia_clte
 
 
             'cmd1.CommandText = "SELECT Substring(VENTA.tipocon,8,10)tipocon, VENTA.fechacon, VENTA.rutcon, Cliente.nomclie, Cliente.dirclie, Cliente.ciuclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon FROM VENTA INNER JOIN CLIENTE ON VENTA.rutcon = CLIENTE.rutclie WHERE VENTA.tipocon LIKE '%FEL%' AND year(VENTA.fechacon) = '" & miano & "' AND month(VENTA.fechacon) > '0' GROUP BY VENTA.tipocon, VENTA.fechacon, VENTA.rutcon, CLIENTE.nomclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon ORDER BY fechacon DESC"
-            cmd1.CommandText = "select folio, fecha_emision, rut_receptor, razon_social_receptor, direccion_receptor, ciudad_receptor, vendedor, monto_neto, referencias.folio_ref from ventas left join referencias on ventas.id = referencias.id_doc where tipo_documento = '33' and year(fecha_emision)= '" & miano & "' and month(fecha_emision) > 0 group by tipo_documento, folio, fecha_emision, rut_receptor, razon_social_receptor, ciudad_receptor, vendedor, monto_neto, referencias.folio_ref order by fecha_emision DESC;"
+            cmd1.CommandText = "select folio, fecha_emision, rut_receptor, razon_social_receptor, direccion_receptor, ciudad_receptor, vendedor, monto_neto, referencias.folio_ref from ventas left join referencias on ventas.id = referencias.id_doc where tipo_documento = '33' and year(fecha_emision)= '" & miano & "' and month(fecha_emision) > 0 group by folio, fecha_emision, rut_receptor, razon_social_receptor, direccion_receptor, ciudad_receptor, vendedor, monto_neto, referencias.folio_ref order by fecha_emision DESC;"
 
             Dim dt As System.Data.DataTable = New System.Data.DataTable
             Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd1)
             da.Fill(dt)
-            ' If dt.Rows.Count <> 0 Then
             grilla.DataSource = dt
 
             conexion.Close()
@@ -394,7 +504,7 @@ Public Class frm_ing_guia_clte
 
 
         Catch ex As Exception
-            MessageBox.Show(ex.Message)
+            MessageBox.Show("Carga de Grilla " + ex.Message)
         End Try
     End Sub
 
@@ -467,6 +577,8 @@ Public Class frm_ing_guia_clte
         lbl_codejec.Text = ""
         lbl_tipo_guia.Text = ""
         lbl_usr_reg.Text = ""
+        lbl_hora.Text = ""
+
 
 
 
@@ -517,7 +629,7 @@ Public Class frm_ing_guia_clte
         Timer1.Enabled = False
         ch_stop_timer.Checked = True
 
-        Carga_grilla()
+        ' Call Carga_grilla()
         Call Ultimo_nrodp()
 
         lbl_reg.Text = ""
@@ -592,7 +704,7 @@ Public Class frm_ing_guia_clte
 
 
         Catch ex As Exception
-
+            MessageBox.Show("cmd Guardar " + ex.Message)
         End Try
 
     End Sub
@@ -644,7 +756,7 @@ Public Class frm_ing_guia_clte
                 conexion.Open()
 
                 com4.Connection = conexion
-                com4.CommandText = "SELECT nrodp, nguia, fe_creacion, rutclie, nombre, comuna, nfactura, fe_docto, fe_desp, transporte, patente, nflete, nrobultos, gramos, vendedor, chofer, despachador, usuario, isgarant, obs_despacho_guia, h_salida, nro_rece From guias_DP Where year(fe_docto) = '" & miano & "'"
+                com4.CommandText = "SELECT nrodp, nguia, fe_creacion, rutclie, nombre, comuna, nfactura, fe_docto, fe_desp, transporte, patente, nflete, nrobultos, gramos, vendedor, chofer, despachador, usuario, isgarant, obs_despacho_guia, h_salida, nro_rece, direccion, id From guias_dp Where year(fe_docto) = '" & miano & "'"
 
                 Dim dt As System.Data.DataTable = New System.Data.DataTable
                 Dim da As MySqlDataAdapter = New MySqlDataAdapter(com4)
@@ -695,7 +807,7 @@ Public Class frm_ing_guia_clte
             End If
 
         Catch ex As Exception
-            MsgBox(ex.Message, "Tab1_MouseClick")
+            MsgBox("Tab1_MouseClick " + ex.Message)
         End Try
     End Sub
 
@@ -881,47 +993,11 @@ Public Class frm_ing_guia_clte
 
                 If txt_nro_Guia.Text <> "" Then
 
+                    'LLAMA A VALIDAR LA GUIA SI EXISTE EN DESPACHOS
+                    Call valida_guia_existe_dp()
 
-                    'NO SE VALIDA LA GUIA A CLIENTE
-                    'PORQUE NO LA REGISTRAN EN PUNTO DE VENTA ES CREADA EN EXCEL.
-                    'SOLO SE VALIDA SI EL NRO YA LO UTILIZARON
-
-                    If ch_anio_ant.Checked = True Then
-                        If emp_entrada = 1 Then   'cintegral
-                            Call ConectaCint2()
-                            Call elano()
-                            miano = miano - 1
-                        Else                       'global
-                            Call ConectaGlo2()
-                            Call elano()
-                            miano = miano - 1
-                        End If
-                    Else
-                        If emp_entrada = 1 Then  'cintegral
-                            Call ConectaCint()
-                            Call elano()
-                        Else                     'global
-                            Call ConectaGlo()
-                            Call elano()
-                        End If
-                    End If
-
-
-                    If conexion.State = 1 Then conexion.Close()
-                    'la abre 
-                    conexion.Open()
-
-                    'entrega el valor a la variable para buscar
-
-                    sql = "Select * From guias_dp Where nguia = '" & txt_nro_Guia.Text & "'"
-                    com7 = New MySqlCommand(sql, conexion)
-
-                    rs7 = com7.ExecuteReader()
-                    If rs7.HasRows = True Then
-
+                    If bandera_valida = True Then  'la guia existe en despachos
                         MsgBox("A VER!!! LA GUIA YA EXISTE Y NO PUEDE REGISTRARLA.", MsgBoxStyle.Critical, "Validación de Guía.")
-
-
 
                         txt_dirclie.Enabled = True
                         txt_cedible.Enabled = False
@@ -941,39 +1017,65 @@ Public Class frm_ing_guia_clte
                         txt_nro_Guia.Select()
 
                     Else
+                        'SE VALIDA LA GUIA ELECTRONICA
+                        If conexion.State = 1 Then conexion.Close()
+                        'la abre 
+                        conexion.Open()
+                        sql = "Select * From ventas Where tipo_documento = '52' and folio = '" & txt_nro_Guia.Text & "'"
+                        com7 = New MySqlCommand(sql, conexion)
+                        rs7 = com7.ExecuteReader()
+                        rs7.Read()
+                        If rs7.HasRows = False Then
+
+                            MsgBox("El Nro de Guía no es Válido, verifique!", MsgBoxStyle.Critical, "Nro de Guia no Válido")
+                            txt_nro_Guia.Focus()
+                            Exit Sub
+
+                        Else
 
 
-                        MsgBox("LA GUIA NO EXISTE, RELLENE LOS DATOS FALTANTES.", MsgBoxStyle.Information, "Validación de Guía.")
 
-                        txt_dirclie.Enabled = True
-                        txt_cedible.Enabled = True
-                        cbo_tp.Enabled = True
-                        cbo_ciudad.Enabled = True
-                        cbo_chofer.Enabled = True
-                        cbo_acomodador.Enabled = True
-                        txt_nrobulto.Enabled = True
-                        txt_nroflete.Enabled = True
-                        txt_peso.Enabled = True
-                        msk_fe_desp.Enabled = True
-                        txt_obs.Enabled = True
-                        cbo_ampm.Enabled = True
-                        cbo_medio_tp.Enabled = True
-                        cmd_modificar.Enabled = False
-                        cmd_guardar.Enabled = True
-                        cbo_tp.Select()
+                            txt_dirclie.Enabled = True
+                            txt_dirclie.Text = CStr(rs7("direccion_entrega"))
+                            cbo_ciudad.Enabled = True
+                            cbo_ciudad.Text = CStr(rs7("comuna_entrega"))
+                            cbo_tp.Enabled = True
+                            cbo_tp.Text = CStr(rs7("transportista"))
+
+                            '///////////////////////////////////////////////////////////
+                            'busca la patente
+                            lapatente = CStr(rs7("patente"))
+                            Call busca_patente()
+
+                            conexion.Close()
+                            rs7.Dispose()
+
+
+                            txt_cedible.Enabled = True
+                            cbo_tp.Enabled = True
+                            cbo_chofer.Enabled = True
+                            cbo_acomodador.Enabled = True
+                            txt_nrobulto.Enabled = True
+                            txt_nroflete.Enabled = True
+                            txt_peso.Enabled = True
+                            msk_fe_desp.Enabled = True
+                            txt_obs.Enabled = True
+                            cbo_ampm.Enabled = True
+
+                            cmd_modificar.Enabled = False
+                            cmd_guardar.Enabled = True
+                            cbo_tp.Select()
+
+
+                        End If
+
                     End If
-
-
-                Else
-                    MsgBox("DEBE INGRESAR UN NUMERO VÁLIDO DE GUIA PARA CONTROLAR", MsgBoxStyle.Critical)
-                    txt_nro_Guia.Select()
 
                 End If
             End If
 
-
         Catch ex As Exception
-            MsgBox(ex.Message, "txt_nro_Guia_keypress")
+            MessageBox.Show("Buscar Guia Keypress " + ex.Message)
         End Try
     End Sub
 
@@ -1439,7 +1541,8 @@ Public Class frm_ing_guia_clte
         If cbo_acomodador.Text <> "" Then
             msk_fe_desp.Select()
         Else
-            cbo_acomodador.Select()
+            cbo_acomodador.Focus()
+
 
         End If
     End Sub
@@ -1469,11 +1572,13 @@ Public Class frm_ing_guia_clte
     End Sub
 
     Private Sub cbo_ampm_KeyPress(sender As Object, e As KeyPressEventArgs) Handles cbo_ampm.KeyPress
-        If cbo_ampm.Text <> "" Then
-            txt_obs.Select()
-        Else
-            cbo_ampm.Select()
+        If e.KeyChar = Convert.ToChar(13) Then
+            If cbo_ampm.Text <> "" Then
+                txt_obs.Select()
+            Else
+                cbo_ampm.Select()
 
+            End If
         End If
     End Sub
 
@@ -1527,7 +1632,7 @@ Public Class frm_ing_guia_clte
             End If
 
         Catch ex As Exception
-            MessageBox.Show(ex.Message)
+            MessageBox.Show("txt_bus_gclte_KeyPress " + ex.Message)
         End Try
     End Sub
 
@@ -1566,7 +1671,7 @@ Public Class frm_ing_guia_clte
             End If
 
         Catch ex As Exception
-            MessageBox.Show(ex.Message)
+            MessageBox.Show("txt_bus_gclte_desp_KeyPress " + ex.Message)
         End Try
     End Sub
 
@@ -1778,7 +1883,7 @@ Public Class frm_ing_guia_clte
             If conexion.State = 1 Then conexion.Close()
             conexion.Open()
 
-            cmd2 = New MySqlCommand("Update guias_dp Set direccion = '" & txt_dirclie.Text & "',  nro_rece= '" & txt_cedible.Text & "', transporte ='" & cbo_tp.Text & "', nflete ='" & txt_nroflete.Text & "', nrobultos ='" & txt_nrobulto.Text & "', gramos ='" & txt_peso.Text & "', comuna ='" & cbo_ciudad.Text & "', chofer ='" & cbo_chofer.Text & "', patente = '" & lbl_patente.Text & "', despachador = '" & cbo_acomodador.Text & "', fe_desp = '" & msk_fe_desp.Text & "'  WHERE id = '" & lbl_idbd.Text & "'", conexion)
+            cmd2 = New MySqlCommand("Update guias_dp Set direccion = '" & txt_dirclie.Text & "',  nro_rece= '" & txt_cedible.Text & "', transporte ='" & cbo_tp.Text & "', nflete ='" & txt_nroflete.Text & "', nrobultos ='" & txt_nrobulto.Text & "', gramos ='" & txt_peso.Text & "', comuna ='" & cbo_ciudad.Text & "', chofer ='" & cbo_chofer.Text & "', patente = '" & lbl_patente.Text & "', despachador = '" & cbo_acomodador.Text & "', fe_desp = '" & msk_fe_desp.Text & "', obs_despacho_guia = '" & txt_obs.Text & "'  WHERE id = '" & lbl_idbd.Text & "'", conexion)
 
             cmd2.ExecuteNonQuery()
             conexion.Close()
@@ -1792,7 +1897,7 @@ Public Class frm_ing_guia_clte
             cmd_limpíar.PerformClick()
 
         Catch ex As Exception
-            MessageBox.Show(ex.Message)
+            MessageBox.Show("Boton Modificar" + ex.Message)
         End Try
     End Sub
 
@@ -1826,29 +1931,30 @@ Public Class frm_ing_guia_clte
     End Sub
 
     Private Sub cbo_acomodador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbo_acomodador.SelectedValueChanged
-        If cbo_acomodador.Text <> "" Then
+        'If cbo_acomodador.Text <> "" Then
 
-            msk_fe_desp.Select()
-        Else
-            cbo_acomodador.Select()
+        '    msk_fe_desp.Select()
+        'Else
+        '    cbo_acomodador.Select()
 
-        End If
+        'End If
     End Sub
 
     Private Sub cbo_acomodador_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbo_acomodador.SelectionChangeCommitted
-        If cbo_acomodador.Text <> "" Then
+        'If cbo_acomodador.Text <> "" Then
 
-            msk_fe_desp.Select()
-        Else
-            cbo_acomodador.Select()
+        '    msk_fe_desp.Select()
+        'Else
+        '    cbo_acomodador.Select()
 
-        End If
+        'End If
     End Sub
 
     Private Sub grilla2_CellMouseDoubleClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles grilla2.CellMouseDoubleClick
         Dim tipogarant As String
 
         'Carga datos a las cajas de texto
+
         lbl_nrodp.Text = grilla2.Item(0, e.RowIndex).Value 'nrodp
         txt_nro_Guia.Text = grilla2.Item(1, e.RowIndex).Value 'nro guia
         lbl_fe_creacion.Text = grilla2.Item(2, e.RowIndex).Value 'fe creacion
@@ -1867,6 +1973,8 @@ Public Class frm_ing_guia_clte
         cbo_chofer.Text = grilla2.Item(15, e.RowIndex).Value 'chofer
         cbo_acomodador.Text = grilla2.Item(16, e.RowIndex).Value 'acomodador
         lbl_usr_reg.Text = grilla2.Item(17, e.RowIndex).Value 'usuario
+        txt_dirclie.Text = grilla2.Item(22, e.RowIndex).Value 'direccion
+        lbl_idbd.Text = grilla2.Item(23, e.RowIndex).Value 'id
 
         tipogarant = grilla2.Item(18, e.RowIndex).Value 'tipo garantia
 
@@ -1889,14 +1997,16 @@ Public Class frm_ing_guia_clte
         'BUSCA MEDIO TP
         If conexion.State = 1 Then conexion.Close()
         conexion.Open()
-        sql = "Select * from medios_dp where tipo = '" & cbo_tp.Text & "'"
+        sql = "Select * from medios_dp where patente = '" & lbl_patente.Text & "'"
         com19 = New MySqlCommand(sql, conexion)
 
         rs19 = com19.ExecuteReader()
 
         If rs19.HasRows = True Then
             rs19.Read()
-            lbl_patente.Text = CStr(rs19("patente"))
+            cbo_medio_tp.Enabled = True
+            cbo_medio_tp.Text = CStr(rs19("tipo"))
+            cbo_medio_tp.Enabled = False
 
             rs19.Dispose()
             conexion.Close()
@@ -1918,7 +2028,12 @@ Public Class frm_ing_guia_clte
         cbo_ampm.Enabled = False
         txt_obs.Enabled = False
         txt_dirclie.Enabled = False
+        txt_nroflete.Enabled = False
+        cbo_chofer.Enabled = False
+        cbo_medio_tp.Enabled = False
+        txt_nro_Guia.Enabled = False
         cmd_modificar.Enabled = True
+
 
 
     End Sub
@@ -1949,5 +2064,25 @@ Public Class frm_ing_guia_clte
 
     Private Sub txt_bus_gclte_desp_TextChanged(sender As Object, e As EventArgs) Handles txt_bus_gclte_desp.TextChanged
 
+    End Sub
+
+    Private Sub ch_anio_ant_CheckedChanged(sender As Object, e As EventArgs) Handles ch_anio_ant.CheckedChanged
+        Call Carga_grilla()
+    End Sub
+
+    Private Sub cbo_ampm_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbo_ampm.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub cbo_acomodador_KeyPress(sender As Object, e As KeyPressEventArgs) Handles cbo_acomodador.KeyPress
+        If e.KeyChar = Convert.ToChar(13) Then
+            If cbo_acomodador.Text <> "" Then
+                msk_fe_desp.Select()
+            Else
+                cbo_acomodador.Focus()
+
+
+            End If
+        End If
     End Sub
 End Class

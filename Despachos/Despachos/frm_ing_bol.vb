@@ -382,6 +382,8 @@ Public Class frm_ing_bol
     Sub Carga_grilla()
 
         Dim cmd1 As New MySqlCommand
+        Dim dif_emp As Boolean = False
+
 
         Try
             'SACA EL MES
@@ -398,6 +400,7 @@ Public Class frm_ing_bol
                     Call ConectaGlo2()
                     Call elano()
                     miano = miano - 1
+                    dif_emp = True
                 End If
             Else
                 If emp_entrada = 1 Then  'cintegral
@@ -406,6 +409,7 @@ Public Class frm_ing_bol
                 Else                     'global
                     Call ConectaGlo()
                     Call elano()
+                    dif_emp = True
                 End If
             End If
 
@@ -415,7 +419,14 @@ Public Class frm_ing_bol
 
 
             'cmd1.CommandText = "SELECT Substring(VENTA.tipocon,8,10)tipocon, VENTA.fechacon, VENTA.rutcon, Cliente.nomclie, Cliente.ciuclie, maemozo.nomven, VENTA.netocon, maebode.nombod FROM VENTA INNER JOIN CLIENTE ON VENTA.rutcon = CLIENTE.rutclie inner join Maemozo on maemozo.codven = venta.vencon inner join maebode on venta.bodecon = maebode.codbod WHERE VENTA.tipocon LIKE '%BOE%' AND year(VENTA.fechacon) = '" & miano & "' AND month(VENTA.fechacon) > 0 and bodecon = '11' GROUP BY VENTA.tipocon, VENTA.fechacon, VENTA.rutcon, CLIENTE.nomclie, VENTA.vencon, VENTA.netocon, VENTA.ordcon ORDER BY fechacon DESC"
-            cmd1.CommandText = "select folio, fecha_emision, rut_receptor, razon_social_receptor, ciudad_receptor, vendedor, monto_neto, nombre_bodega from ventas where tipo_documento = '39' and year(fecha_emision)= '" & miano & "' and month(fecha_emision) > 0 and num_bodega = '11' group by tipo_documento, folio, fecha_emision, rut_receptor, razon_social_receptor, ciudad_receptor, vendedor, monto_neto, nombre_bodega order by fecha_emision DESC;"
+            If dif_emp = True Then
+                'carga global
+                cmd1.CommandText = "select folio, fecha_emision, rut_receptor, razon_social_receptor, ciudad_receptor, vendedor, monto_neto, nombre_bodega from ventas where tipo_documento = '39' and year(fecha_emision)= '" & miano & "' and month(fecha_emision) > 0 and num_bodega = '1' group by tipo_documento, folio, fecha_emision, rut_receptor, razon_social_receptor, ciudad_receptor, vendedor, monto_neto, nombre_bodega order by fecha_emision DESC;"
+            Else
+                'carga cintegral
+                cmd1.CommandText = "select folio, fecha_emision, rut_receptor, razon_social_receptor, ciudad_receptor, vendedor, monto_neto, nombre_bodega from ventas where tipo_documento = '39' and year(fecha_emision)= '" & miano & "' and month(fecha_emision) > 0 and num_bodega = '11' group by tipo_documento, folio, fecha_emision, rut_receptor, razon_social_receptor, ciudad_receptor, vendedor, monto_neto, nombre_bodega order by fecha_emision DESC;"
+            End If
+
 
             Dim dt As System.Data.DataTable = New System.Data.DataTable
             Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd1)
@@ -487,7 +498,7 @@ Public Class frm_ing_bol
 
         Dim BarraStatusTexto = New StatusBarPanel
         BarraStatusTexto.Name = "StatusBartexto"
-        BarraStatusTexto.Width = 200
+        BarraStatusTexto.Width = 600
         BarraStatusTexto.Text = "CONECTADO A BD " & v_database
         BarraStatus.Panels.Add(BarraStatusTexto)
 
@@ -741,7 +752,7 @@ Public Class frm_ing_bol
         End If
 
 
-        valret1 = "0" + valret1 'le agrega el 0 para igualar el campo
+        'valret1 = "0" + valret1 'le agrega el 0 para igualar el campo
         If conexion.State = 1 Then conexion.Close()
         'la abre 
         conexion.Open()
@@ -801,7 +812,7 @@ Public Class frm_ing_bol
 
             Label13.Visible = True
             txt_cedible.Visible = True
-            txt_cedible.ReadOnly = True
+            'txt_cedible.ReadOnly = True
             txt_cedible.ForeColor = Color.Red
             txt_cedible.BackColor = txt_cedible.BackColor
 
@@ -809,11 +820,11 @@ Public Class frm_ing_bol
             txt_nrobulto.ForeColor = Color.Red
             txt_nrobulto.BackColor = txt_nrobulto.BackColor
 
-            txt_nroflete.ReadOnly = True
+            'txt_nroflete.ReadOnly = True
             txt_nroflete.ForeColor = Color.Red
             txt_nroflete.BackColor = txt_nroflete.BackColor
 
-            txt_peso.ReadOnly = True
+            'txt_peso.ReadOnly = True
             txt_peso.ForeColor = Color.Red
             txt_peso.BackColor = txt_peso.BackColor
 
@@ -821,7 +832,7 @@ Public Class frm_ing_bol
             msk_fe_desp.ForeColor = Color.Blue
             msk_fe_desp.BackColor = msk_fe_desp.BackColor
 
-            txt_obs_boe.ReadOnly = True
+            'txt_obs_boe.ReadOnly = True
             txt_obs_boe.ForeColor = Color.Red
             txt_obs_boe.BackColor = txt_obs_boe.BackColor
 
@@ -1020,75 +1031,92 @@ Public Class frm_ing_bol
 
             ch_stop_timer.Checked = True 'detiene el timer
 
-            lbl_rut.Text = grilla.Item(2, e.RowIndex).Value 'rut
-            lbl_nombre.Text = grilla.Item(3, e.RowIndex).Value 'cliente
-            cbo_ciudad.Text = grilla.Item(4, e.RowIndex).Value 'ciudad
-            lbl_nro_boe.Text = grilla.Item(0, e.RowIndex).Value 'nro fact
-            lbl_fe_boe.Text = grilla.Item(1, e.RowIndex).Value 'fecha fact
-            lbl_mto_boe.Text = grilla.Item(6, e.RowIndex).Value 'mto_fact
-            lbl_vendedor.Text = grilla.Item(5, e.RowIndex).Value 'vendedor
-            lbl_bod.Text = grilla.Item(7, e.RowIndex).Value 'bodega
+            If IsDBNull(grilla.Item(2, e.RowIndex).Value) = True Then
+                ' MsgBox("No se puede registrar la Boleta sin Rut, debe personalizar la Boleta con los datos del Cliente", MsgBoxStyle.Critical)
+                'Exit Sub
 
+
+                lbl_rut.Text = "96689970-0"
+                lbl_nombre.Text = "Cliente con Boleta"
+                cbo_ciudad.Text = "Viña del mar"
+                lbl_nro_boe.Text = grilla.Item(0, e.RowIndex).Value 'nro fact
+                lbl_fe_boe.Text = grilla.Item(1, e.RowIndex).Value 'fecha fact
+                lbl_mto_boe.Text = grilla.Item(6, e.RowIndex).Value 'mto_fact
+                lbl_vendedor.Text = grilla.Item(5, e.RowIndex).Value 'vendedor
+                lbl_bod.Text = grilla.Item(7, e.RowIndex).Value 'bodega
+            Else
+
+
+
+                lbl_rut.Text = grilla.Item(2, e.RowIndex).Value 'rut
+                lbl_nombre.Text = grilla.Item(3, e.RowIndex).Value 'cliente
+                cbo_ciudad.Text = grilla.Item(4, e.RowIndex).Value 'ciudad
+                lbl_nro_boe.Text = grilla.Item(0, e.RowIndex).Value 'nro fact
+                lbl_fe_boe.Text = grilla.Item(1, e.RowIndex).Value 'fecha fact
+                lbl_mto_boe.Text = grilla.Item(6, e.RowIndex).Value 'mto_fact
+                lbl_vendedor.Text = grilla.Item(5, e.RowIndex).Value 'vendedor
+                lbl_bod.Text = grilla.Item(7, e.RowIndex).Value 'bodega
+            End If
             'busca al vendedor
             If ch_anio_ant.Checked = True Then
-                If emp_entrada = 1 Then   'cintegral
-                    Call ConectaCint2()
-                    Call elano()
-                    miano = miano - 1
-                Else                       'global
-                    Call ConectaGlo2()
-                    Call elano()
-                    miano = miano - 1
+                    If emp_entrada = 1 Then   'cintegral
+                        Call ConectaCint2()
+                        Call elano()
+                        miano = miano - 1
+                    Else                       'global
+                        Call ConectaGlo2()
+                        Call elano()
+                        miano = miano - 1
+                    End If
+                Else
+                    If emp_entrada = 1 Then  'cintegral
+                        Call ConectaCint()
+                        Call elano()
+                    Else                     'global
+                        Call ConectaGlo()
+                        Call elano()
+                    End If
                 End If
-            Else
-                If emp_entrada = 1 Then  'cintegral
-                    Call ConectaCint()
-                    Call elano()
-                Else                     'global
-                    Call ConectaGlo()
-                    Call elano()
+
+                If conexion.State = 1 Then conexion.Close()
+                conexion.Open()
+                sql = ""
+                'sql = "select codven from maemozo where nomven= '" & lbl_vendedor.Text & "'"
+                sql = "select num_vendedor from usuarios where nombre_usuario= '" & lbl_vendedor.Text & "' and es_vendedor = 1"
+                com7 = New MySqlCommand(sql, conexion)
+
+                rs7 = com7.ExecuteReader()
+                If rs7.HasRows() = False Then
+                    MsgBox("No se encontró el código del vendedor", MsgBoxStyle.Critical)
+                    lbl_codejec.Text = ""
+                Else
+                    rs7.Read()
+                    lbl_codejec.Text = CStr(rs7("num_vendedor").ToString)
                 End If
+                com7.Dispose()
+                conexion.Close()
+
+
+
+
+                txt_cedible.Enabled = True
+                cbo_tp.Enabled = True
+                cbo_ciudad.Enabled = True
+                cbo_chofer.Enabled = True
+                cbo_acomodador.Enabled = True
+                txt_nrobulto.Enabled = True
+                txt_nroflete.Enabled = True
+                txt_peso.Enabled = True
+                cbo_ciudad.Enabled = False
+                msk_fe_desp.Enabled = True
+                txt_obs_boe.Enabled = True
+                cbo_ampm.Enabled = True
+                cbo_medio_tp.Enabled = True
+                cmd_modificar.Enabled = False
+                cmd_guardar.Enabled = False
+
+
             End If
-
-            If conexion.State = 1 Then conexion.Close()
-            conexion.Open()
-            sql = ""
-            'sql = "select codven from maemozo where nomven= '" & lbl_vendedor.Text & "'"
-            sql = "select num_vendedor from usuarios where nombre_usuario= '" & lbl_vendedor.Text & "' and es_vendedor = 1"
-            com7 = New MySqlCommand(sql, conexion)
-
-            rs7 = com7.ExecuteReader()
-            If rs7.HasRows() = False Then
-                MsgBox("No se encontró el código del vendedor", MsgBoxStyle.Critical)
-                lbl_codejec.Text = ""
-            Else
-                rs7.Read()
-                lbl_codejec.Text = CStr(rs7("num_vendedor").ToString)
-            End If
-            com7.Dispose()
-            conexion.Close()
-
-
-
-
-            txt_cedible.Enabled = True
-            cbo_tp.Enabled = True
-            cbo_ciudad.Enabled = True
-            cbo_chofer.Enabled = True
-            cbo_acomodador.Enabled = True
-            txt_nrobulto.Enabled = True
-            txt_nroflete.Enabled = True
-            txt_peso.Enabled = True
-            cbo_ciudad.Enabled = False
-            msk_fe_desp.Enabled = True
-            txt_obs_boe.Enabled = True
-            cbo_ampm.Enabled = True
-            cbo_medio_tp.Enabled = True
-            cmd_modificar.Enabled = False
-            cmd_guardar.Enabled = False
-
-        End If
-
     End Sub
 
     Private Sub ch_stop_timer_CheckedChanged(sender As Object, e As EventArgs) Handles ch_stop_timer.CheckedChanged
@@ -1748,6 +1776,14 @@ Public Class frm_ing_bol
                         ' Else
                         'txt_peso.Select()
 
+                    Case "CAMIONETA GLOBAL"
+                        txt_nroflete.Text = "0"
+                        cbo_chofer.Enabled = True
+                        cbo_ciudad.Enabled = False
+                        cbo_medio_tp.Enabled = True
+
+                        cbo_chofer.Select()
+
                 End Select
             End If
 
@@ -1839,7 +1875,11 @@ Public Class frm_ing_bol
             MsgBox("El valor para peso como minimo es de 400 gramos, verifique!", MsgBoxStyle.Critical, "Control de Peso")
             txt_peso.Select()
         Else
-            cbo_ciudad.Select()
+            If cbo_ciudad.Enabled = False Then
+                cbo_chofer.Select()
+            Else
+                cbo_ciudad.Select()
+            End If
         End If
     End Sub
 
@@ -2001,5 +2041,10 @@ Public Class frm_ing_bol
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
         SendKeys.Send("{ENTER}")
         Timer2.Enabled = False
+    End Sub
+
+    Private Sub ch_anio_ant_CheckedChanged(sender As Object, e As EventArgs) Handles ch_anio_ant.CheckedChanged
+        Call Carga_grilla()
+
     End Sub
 End Class

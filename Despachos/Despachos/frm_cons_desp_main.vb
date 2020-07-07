@@ -600,6 +600,7 @@ Public Class frm_cons_desp_main
         cbo_tipo.Items.Add("BOLETA")
         cbo_tipo.Items.Add("GUIA")
         cbo_tipo.Items.Add("GUIA TRASP")
+        cbo_tipo.Items.Add("GUIA ELECTRONICA")
         cbo_tipo.Items.Add("NRO DPI")
 
         cmd_buscar.Enabled = False
@@ -652,9 +653,9 @@ Public Class frm_cons_desp_main
                 Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd10)
 
                 da.Fill(dt)
-                If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+                'If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
 
-                    grilla.DataSource = dt
+                grilla.DataSource = dt
                     Call formato_grilla_fact()
 
 
@@ -675,10 +676,10 @@ Public Class frm_cons_desp_main
                     '       i = +i
                     'Next
                     cmd_exp_excel.Enabled = True
-                Else
-                    MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
-                End If
-                conexion.Close()
+                    'Else
+                    '    MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
+                    'End If
+                    conexion.Close()
                 da.Dispose()
                 cmd10.Dispose()
 
@@ -707,25 +708,27 @@ Public Class frm_cons_desp_main
                 If conexion.State = 1 Then conexion.Close()
                 conexion.Open()
 
-                valor = "0" + txt_nrodocto.Text
+                valor = txt_nrodocto.Text
 
                 cmd10.Connection = conexion
                 cmd10.CommandText = "Select id, nrodp, rutclie, nomclie, comuna, nboleta, monto_fact, fe_docto, fe_desp, transporte, patente, nflete, recibio, fe_reingreso, nro_rece, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, noc, gramos, fe_creacion, obs_despacho, obs_reingreso, usuario, usuario_reing From boletas_dp Where nboleta = '" & valor & "'"
-                Dim dt As System.Data.DataTable = New System.Data.DataTable
-                Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd10)
+                Dim dt1 As System.Data.DataTable = New System.Data.DataTable
+                Dim da1 As MySqlDataAdapter = New MySqlDataAdapter(cmd10)
 
-                da.Fill(dt)
-                If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+                da1.Fill(dt1)
+                'If dt1 IsNot Nothing AndAlso dt1.Rows.Count > 0 Then
 
-                    grilla.DataSource = dt
+
+
+                grilla.DataSource = dt1
                     Call formato_grilla_Boe()
                     cmd_exp_excel.Enabled = True
-                Else
-                    MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
-                End If
+                ' Else
+                'MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
+                ' End If
 
                 conexion.Close()
-                da.Dispose()
+                da1.Dispose()
                 cmd10.Dispose()
 
 
@@ -760,17 +763,18 @@ Public Class frm_cons_desp_main
                 cmd10.CommandText = "Select * From guias_dp Where nguia = '" & valor & "'"
                 Dim dt As System.Data.DataTable = New System.Data.DataTable
                 Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd10)
-                da.Fill(dt)
-                If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
 
-                    grilla.DataSource = dt
+                da.Fill(dt)
+                ' If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+
+                grilla.DataSource = dt
                     Call formato_grilla_guia()
                     cmd_exp_excel.Enabled = True
 
-                Else
-                    MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
+                'Else
+                'MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
 
-                End If
+                'End If
 
                 conexion.Close()
                 da.Dispose()
@@ -806,16 +810,17 @@ Public Class frm_cons_desp_main
                 cmd10.CommandText = "Select * From guias_trasp_dp Where nguia = '" & valor & "'"
                 Dim dt As System.Data.DataTable = New System.Data.DataTable
                 Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd10)
-                da.Fill(dt)
-                If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
 
-                    grilla.DataSource = dt
+                da.Fill(dt)
+                'If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+
+                grilla.DataSource = dt
                     Call formato_grilla_guia_trasp()
                     cmd_exp_excel.Enabled = True
-                Else
-                    MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
+                'Else
+                'MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
 
-                End If
+                'End If
 
                 conexion.Close()
                 da.Dispose()
@@ -852,9 +857,9 @@ Public Class frm_cons_desp_main
                 Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd10)
 
                 da.Fill(dt)
-                If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+                ' If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
 
-                    grilla.DataSource = dt
+                grilla.DataSource = dt
                     Call formato_grilla_fact()
 
 
@@ -875,14 +880,60 @@ Public Class frm_cons_desp_main
                     ' i = +i
                     'Next
                     cmd_exp_excel.Enabled = True
-                Else
-                    MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
-                End If
-                conexion.Close()
+                    ' Else
+                    '     MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
+                    ' End If
+                    conexion.Close()
                 da.Dispose()
                 cmd10.Dispose()
 
-        End Select
+            Case "GUIA ELECTRONICA"
+
+
+                'Carga los datos en la grilla
+                If ch_anio_ant.Checked = True Then
+                        If emp_entrada = 1 Then   'cintegral
+                            Call ConectaCint2()
+
+                        Else                       'global
+                            Call ConectaGlo2()
+
+                        End If
+                    Else
+                        If emp_entrada = 1 Then  'cintegral
+                            Call ConectaCint()
+
+                        Else                     'global
+                            Call ConectaGlo()
+
+                        End If
+                    End If
+
+                    If conexion.State = 1 Then conexion.Close()
+                    conexion.Open()
+
+                    valor = txt_nrodocto.Text
+                    cmd10.Connection = conexion
+                cmd10.CommandText = "Select rut_receptor, razon_social_receptor, ciudad_receptor, folio, fecha_emision, tipo_cliente, nombre_bodega, transportista, direccion_entrega, comuna_entrega From ventas Where tipo_documento = 52 and folio = '" & valor & "'"
+                Dim dt As System.Data.DataTable = New System.Data.DataTable
+                    Dim da As MySqlDataAdapter = New MySqlDataAdapter(cmd10)
+
+                    da.Fill(dt)
+                    ' If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+
+                    grilla.DataSource = dt
+
+
+
+                cmd_exp_excel.Enabled = True
+                    ' Else
+                    '     MsgBox("No hay Datos para Cargar", MsgBoxStyle.Exclamation)
+                    ' End If
+                    conexion.Close()
+                    da.Dispose()
+                    cmd10.Dispose()
+
+                End Select
 
 
     End Sub
@@ -913,5 +964,10 @@ Public Class frm_cons_desp_main
         Else
             Exit Sub
         End If
+    End Sub
+
+    Private Sub frm_cons_desp_main_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
+        frm_Menu.Show()
+
     End Sub
 End Class

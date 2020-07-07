@@ -502,7 +502,7 @@ Public Class frm_ing_fel
 
         Dim BarraStatusTexto = New StatusBarPanel
         BarraStatusTexto.Name = "StatusBartexto"
-        BarraStatusTexto.Width = 200
+        BarraStatusTexto.Width = 600
         BarraStatusTexto.Text = "CONECTADO A BD " & v_database
         BarraStatus.Panels.Add(BarraStatusTexto)
 
@@ -1122,6 +1122,16 @@ Public Class frm_ing_fel
                         txt_peso.SelectAll()
                         txt_peso.Select()
 
+                    Case "CAMIONETA GLOBAL"
+                        txt_nroflete.Text = "0"
+                        cbo_chofer.Enabled = True
+                        cbo_ciudad.Enabled = False
+                        cbo_medio_tp.Enabled = True
+
+                        txt_peso.Text = " "
+                        txt_peso.SelectAll()
+                        txt_peso.Select()
+
                 End Select
 
 
@@ -1228,6 +1238,15 @@ Public Class frm_ing_fel
                         cbo_acomodador.Text = "ASISTENTE"
                         cbo_acomodador.SelectAll()
                         cbo_acomodador.Select()
+
+                    Case "CAMIONETA GLOBAL"
+                        txt_nroflete.Text = "0"
+                        cbo_chofer.Enabled = True
+                        cbo_ciudad.Enabled = False
+                        cbo_medio_tp.Enabled = True
+
+                        cbo_chofer.Select()
+
 
 
                 End Select
@@ -1348,7 +1367,12 @@ Public Class frm_ing_fel
                 txt_peso.Enabled = True
                 txt_peso.Select()
             Else
-                cbo_ciudad.Select()
+                If cbo_ciudad.Enabled = False Then
+                    cbo_chofer.Select()
+                Else
+                    cbo_ciudad.Select()
+                End If
+
             End If
 
         Catch ex As Exception
@@ -2072,5 +2096,13 @@ Public Class frm_ing_fel
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
         SendKeys.Send("{ENTER}")
         Timer2.Enabled = False
+    End Sub
+
+    Private Sub ch_anio_ant_CheckedChanged(sender As Object, e As EventArgs) Handles ch_anio_ant.CheckedChanged
+        Call Carga_grilla_cint()
+    End Sub
+
+    Private Sub txt_bus_oc_desp_TextChanged(sender As Object, e As EventArgs) Handles txt_bus_oc_desp.TextChanged
+
     End Sub
 End Class

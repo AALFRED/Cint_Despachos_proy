@@ -122,6 +122,12 @@
     <Compile Include="frm_cons_desp_main.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frm_cons_series.Designer.vb">
+      <DependentUpon>frm_cons_series.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frm_cons_series.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frm_Extract_datos_cobro.Designer.vb">
       <DependentUpon>frm_Extract_datos_cobro.vb</DependentUpon>
     </Compile>
@@ -162,6 +168,12 @@
       <DependentUpon>frm_reingresos.vb</DependentUpon>
     </Compile>
     <Compile Include="frm_reingresos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frm_Rep_Est_Boletas.Designer.vb">
+      <DependentUpon>frm_Rep_Est_Boletas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frm_Rep_Est_Boletas.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frm_Rep_Est_Fact.Designer.vb">
@@ -210,6 +222,9 @@
     <EmbeddedResource Include="frm_cons_desp_main.resx">
       <DependentUpon>frm_cons_desp_main.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frm_cons_series.resx">
+      <DependentUpon>frm_cons_series.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frm_Extract_datos_cobro.resx">
       <DependentUpon>frm_Extract_datos_cobro.vb</DependentUpon>
     </EmbeddedResource>
@@ -236,6 +251,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frm_reingresos.resx">
       <DependentUpon>frm_reingresos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frm_Rep_Est_Boletas.resx">
+      <DependentUpon>frm_Rep_Est_Boletas.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frm_Rep_Est_Fact.resx">
       <DependentUpon>frm_Rep_Est_Fact.vb</DependentUpon>

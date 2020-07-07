@@ -23,15 +23,107 @@ Public Class frm_Rep_Est_guias
 
 
 
+    Sub Exp_Excel2(grilla As DataGridView)
+
+        System.Windows.Forms.Application.DoEvents()
+
+
+        lbl_cartel.Visible = True
+
+        If ((grilla.Columns.Count = 0) Or (grilla.Rows.Count = 0)) Then
+            MsgBox("No hay datos para procesar", MsgBoxStyle.Critical, "Sin Datos")
+            'Exit Sub
+        Else
+            'Creando Dataset para Exportar
+            Dim dset As New DataSet
+            'Agregar tabla al Dataset
+            dset.Tables.Add()
+            'AGregar Columna a la tabla
+            For i As Integer = 0 To grilla.ColumnCount - 1
+                dset.Tables(0).Columns.Add(grilla.Columns(i).HeaderText)
+            Next
+
+            'Agregar filas a la tabla
+            Dim dr1 As DataRow
+            For i As Integer = 0 To grilla.RowCount - 1
+                dr1 = dset.Tables(0).NewRow
+                For j As Integer = 0 To grilla.Columns.Count - 1
+                    dr1(j) = grilla.Rows(i).Cells(j).Value
+                Next
+                dset.Tables(0).Rows.Add(dr1)
+            Next
+
+            Dim aplicacion As New Microsoft.Office.Interop.Excel.Application
+            Dim wBook As Microsoft.Office.Interop.Excel.Workbook
+            Dim wSheet As Microsoft.Office.Interop.Excel.Worksheet
+
+            wBook = aplicacion.Workbooks.Add()
+            wSheet = wBook.ActiveSheet()
+
+            Dim dt As System.Data.DataTable = dset.Tables(0)
+            Dim dc As System.Data.DataColumn
+            Dim dr As System.Data.DataRow
+            Dim colIndex As Integer = 0
+            Dim rowIndex As Integer = 0
+
+            For Each dc In dt.Columns
+                colIndex = colIndex + 1
+                aplicacion.Cells(1, colIndex) = dc.ColumnName
+            Next
+            Cursor.Current = Cursors.WaitCursor
+            For Each dr In dt.Rows
+                rowIndex = rowIndex + 1
+                colIndex = 0
+                For Each dc In dt.Columns
+                    colIndex = colIndex + 1
+                    aplicacion.Cells(rowIndex + 1, colIndex) = dr(dc.ColumnName)
+
+                Next
+
+                lbl_cartel.Text = "Procesando la Fila....." & rowIndex
+            Next
+
+            'Configurar la orientacion de la  hoja y el tamaño
+            ' wSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape
+            ' wSheet.PageSetup.PaperSize = XlPaperSize.xlPaperLegal
+            'Configurar con negrilla la cabecera y tenga autofit
+            wSheet.Rows.Item(1).Font.Bold = 1
+            wSheet.Columns.AutoFit()
+
+            '  Dim strFileName As String = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory) & "Temp\Rep_Estado_Facturas.xlsx"
+            'Dim strFilename As String = System.IO.Path.GetDirectoryName(path:="Temp\exp_Cuadro_Anual.xlsx")
+            'Dim strfilename As String = "C:\Proyectos Vb2017\DESPACHOS\Despachos\Temp\Rep_Estado_Facturas.xlsx"
+            Dim strfilename As String = "C:\Proyectos Vb2017\Redireccionamiento\DESPACHOS_PROY\Temp\Rep_Estado_Guias.xlsx"
+            Dim blnFileOpen As Boolean = False
+            Try
+                Dim fileTemp As System.IO.FileStream = System.IO.File.OpenWrite(strfilename)
+                fileTemp.Close()
+            Catch ex As Exception
+                blnFileOpen = False
+            End Try
+
+            If System.IO.File.Exists(strfilename) Then
+                System.IO.File.Delete(strfilename)
+            End If
+            MessageBox.Show("El documento fue exportado correctamente.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1)
+            wBook.SaveAs(strfilename)
+            aplicacion.Workbooks.Open(strfilename)
+            aplicacion.Visible = True
+            Cursor.Current = Cursors.Default
+
+        End If
+
+
+    End Sub
+
     Sub Formato_grilla()
 
         'REVISAR viernes 28/03
         'dejar campos necesarios
 
-
-        'nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso,
-        'fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant
-
+        'nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, 
+        'fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, 
+        'usuario, usuario_reing, isgarant
 
         'FORMATO DE GRILLA
         grilla.Columns(0).HeaderCell.Value = "Nro DP"
@@ -407,7 +499,8 @@ Public Class frm_Rep_Est_guias
         Call elano() 'saca el año
         Me.CenterToScreen()
         v_emp = laemp.ToString()
-        Me.Text = v_emp & " / Reporte de Estado Facturas para Despacho **** AÑO " & miano & " **** Conectado como: " & retenUser
+        Me.Text = v_emp & " / Reporte de Estado Guias para Despacho **** AÑO " & miano & " **** Conectado como: " & retenUser
+        lbl_cartel.Text = ""
 
 
         'Create a StatusBar
@@ -483,6 +576,7 @@ Public Class frm_Rep_Est_guias
 
     Private Sub cmd_buscar_Click(sender As Object, e As EventArgs) Handles cmd_buscar.Click
         Dim cmd28 As New MySqlCommand
+        Dim valgrilla As Integer = 0
 
         ' Try
 
@@ -529,28 +623,28 @@ Public Class frm_Rep_Est_guias
                     If tipo_estado = 1 Then
                     ' despachado y entregado con guia cliente
 
-                    cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From GUIAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null ORDER BY fe_docto DESC"
-                    Call Formato_grilla()
+                    cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From guias_dp WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null ORDER BY fe_docto, nrodp DESC"
+
                 Else
                     ' en transito con guia cliente
-                    cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From GUIAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is null ORDER BY fe_docto DESC"
-                    Call Formato_grilla()
-                End If
+                    cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From guias_dp WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is null ORDER BY fe_docto, nrodp DESC"
 
+                End If
+                valgrilla = 1
 
             Case "SIN FACTURA"
 
                     If tipo_estado = 1 Then
                     ' despachado y entregado con guia sin fact
                     'cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From guias_dp WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null and nfactura is not null ORDER BY fe_docto DESC"
-                    cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From GUIAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null and nfactura is not null ORDER BY fe_docto DESC"
-                    Call Formato_grilla3()
+                    cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From guias_dp WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null and nfactura is not null ORDER BY fe_docto DESC"
+
                 Else
                     'cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From guias_dp WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null and nfactura is null ORDER BY fe_docto DESC"
-                    cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From GUIAS_DP WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null and nfactura is null ORDER BY fe_docto DESC"
-                    Call Formato_grilla3()
-                End If
+                    cmd28.CommandText = "SELECT nrodp, fe_creacion, nfactura, fe_docto, noc, rutclie, nombre, comuna, nguia, fe_desp, transporte, nro_rece, nflete, recibio, fe_reingreso, fe_cliente, vendedor, chofer, despachador, nrobultos, h_salida, gramos, obs_reingreso_guia, obs_despacho_guia, usuario, usuario_reing, isgarant From guias_dp WHERE fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' and  fe_reingreso is not null and nfactura is null ORDER BY fe_docto DESC"
 
+                End If
+                valgrilla = 2
 
 
             Case "TRASPASOS"
@@ -559,13 +653,13 @@ Public Class frm_Rep_Est_guias
                         'despachado y entregado con guia traspaso
 
                         cmd28.CommandText = "SELECT nrodp, nguia, bod_origen, bod_destino, fe_trasp, rut_trasp, nom_trasp, dir_trasp, fe_desp, transporte, patente, chofer, gramos, nrobultos, fe_recepcion, confirmacion, obs_ingreso, obs_reingreso, usr_registro, usr_reing FROM guias_trasp_dp where fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' order by fe_trasp ASC ;"
-                    Call Formato_grilla2()
+
                 Else
                     'en transito con guia traspaso
                     cmd28.CommandText = "SELECT nrodp, nguia, bod_origen, bod_destino, fe_trasp, rut_trasp, nom_trasp, dir_trasp, fe_desp, transporte, patente, chofer, gramos, nrobultos, fe_recepcion, confirmacion, obs_ingreso, obs_reingreso, usr_registro, usr_reing FROM guias_trasp_dp where fe_desp between '" & mifecha.ToString("yyyy-MM-dd") & "' and '" & mifecha2.ToString("yyyy-MM-dd") & "' order by fe_trasp ASC ;"
-                    Call Formato_grilla2()
-                End If
 
+                End If
+                valgrilla = 3
         End Select
 
 
@@ -580,6 +674,11 @@ Public Class frm_Rep_Est_guias
 
             ' If dt.Rows.Count <> 0 Then
             grilla.DataSource = dt
+
+
+            If valgrilla = 1 Then Call Formato_grilla()
+            If valgrilla = 2 Then Call Formato_grilla2()
+            If valgrilla = 3 Then Call Formato_grilla3()
 
             conexion.Close()
             da.Dispose()
@@ -621,7 +720,7 @@ Public Class frm_Rep_Est_guias
     End Sub
 
     Private Sub cmd_exp_excel_Click(sender As Object, e As EventArgs) Handles cmd_exp_excel.Click
-        MsgBox("En desarrollo")
+        Call Exp_Excel2(grilla)
     End Sub
 
     Private Sub cbo_tipo_guia_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbo_tipo_guia.SelectedIndexChanged
@@ -632,5 +731,9 @@ Public Class frm_Rep_Est_guias
             cbo_tipo_guia.Select()
 
         End If
+    End Sub
+
+    Private Sub GroupBox1_Enter(sender As Object, e As EventArgs) Handles GroupBox1.Enter
+
     End Sub
 End Class

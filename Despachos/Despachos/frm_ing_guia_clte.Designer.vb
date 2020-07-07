@@ -25,6 +25,8 @@ Partial Class frm_ing_guia_clte
         Me.components = New System.ComponentModel.Container()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frm_ing_guia_clte))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.lbl_fe_creacion = New System.Windows.Forms.Label()
@@ -472,7 +474,7 @@ Partial Class frm_ing_guia_clte
         Me.GroupBox2.Controls.Add(Me.txt_bus_gclte_desp)
         Me.GroupBox2.Location = New System.Drawing.Point(22, 166)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(1057, 543)
+        Me.GroupBox2.Size = New System.Drawing.Size(1117, 543)
         Me.GroupBox2.TabIndex = 2
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "DATOS DEL DESPACHO"
@@ -603,7 +605,7 @@ Partial Class frm_ing_guia_clte
         Me.Tab1.Location = New System.Drawing.Point(20, 153)
         Me.Tab1.Name = "Tab1"
         Me.Tab1.SelectedIndex = 0
-        Me.Tab1.Size = New System.Drawing.Size(1031, 335)
+        Me.Tab1.Size = New System.Drawing.Size(1091, 335)
         Me.Tab1.TabIndex = 48
         '
         'TP1
@@ -612,7 +614,7 @@ Partial Class frm_ing_guia_clte
         Me.TP1.Location = New System.Drawing.Point(4, 24)
         Me.TP1.Name = "TP1"
         Me.TP1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TP1.Size = New System.Drawing.Size(1023, 307)
+        Me.TP1.Size = New System.Drawing.Size(1083, 307)
         Me.TP1.TabIndex = 0
         Me.TP1.Text = "Facturas Disponibles"
         Me.TP1.UseVisualStyleBackColor = True
@@ -626,15 +628,31 @@ Partial Class frm_ing_guia_clte
         DataGridViewCellStyle1.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black
         DataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Maroon
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Blue
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.grilla.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.grilla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.grilla.DefaultCellStyle = DataGridViewCellStyle2
         Me.grilla.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.grilla.Location = New System.Drawing.Point(5, 6)
         Me.grilla.Name = "grilla"
         Me.grilla.ReadOnly = True
-        Me.grilla.Size = New System.Drawing.Size(1012, 291)
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.grilla.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
+        Me.grilla.Size = New System.Drawing.Size(1072, 291)
         Me.grilla.TabIndex = 0
         '
         'TP2
@@ -643,7 +661,7 @@ Partial Class frm_ing_guia_clte
         Me.TP2.Location = New System.Drawing.Point(4, 24)
         Me.TP2.Name = "TP2"
         Me.TP2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TP2.Size = New System.Drawing.Size(1023, 307)
+        Me.TP2.Size = New System.Drawing.Size(1083, 307)
         Me.TP2.TabIndex = 1
         Me.TP2.Text = "Guias con Despachos Registrados"
         Me.TP2.UseVisualStyleBackColor = True
@@ -653,26 +671,26 @@ Partial Class frm_ing_guia_clte
         Me.grilla2.AllowUserToAddRows = False
         Me.grilla2.AllowUserToDeleteRows = False
         Me.grilla2.AllowUserToOrderColumns = True
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(192, Byte), Integer))
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Maroon
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.grilla2.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
-        Me.grilla2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Red
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.grilla2.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.grilla2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.grilla2.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.grilla2.Location = New System.Drawing.Point(5, 6)
         Me.grilla2.Name = "grilla2"
         Me.grilla2.ReadOnly = True
-        Me.grilla2.Size = New System.Drawing.Size(1012, 287)
+        Me.grilla2.Size = New System.Drawing.Size(1072, 287)
         Me.grilla2.TabIndex = 1
         '
         'cmd_modificar
         '
         Me.cmd_modificar.Image = Global.Despachos.My.Resources.Resources.refresh
         Me.cmd_modificar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.cmd_modificar.Location = New System.Drawing.Point(679, 99)
+        Me.cmd_modificar.Location = New System.Drawing.Point(680, 99)
         Me.cmd_modificar.Name = "cmd_modificar"
         Me.cmd_modificar.Size = New System.Drawing.Size(100, 40)
         Me.cmd_modificar.TabIndex = 47
@@ -990,7 +1008,7 @@ Partial Class frm_ing_guia_clte
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ArchivoToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(1111, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1151, 24)
         Me.MenuStrip1.TabIndex = 3
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -1012,7 +1030,7 @@ Partial Class frm_ing_guia_clte
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.InactiveCaption
-        Me.ClientSize = New System.Drawing.Size(1111, 738)
+        Me.ClientSize = New System.Drawing.Size(1151, 738)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.MenuStrip1)
